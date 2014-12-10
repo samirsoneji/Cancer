@@ -71,17 +71,18 @@ setwd("~/Dropbox/Cancer/Value")
 #Lung Cancer#
 #############
 seer.respir <- read.fwf("data/SEER_data/SEER_1973_2011_TEXTDATA/incidence/yr1973_2011.seer9/RESPIR.txt",widths=348)
-cancer <- apply(seer.respir, 1, function(x) substr(x,43,46))
+cancer <- as.numeric(apply(seer.respir, 1, function(x) substr(x,44,46))) #full position is [43,46]; removed position 43, which is "C" for cancer
+site.recode <- as.numeric(apply(seer.respir, 1, function(x) substr(x,199,203)))
 age.dx <- as.numeric(apply(seer.respir, 1, function(x) substr(x,25,27)))
 year.dx <- as.numeric(apply(seer.respir, 1, function(x) substr(x,39,42)))
 sex <- as.numeric(apply(seer.respir, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.respir, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.respir, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.respir, 1, function(x) substr(x,301,304)))
-data.respir <- data.frame(cbind(cancer=cancer,age.dx=age.dx,year.dx=year.dx,sex=sex,stage=stage,vital.status=vital.status,surv.months=surv.months))
-
-
-
+data.respir <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
+                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+lung <- c(340:349)
+data.lung <- subset(data.respir, cancer %in% lung)
 drop <- which(data.lung$surv.months==9999 | data.lung$stage==9 | data.lung$age.dx < 40 | data.lung$age.dx==999)
 lung <- data.lung[-drop,]
 lung$sex[lung$sex==1] <- "male"
