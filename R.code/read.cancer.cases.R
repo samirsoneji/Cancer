@@ -570,3 +570,4 @@ prop.leukemia <- apply(table(leukemia$year.dx, leukemia$sex, leukemia$stage),c(1
 save(mx.leukemia, file="~/Cancer/data/mx.leukemia.Rdata")
 save(prop.leukemia, file="~/Cancer/data/prop.leukemia.Rdata") 
 print(paste("completed leukemia",date()))
+ 
