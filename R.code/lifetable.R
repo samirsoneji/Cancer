@@ -1,5 +1,4 @@
 lifetab.grad.nax.nLxappr <- function(nMx, a0, Rdx)   {
-source("Cancer/R.code/nAx.fxn.allcause.mort.r")
 
 #kk<-as.matrix(nMx)
 #dime<-dim(kk)

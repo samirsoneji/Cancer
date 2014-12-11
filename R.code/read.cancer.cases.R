@@ -331,7 +331,7 @@ prostate$stage[prostate$stage==0] <- "0. in situ"
 prostate$stage[prostate$stage==1] <- "1. localized"
 prostate$stage[prostate$stage==2] <- "2. regional"
 prostate$stage[prostate$stage==4] <- "4. distant"
-prostate$stage[prostate$stage==4] <- "8. localized.regional"
+prostate$stage[prostate$stage==8] <- "8. localized.regional"
 year.list <- as.numeric(rownames(table(prostate$year.dx)))
 age.list <-  as.numeric(rownames(table(prostate$age.dx.cat)))
 dead <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$sex, prostate$stage), sum)
@@ -523,7 +523,7 @@ data.lymyleuk <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=a
 
 #Note (Dec 11, 2014): Lymphoma staging follows Ann Arbor Staging (variable 348-348 in SEER data)
 data.lymphoma <- subset(data.lymyleuk, site.recode %in% c(33011,33012,33041,33042))
-drop <- which(data.lymphoma$surv.months==9999 | data.lymphoma$stage==9 | data.lymphoma$age.dx < 40 | data.lymphoma$age.dx==999)
+drop <- which(data.lymphoma$surv.months==9999 | data.lymphoma$stage.lymphoma %in% c(8,9) | data.lymphoma$age.dx < 40 | data.lymphoma$age.dx==999)
 lymphoma <- data.lymphoma[-drop,]
 lymphoma$sex[lymphoma$sex==1] <- "male"
 lymphoma$sex[lymphoma$sex==2] <- "female"
@@ -547,6 +547,7 @@ save(mx.lymphoma, file="~/Cancer/data/mx.lymphoma.Rdata")
 save(prop.lymphoma, file="~/Cancer/data/prop.lymphoma.Rdata") 
 print(paste("completed lymphoma",date()))
 
+#Note (Dec 11, 2014): Leukemia stage seems to depend on type of leukemia.  Should we drop leukemia?
 data.leukemia <- subset(data.lymyleuk, site.recode %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043))
 drop <- which(data.leukemia$surv.months==9999 | data.leukemia$stage==9 | data.leukemia$age.dx < 40 | data.leukemia$age.dx==999)
 leukemia <- data.leukemia[-drop,]
