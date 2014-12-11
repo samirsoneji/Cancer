@@ -1,0 +1,968 @@
+@charset "utf-8";
+/* CSS Document */
+html {
+	overflow: -moz-scrollbars-vertical;
+}
+html {
+	overflow-x: auto;
+}
+body {
+	font: 11pt Arial, Helvetica, sans-serif;
+	background: #E8E8E8;
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+	padding: 0;
+	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+	color: #000000;
+}
+strong {
+	color: #232F33;	
+}
+h1 {
+	font-size: 2em;
+}
+h2 {
+	margin-top: 20px;
+	color: #444444;
+}
+h3 {
+	color: #435b62;
+	font-size: 1.3em;
+}
+hr {
+	border: 0;
+	color: #585858;
+	background-color: #585858;
+	height: 1px;
+	width: 100%;
+	text-align: left;
+}
+hr.black {
+	color: #000000;
+	background-color: #000000;
+}
+#mainContent li {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+#mainContent ul {
+	margin-bottom: 5px;
+}
+#mainContent ul ul {
+	padding-top: 5px;
+}
+a, a:active, a:focus, span:active, span:focus {
+	color: #435b62;
+	outline: 0;
+}
+#mainContent a:focus, #footer a:focus {
+	outline: 1px dotted #435b62;	
+}
+#skip a, #skip a:hover, #skip a:visited {
+	position: absolute;
+	left: 0px;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+#skip a:active, #skip a:focus {
+	position: static;
+	display: block;
+	color: #FFFFFF;
+	float: right;
+	margin-right: 1.5em;
+	width: auto;
+	height: auto;
+}
+#container {
+	width: 62em;  /* this width will create a container that will fit in an 800px browser window if text is left at browser default font sizes */
+	background: #D9E4E8;
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	border: 1px solid #888;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+}
+#leftNav > div.menu > ul > li > ul > li.unavailtext { /*sections that are currently unavailable in the sidebar*/
+	background-color: #FFFFFF;	
+	border-radius: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+/* ------------------------ HEADER CSS ----------------------- */
+
+
+#nciBanner {
+	height: 40px;
+	background-color: #706F5D;
+	color: #FFF;
+	text-align: right;
+	font: 11px/1 Verdana, Helvetica, "Trebuchet MS", Arial, sans-serif;
+	overflow: visible;
+	min-width: 600px;
+}
+#nciBanner a {
+	color: #FFF;
+	text-decoration: none;
+}
+#nciBanner a:hover, #nciBanner a:focus {
+	text-decoration: underline;
+}
+#nciBanner img {
+	float: left;
+	border: none;
+}
+#nciBanner span {
+	display: block;
+	padding: 15px 10px 0 0;
+}
+#skip, #skip:hover, #skip:visited {
+	position: absolute;
+	top: -200px;
+	right: 44%;
+	padding: 8px 15px;
+	font-weight: bold;
+	border: 2px solid #ccc;
+	border-top: none;
+	border-radius: 0 0 3px 3px;
+	transition: all .2s ease-in-out;
+}
+#skip:active, #skip:focus {
+	position: absolute;
+	top: 0;
+	color: #444444;
+	background: #fff;
+	box-shadow: 0 1px 5px rgba(0,0,0,.7);
+}
+#seerBanner {
+	background: url("../images/bnr_repeat.gif") top repeat-x #f1f5f6;
+	padding: .5em 0 1.4em 1.4em;  /* this padding matches the left alignment of the elements in the divs that appear beneath it. If an image is used in the #seerBanner instead of text, you may want to remove the padding. */
+}
+#seerBanner h1 {
+	color: #162c66;
+	font-weight: normal;
+	margin: 0; /* zeroing the margin of the last element in the #seerBanner div will avoid margin collapse - an unexplainable space between divs. If the div has a border around it, this is not necessary as that also avoids the margin collapse */
+	padding: 16px 0 0 0; /* using padding will keep the heading away from the edges of the div */
+}
+#seerBanner img {
+	position: absolute;
+	z-index: 500;
+}
+#searchForm {
+	display: inline; /* Fixes double margin bug in IE6 */
+	margin: 1em 1.5em 0 0;
+}
+#title {
+	margin-left: 6.6em;
+}
+/*~~~~~~~~~~~~~~~~~~~~~~~Search Input~~~~~~~~~~~~~~~~~~~~~~*/
+#title form {
+	position: relative;
+	right: 20px;
+	top: 15px;
+}
+#title label {
+	display: block;
+	font-size: .9em;
+	font-weight: bold;
+	right
+}
+#title label {
+	display: block;
+	font-size: .9em;
+	font-weight: bold;
+}
+#title #searchsite {
+	height: 20px;
+}
+#title #button {
+	height: 26px;
+	color: #FFFFFF;
+	text-shadow: 1px 1px 2px #000000; 
+	background-color: #3f7900;
+	background-image: -ms-linear-gradient(top, #3F7900 0%, #325E00 100%);/* IE10 Consumer Preview */ 
+	background-image: -moz-linear-gradient(top, #3F7900 0%, #325E00 100%);/* Mozilla Firefox */ 
+	background-image: -o-linear-gradient(top, #3F7900 0%, #325E00 100%);/* Opera */ 
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3F7900), color-stop(1, #325E00));/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-linear-gradient(top, #3F7900 0%, #325E00 100%);/* Webkit (Chrome 11+) */ 
+	background-image: linear-gradient(to bottom, #3F7900 0%, #325E00 100%);/* W3C Markup, IE10 Release Preview */ 
+	border-radius: 5px;
+}
+/*~~~~~~~~~~~~~~~~~~~~~~~Close Search Input~~~~~~~~~~~~~~~~~~~~~~*/
+#utilities {
+	background-color: #FFFFFF;
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #888;
+	position: relative;
+	height: 1.6em;
+}
+#utilities form {
+	margin: 0;
+	padding: 0;
+}
+#utilities ul {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+#utilities li {
+	float: left;
+	list-style: none;
+	border-left: 1px solid #888;
+}
+#utilities a {
+	display: block;
+	color: #435b62;
+	text-decoration: none;
+	font-size: .9em;
+	padding: .3em 1.8em;
+}
+#utilities a:hover, #utilities a:focus {
+	color: #444444;
+	text-decoration: underline;
+}
+#utilities #print {
+	background: .1em center no-repeat url(/images/icons/printer.gif);
+	border-left: 0;
+}
+#header {
+	padding-left: 1.5em;
+	margin: 0;
+}
+#breadcrumbs {
+	margin: 10px 20px 0 20px;
+	padding: 0;
+	z-index: 1000;
+}
+#breadcrumbs span {
+	color: #1E1E1E;
+	font-size: 12px;
+}
+#breadcrumbs a {
+	display: inline;
+	color: #1E1E1E;
+	font-size: 11px;
+	text-decoration: none;
+}
+#breadcrumbs strong {
+	font-size: 11px;
+}
+#breadcrumbs a:hover, #breadcrumbs a:focus {
+	color: #444444;
+	text-decoration: underline;
+}
+/* ---------- LEFT NAV MENU CSS (LEFT NAVIGATION) ------------ */
+
+#leftNav {
+	width: auto; /* since this element is floated, a width must be given */
+	display: inline; /* Fixes double margin bug in IE6 */
+	float: left;
+	font-size: 1em;
+	margin: 10px 0 20px 20px;
+	padding: 0;
+	border: solid 1px #a8a8a8;
+	border-radius: 5px;
+}
+#leftNav a {
+	display: block;
+	width: 16em;
+	padding: .4em 1em;
+	text-decoration: none;
+	border: 0;
+	font-weight: bold;
+	border-top: solid 1px #a8a8a8;
+	background: #1B3B46;
+	color: #ffffff;
+	}
+/* LEVEL 1 - MODULE GROUP */
+#leftNav #cancerReg a {
+	border-top: none;
+}
+#leftNav a:hover, 
+#leftNav a:focus{
+	background-color: #CD8358;
+	color: #000000;
+}
+#leftNav #cancerReg a:hover,
+#leftNav #cancerReg a:focus {
+	border-radius: 5px 5px 0 0;
+}
+#leftNav  #archMod a:hover,
+#leftNav  #archMod a:focus {
+	border-radius: 0 0 5px 5px;
+}
+/* LEVEL 2 - MODULE LEVEL */
+#leftNav .menu ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	background-color: #1B3B46;
+}
+#leftNav .menu ul li {
+	padding-left: 1em;
+	margin-left: 1em;
+	background-color: #2E515E;
+	width: 16em;
+}
+#leftNav .menu ul li a {
+	padding-left: 0;
+	width: auto;
+	border-top: none;
+	background-color: #2E515E;
+}
+#leftNav .menu li a.current {
+	background: #CD8358;
+	color: #000000;
+	padding-left: 1em;
+	margin-left: -1em;
+}
+#leftNav .menu li a.current:hover, #leftNav .menu li a.current:focus{
+	background: #ffffff;
+	color: #000000;
+}
+#leftNav .menu a:hover, 
+#leftNav .menu a:focus,
+#leftNav .menu a.current:hover, 
+#leftNav .menu a.current:focus {
+	background-color: #CD8358;
+	color: #000000;
+	padding-left: 1em;
+	margin-left: -1em;
+}
+/* LEVEL 3 - UNIT LEVEL */
+#leftNav .menu ul ul li {
+	padding-left: 1em;
+	margin-left: 0;
+	background-color: #416876;
+	width: 15em;
+}
+#leftNav .menu ul ul li a {
+	padding-left: 0;
+	width: auto;
+	background-color: #416876;
+	border-top: none;
+}
+/* LEVEL 4 - CHAPTER LEVEL */
+#leftNav .menu ul ul ul li {
+	padding-left: 1em;
+	margin-left: 0;
+	background-color: #4C7D8F;
+	width: 14em;
+}
+#leftNav .menu ul ul ul li a {
+	padding-left: 0;
+	width: auto;
+	background-color: #4C7D8F;
+	border-top: none;
+}
+/* LEVEL 5 - SECTION LEVEL */
+#leftNav .menu ul ul ul ul li {
+	padding-left: 1em;
+	margin-left: 0;
+	background-color: #6896A6;
+	width: 13em;
+}
+#leftNav .menu ul ul ul ul li a {
+	padding-left: 0;
+	width: auto;
+	background-color: #6896A6;
+	border-top: none;
+}
+/* LEVEL 6 & UP - SUB-SECTION, ETC. LEVEL */
+#leftNav .menu ul ul ul ul ul, #leftNav .menu ul ul ul ul ul li {
+	display: none;
+	background: #FFF;
+	color: #000;
+}
+/* LEVELS <6 NOT TO BE DISPLAYED IN LEFT NAV */
+#leftNav ul.noNav, #leftNav li.noNav {
+	display: none;
+	background: #FFF;
+	color: #000;
+}
+/* --------------------- HANDS-ON TABS CSS ------------------- */
+#menu {
+	display: inline;
+	width: 39.53em;
+	float: right;
+	height: 2em;
+	margin: 10px 20px 0 0;
+	position: relative;
+}
+#menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	bottom: 0;
+}
+#menu ul li {
+	display: block;
+	float: left;
+	width: 180px;
+}
+#menu ul li a {
+	display: block;
+	color: #FFF;
+	text-decoration: none;
+	background-color: #1B3B46;
+	padding: .4em 1em;
+	border: 1px solid #888;
+	border-width: 1px 1px 0;
+	border-radius: 5px 5px 0 0;
+}
+#menu ul li.selected a {
+	padding-bottom: .5em;
+	z-index: 1000;
+	margin-bottom: -2px;
+	background-color: #2E515E;
+}
+#submenu {
+	display: inline;
+	background-color: #2E515E;
+	border: 1px solid #888;
+	border-width: 1px 1px 0;
+	width: 39.4em;
+	height: 3em;
+	padding: 0;
+	margin-right: 20px;
+	float: right;
+	border-radius: 0 5px 0 0;
+}
+#submenu ul {
+	display: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#submenu ul li {
+	display: block;
+	float: left;
+	width: 4em;
+}
+#submenu #treatment li {
+	width: 6em;
+}
+#submenu ul li a {
+	display: block;
+	color: #ffffff;
+	font-size: .8em;
+	text-decoration: none;
+	text-align: center;
+	padding: .4em 0;
+}
+#submenu ul #histology, #submenu ul #staging {
+	width: 7.7em;
+}
+#submenu ul.selected {
+	display: block;
+}
+#submenu ul.selected li.current a {
+	background: #4C7D8F;
+	border-radius: 5px;
+	padding-bottom: 20px;
+}
+#submenu ul li a:hover, #submenu ul li a:focus, #submenu ul.selected li.current a:hover, #submenu ul.selected li.current a:focus {
+	background-color: #CD8358;
+	border-radius: 5px;
+	padding-bottom: 20px;
+}
+/* -------------- RIGHT COLUMN CSS (MAIN CONTENT) ------------ */
+
+#mainContent {
+	float: right;
+	display: inline;
+	background-color: #FFFFFF;
+	border: 1px solid #a8a8a8;
+	border-radius: 10px;
+	margin: 10px 20px 80px 0; /* this keeps the #footer div from pressing up against the bottom of the #mainContent div */
+	padding: 0 1.2em 1.2em 1.2em;
+	width: 37em;
+}
+#mainContent.handson {
+	margin-top: 0;
+	position: relative;
+	top: -20px;
+}
+#mainContent h2 {
+	font-size: 1.5em;
+	margin-bottom: 0;
+	text-transform:	uppercase;
+}
+#mainContent h2.pageTitle {
+	width: 18em;
+	margin: 20px 0 0 0;
+}
+#mainContent p {
+	margin-bottom: 1em; /* this makes the p margin the same height as the padding */
+}
+.returnTop {
+	text-align: right;
+}
+div.half {
+	width: 48%;
+}
+/* ------------------------- TABLE CSS ----------------------- */
+#mainContent table {
+	border-collapse: collapse;
+	text-align: center;
+	border: 1px solid #888;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: .5em;
+}
+#mainContent table.bottomMargin {
+	margin-bottom: 1em;
+}
+#mainContent table.invisible {
+	border: 0;
+}
+#mainContent table caption {
+	font-weight: bold;
+	padding: 0;
+	margin: .5em 0;
+	text-align: left;
+}
+#mainContent th {
+	background-color: #1B3B46;
+	color: #FFFFFF;
+}
+#mainContent th.noStyle {
+	background-color: #FFF;
+	color: #000;
+	font-weight: normal;
+	text-align: left;
+}
+#mainContent th.noStyleCenter {
+	background-color: #FFF;
+	color: #000;
+	font-weight: normal;
+	text-align: center;
+}
+#mainContent th, #mainContent td {
+	border: 1px solid #888;
+	padding: 5px 10px;
+}
+#mainContent table.lessPadding th, #mainContent table.lessPadding td {
+	padding: 2px 5px;
+}
+#mainContent table.invisible th, #mainContent table.invisible td {
+	border: 0;
+	padding: 5px 0;
+}
+/* THESE TABLES ARE ONLY USED WITHIN THE "CANCER AS A DISEASE" MODULE */
+#mainContent th.tumorTissue {
+	width: 34%;
+}
+#mainContent th.tumorBenign {
+	width: 33%;
+}
+#mainContent th.tumorMalignant {
+	width: 33%;
+}
+/* THESE TABLES ARE ONLY USED WITHIN THE "DIAGNOSTIC TESTS" MODULE */
+#mainContent table.diagnostic {
+	margin: 0 auto;
+}
+#mainContent table.diagnostic td {
+	text-align: left;
+	vertical-align: top;
+}
+#mainContent table.diagnostic td.indent {
+	padding-left: 2.5em;
+}
+#mainContent table.diagnostic th.test, #mainContent table.diagnostic th.values {
+	width: 50%;
+}
+/* THESE TABLES ARE ONLY USED WITHIN THE "CASEFINDING" MODULE */
+#mainContent table.casefinding {
+	margin-bottom: 1em;
+	width: 100%;
+}
+/* THESE TABLES ARE ONLY USED WITHIN THE "CODING PRIMARY SITE/TUMOR MORPHOLOGY" MODULE */
+#mainContent table.leftAlign {
+	width: 100%;
+}
+#mainContent table.leftAlign td {
+	text-align: left;
+}
+#mainContent table.center td {
+	text-align: center;
+}
+/* TABLES MISC STYLES FOR REUSE */
+#mainContent table td.txtLeft, #mainContent table th.txtLeft {
+	text-align: left;
+}
+#mainContent table td.noWrap, #mainContent table th.noWrap {
+	white-space: nowrap;
+}
+#mainContent table tr.fixedHeight {
+	height: 1.2em;
+}
+#mainContent table.alignTop td {
+	vertical-align: top;
+}
+#mainContent table.txtSmall caption {
+	font-size: 11pt;
+}
+.firstCol {
+	width: 8em;
+}
+.firstColSmall {
+	width: 5em;
+}
+tr.underline {
+	border-bottom: 3px solid #888;
+}
+/* ---------------------- PREV/NEXT CSS --------------------- */
+#prevNext {
+	color: #435b62;
+	margin: 0;
+	padding: 0;
+	margin-top: 20px;
+}
+#prevNext a {
+	display: inline-block;
+	color: #435b62;
+	text-decoration: none;
+	width: 48%;
+	padding: 0;
+}
+#prevNext #pagePrev {
+	float: left;
+	text-align: left;
+}
+#prevNext #pageNext {
+	float: right;
+	text-align: right;
+}
+#prevNext a:hover {
+	color: #444444;
+	text-decoration: underline;
+}
+#prevNext #pageReturn {
+	display: block;
+	width: 100%;
+	float: left;
+	text-align: left;
+}
+/* ------------------------ IMAGES CSS ----------------------- */
+.rightColImg {
+	float: right;
+	margin: 0 0 15px 15px;
+}
+.leftColImg {
+	float: left;
+	margin: 0 15px 15px 0;
+}
+.horzImgGroup {
+	margin-bottom: 15px;
+}
+/* IMAGES MISC STYLES FOR REUSE */
+img.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.figure {
+	border: 1px solid #888;
+	background: #FFFFCC;
+	padding: 1em;
+	margin: 0 auto 1em auto;
+	text-align: center;
+}
+.figure p {
+	margin: 0;
+}
+/* ---------------------- MODULE MAP CSS --------------------- */
+
+#mainContent #modMap {
+	width: auto;
+	margin: 22px 0 0 0;
+	text-align: right;
+	float: right;
+}
+#modMap a {
+	padding: .3em .5em;
+	text-decoration: none;
+	color: #FFFFFF;
+	background: #444444;
+	border-radius: 5px;
+}
+#modMap a:hover {
+	text-decoration: underline;
+}
+.modMap {
+	margin-top: 10px;
+}
+/* ------------------------- QUIZ CSS ------------------------ */
+form#quiz ol li label, form#quiz ol li ol li label {
+	background-color: #D9E4E8;
+	padding: 2px 5px 1px 2px;
+	border-radius: 5px;
+}
+#summary {
+	color: #444444;
+	border: 1px solid #444444;
+	padding: .4em;
+	font-style: italic;
+	margin-top: 1em;
+}
+#summary p {
+	margin: 0;
+}
+.ansUnanswered {
+	margin-left: 20px;
+	font-style: italic;
+	color: #525252;
+	text-decoration: none;
+	cursor: default;
+}
+.ansCorrect {
+	display: inline;
+	margin-left: 20px;
+	font-style: italic;
+	color: #86B5C6;
+	text-decoration: none;
+	cursor: default;
+}
+.ansIncorrect {
+	display: inline;
+	margin-left: 20px;
+	font-style: italic;
+	color: #444444;
+	text-decoration: none;
+	cursor: default;
+}
+a.ansTreat {
+	position: absolute;
+	margin-left: 11em;
+}
+a.ansChkBx {
+	position: absolute;
+	margin-left: 16em;
+}
+a.ansMC {
+	margin-left: 0;
+}
+a.ansSS2K {
+	display: block;
+	margin-left: 0;
+	margin-top: 10px;
+}
+/* For Multiple Choice questions, where the answer in a sentence is indicated by a blank, underlined area. */
+span.blankAnswer {
+	border-bottom: 1px solid #777;
+	white-space: pre;
+}
+/* THESE STYLES APPLY EXCLUSIVELY TO DEFINTION TYPE QUIZZES */
+#def_txt {
+	float: left;
+	margin-right: 8px;
+	width: 48%;
+}
+#def_list {
+	float: right;
+	margin-right: 8px;
+	width: 48%;
+}
+#def_txt ol li {
+	clear: right;
+}
+#def_txt ol li input {
+	position: absolute;
+	width: 20px;
+}
+#def_txt p {
+	display: block;
+	float: right;
+	width: 12.5em;
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+a.ansDef {
+	display: block;
+	margin-left: 0;
+	margin-top: 5px;
+}
+/* THESE STYLES APPLY EXCLUSIVELY TO CASES (NEW WINDOW LINK) */
+#nwexer {
+	float: right;
+	margin-left: 8px;
+	margin-top: 12px;
+}
+#nwexer a {
+	display: none;
+	margin: 0;
+	padding: .3em .4em;
+	text-decoration: none;
+	color: #FFFFFF;
+	background: #444444;
+	border-radius: 5px;
+}
+#nwexer a.selected {
+	display: block;
+}
+/* THESE STYLES APPLY EXCLUSIVELY TO ICD-O-3 ERRATA AND CLARIFICATIONS PAGE*/
+#errClari li {
+	margin-bottom: 1em;
+	list-style: none;
+}
+/* ------------------------ FOOTER CSS ----------------------- */
+
+#footer {
+	background: #FFFFFF;
+	color: #525252;
+	border-top: 1px solid #888;
+	padding: .5em .5em .5em 1.5em;
+	height: auto;
+	font-size: .85em;
+	text-align: center;
+}
+#footer .nih_footer{
+	width: 80%;
+	border-top: 4px double #525252;
+	padding-top: 20px;
+	margin-left: 10%;
+}
+#footer .contact{
+	padding-bottom: 10px;
+}
+#footer a {
+	color: #2978bb;
+}
+#footer a:hover {
+	color: #2f2f2f;
+}
+/* --------------- MISCELLANEOUS CSS FOR REUSE --------------- */
+
+/* TEXT MISC STYLES */
+.caption {
+	text-align: center;
+	font-weight: bold;
+}
+.footnote {
+	margin-top: .5em;
+	font-size: .9em;
+	font-style: italic;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #80B8CC;
+}
+.txtSmall {
+	font-size: .8em;
+}
+.txtLarger {
+	font-size: 1.3em;
+}
+.txtCenter {
+	text-align: center;
+}
+span.underline {
+	text-decoration: underline;
+	color: #444444;
+}
+.pdf {
+    color: #767676;
+    font-size: 96%;
+}
+/* ALL OTHER MISC STYLES */
+
+.noLiPad ol, .noLiPad ul {
+	padding-left: 1.5em;
+}
+.alphaIndex {
+	width: 20%;
+	float: left;
+}
+.relative {
+	position: relative;
+}
+ul.noBulletVert, ul.noBulletVert li {
+	list-style-type: none;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 0;
+}
+ul.noBulletHorz, ul.noBulletHorz li {
+	list-style-type: none;
+	margin-left: 0;
+	padding: 0;
+}
+ul.noBulletHorz li {
+	display: inline;
+	float: left;
+	margin-right: 2em;
+}
+.indent {
+	margin-left: 3em;
+}
+.smallIndent {
+	padding-left: 1.7em;
+}
+.noShow {
+	display: none;
+}
+#leftNav .menu ul.noShow a {
+	background: #FFF;
+	color: #000;
+}
+.rgtMargin {
+	display: block;
+	float: left;
+	margin-right: 40px;
+}
+.lftMargin {
+	display: block;
+	margin-left: 40px;
+}
+.bottomMargin {
+	margin-bottom: 1em;
+}
+.topMargin {
+	margin-top: 1em;
+}
+.fltrt { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page */
+	float: left;
+	margin-right: 8px;
+}
+.clearFlt {  /* this class should be placed on an empty div (you may also use a break, but it may not be recognized by IE6) and should be the final element before the close of a container that should fully contain a float */
+	clear: both;
+	font-size: 1px;
+	line-height: 1px;
+}
+a.maskLink, a:link.maskLink, a:visited.maskLink, a:active.maskLink, a:hover.maskLink {
+	text-decoration: none;
+	cursor: default;
+	color: inherit;
+}
+#pdf_info {
+	padding: 1em 0 0 1em;
+	width: 17em;
+	text-align: left;
+	background-color: #1B3B46;
+	color: white;
+	font-weight: bold;
+	border-top: solid 1px #a8a8a8;
+}
+#pdf_info a {
+	margin: 0 0 0 -1em;
+	border: none;
+	padding-bottom: 1em;
+}
+#csect h3 {
+  margin: 5px 0 7px 0;
+  font-size: 12pt;
+}
+#csect a {
+  text-decoration: none;
+  color:#435B62;
+}
+#csect .switchcontent {
+  display:none;
+  margin-left: 1.2em;
+}

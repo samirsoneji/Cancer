@@ -1,0 +1,38 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	font: 12pt Arial, Helvetica, sans-serif;
+}
+#seerBanner img {
+	position: absolute;
+	z-index: 500;
+}
+#seerBanner h1 {
+	color: #A90101;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 15px 0 15px 0;
+}
+#title {
+	margin-left: 6em;
+}
+#breadcrumbs {
+	font-size: 9pt;
+}
+#breadcrumbs a {
+	color: #000000;
+	text-decoration: none;
+}
+#nciBanner, #searchForm, #utilities, #leftNav, #contentTabs, #prevNext, #footer, #testLink {
+	display: none;
+}
+#content{
+	width: 100%;
+}
+#mainContent table {
+	border-collapse: collapse;
+	border: 1px solid #888;
+	margin-bottom: 1em;
+}
+#mainContent table th, table td {
+	border: 1px solid #888;
+}
