@@ -1,4 +1,4 @@
-setwd("~/Dropbox/Cancer/Value")
+setwd("~/Dropbox/Cancer/Value/")
 
 ###############
 #Breast Cancer#
@@ -478,6 +478,7 @@ save(mx.headneck, file="~/Cancer/data/mx.headneck.Rdata")
 save(prop.headneck, file="~/Cancer/data/prop.headneck.Rdata")
 print(paste("completed headneck",date()))
 
+#Note (Dec 11, 2014): There is no stage for brain cancer.  All brain cancers are unstaged (==9).  We should drop brain cancer from the list of cancers we consider.
 data.brain <- subset(data.other, site.recode %in% c(31010))
 drop <- which(data.brain$surv.months==9999 | data.brain$stage==9 | data.brain$age.dx < 40 | data.brain$age.dx==999)
 brain <- data.brain[-drop,]
@@ -514,11 +515,13 @@ age.dx <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,25,27)))
 year.dx <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,39,42)))
 sex <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,236,236)))
+stage.lymphoma <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,348,348))) #Ann Arbor staging, 1983+
 vital.status <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,301,304)))
 data.lymyleuk <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,stage.lymphoma=stage.lymphoma,vital.status=vital.status,surv.months=surv.months))
 
+#Note (Dec 11, 2014): Lymphoma staging follows Ann Arbor Staging (variable 348-348 in SEER data)
 data.lymphoma <- subset(data.lymyleuk, site.recode %in% c(33011,33012,33041,33042))
 drop <- which(data.lymphoma$surv.months==9999 | data.lymphoma$stage==9 | data.lymphoma$age.dx < 40 | data.lymphoma$age.dx==999)
 lymphoma <- data.lymphoma[-drop,]
@@ -530,17 +533,16 @@ lymphoma$dead[lymphoma$surv.months >= 120] <- 0
 lymphoma$surv.months <- ifelse(lymphoma$surv.months<=120,lymphoma$surv.months,120)
 lymphoma$age.dx.cat <- 5*floor(lymphoma$age.dx/5)
 lymphoma$age.dx.cat[lymphoma$age.dx.cat>=100] <- 100
-lymphoma$stage[lymphoma$stage==0] <- "0. in situ"
-lymphoma$stage[lymphoma$stage==1] <- "1. localized"
-lymphoma$stage[lymphoma$stage==2] <- "2. regional"
-lymphoma$stage[lymphoma$stage==4] <- "4. distant"
-lymphoma$stage[lymphoma$stage==4] <- "8. localized.regional"
+lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==1] <- "1. stage I"
+lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==2] <- "2. stage II"
+lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==3] <- "3. stage III"
+lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==4] <- "4. stage IV"
 year.list <- as.numeric(rownames(table(lymphoma$year.dx)))
 age.list <-  as.numeric(rownames(table(lymphoma$age.dx.cat)))
-dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$sex, lymphoma$stage), sum)
-exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$sex, lymphoma$stage), sum)
+dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$sex, lymphoma$stage.lymphoma), sum)
+exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$sex, lymphoma$stage.lymphoma), sum)
 mx.lymphoma <- dead/exposure
-prop.lymphoma <- apply(table(lymphoma$year.dx, lymphoma$sex, lymphoma$stage),c(1,2),function(x) prop.table(x))
+prop.lymphoma <- apply(table(lymphoma$year.dx, lymphoma$sex, lymphoma$stage.lymphoma),c(1,2),function(x) prop.table(x))
 save(mx.lymphoma, file="~/Cancer/data/mx.lymphoma.Rdata")
 save(prop.lymphoma, file="~/Cancer/data/prop.lymphoma.Rdata") 
 print(paste("completed lymphoma",date()))
