@@ -1,0 +1,34 @@
+\begin{document}
+
+This is the decomposition you have done so far:
+\begin{enumerate}
+\item Let $\pi_i(t)$ and $e_i(x,t)$ be the proportion of patients and the life expectancy at age $x$ time $t$, 
+respectively, for cancer patients with stage $i$ (e.g., localized, regional, distant). That is, 
+$e_i(x,t)$ would be a stage-specific life expectancy. The overall life expectancy at age $x$ time $t$ would be
+\begin{eqnarray}
+  e(x,t)=\sum_{i=0}^{3}\,\pi_i(t)\,e_i(x,t) \notag
+\end{eqnarray}
+where $\sum_{i=0}^{3}\,\pi_i=1$.
+
+Then, the change in life expectancy at age $x$ between times $t_1$ and $t_2$ can be decomposed as (Kitagawa 1955):
+\begin{eqnarray}
+  e(x,t_2)-e(x,t_1)&=&\sum_{i=0}^{3}\left[\,\pi_i(t_2)\,e_i(x,t_2)- \pi_i(t_1)\,e_i(x,t_1)\right] \notag \\
+  &=&\sum_{i=0}^{3}\left[\pi_i(t_2)-\pi_i(t_1) \right]\left[\frac{e_i(x,t_1)+e_i(x,t_2)}{2}\right]+\sum_{i=0}^{3}\left[e_i(x,t_2)-e_i(x,t_1) \right]\left[\frac{\pi_i(t_1)+\pi_i(t_2)}{2}\right] 
+  \label{eqn:basic}
+\end{eqnarray}
+\end{enumerate}
+The above equation tells us how much of change in life expectancy at age $x$ between times $t_1$ and $t_2$ is due to: 
+a) changes in cancer stage distribution due to shifts in cancer stage (first term) and b) changes in stage-specific life expectancy (mortality).
+
+Formula \eqref{eqn:basic} would produce 6 terms (one for each cancer-stage proportion and cancer-stage mortality), which
+are the pieces you plotted as blue and red bars. 
+
+The next step is to further decompose the second term in \eqref{eqn:basic}. The idea would be to estimate how much of the change
+in cancer-specific life expectancy, $e_i(x,t_2)-e_i(x,t_1)$, is due to cancer and non-cancer mortality improvements. 
+In this case we can use traditional decomposition approaches as follows (eqn 2 in my 2008 paper):
+\begin{eqnarray}
+e_i(x,t_2)-e_i(x,t_1)=\sum_{j=1}^{k} \sum_{x=0}^{\omega}\left[L_{x,i,j}(t_2)-L_{x,i,j}(t_1) \right] \left[\frac{L_{x,i,-j}(t_2)+L_{x,i,-j}(t_1) }{2n} \right]
+\end{eqnarray}
+where $i$ corresponds to cancer, $j$ is cause-specific mortality among patients with cancer $i$, $x$ is age, and $L_x$ are person-years lived from the life table.
+
+\end{document}
