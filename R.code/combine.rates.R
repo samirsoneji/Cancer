@@ -66,6 +66,20 @@ library(survival)
 library(cause.decomp)
 source("~/Cancer/R.code/lifetable.R")
 source("~/Cancer/R.code/nAx.fxn.allcause.mort.r")
+source("~/Cancer/R.code/decomp.ex.cd.fxn.R")
+source("R.code/Assoc_LT.r")
+nMx1 <- t(mx.breast.cause[,,"1980","1. localized"])
+nMx2 <- t(mx.breast.cause[,,"1990","1. localized"])
+a01=0.1385
+a11=1.6325
+a12=2.2025
+a02=0.1385
+a21=1.6325
+a22=2.2025
+Rx <- 1
+decomp.ex.cd(nMx1, a01, a11, a12, Rx, nMx2, a02, a21, a22)
+
+
 
 decomp.fxn <- function(datos, year.list) {
   results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=9))
