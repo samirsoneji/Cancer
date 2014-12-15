@@ -574,3 +574,4 @@ save(mx.leukemia, file="~/Cancer/data/mx.leukemia.Rdata")
 save(prop.leukemia, file="~/Cancer/data/prop.leukemia.Rdata") 
 print(paste("completed leukemia",date()))
  
+ 
