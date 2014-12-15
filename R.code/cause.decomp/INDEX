@@ -1,0 +1,12 @@
+assoc.lt                Estimation of single-decrement life tables
+                        (a.k.a. associated life tables)
+cause.decomp-package    It estimates the contribution of changes in
+                        cause-specific mortality rates on changes in
+                        life expectancy between two time periods using
+                        the methodology developed by Beltrán-Sánchez et
+                        al. (2008). It also produces two life tables,
+                        one for each time period.
+decomp.ex.cd            Decomposition of changes in life expectancy at
+                        birth over time by cause of death.
+lifetab.grad.nax.nLxappr
+                        Estimation of a life table.
