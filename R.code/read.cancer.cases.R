@@ -36,7 +36,7 @@ prop.breast <- prop.table(as.table(table(breast$year.dx, breast$stage)),1)
 save(mx.breast, mx.breast.cause, file="~/Cancer/data/mx.breast.Rdata")
 save(prop.breast, file="~/Cancer/data/prop.breast.Rdata") 
 print(paste("completed breast",date()))
-
+ 
 ###################
 #Colorectal Cancer#
 ###################
