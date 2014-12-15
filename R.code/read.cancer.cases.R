@@ -1,4 +1,5 @@
 setwd("~/Dropbox/Cancer/Value/")
+library(plyr)
 
 ###############
 #Breast Cancer#
@@ -9,7 +10,8 @@ year.dx <- as.numeric(apply(seer.breast, 1, function(x) substr(x,39,42)))
 stage <- as.numeric(apply(seer.breast, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.breast, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.breast, 1, function(x) substr(x,301,304)))
-data.breast <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,stage=stage,vital.status=vital.status,surv.months=surv.months))
+cod <- as.numeric(apply(seer.breast, 1, function(x) substr(x,255,259)))
+data.breast <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 drop <- which(data.breast$surv.months==9999 | data.breast$stage==9 | data.breast$age.dx < 40 | data.breast$age.dx==999)
 breast <- data.breast[-drop,]
 breast$dead[breast$vital.status==1] <- 0
@@ -23,13 +25,15 @@ breast$stage[breast$stage==1] <- "1. localized"
 breast$stage[breast$stage==2] <- "2. regional"
 breast$stage[breast$stage==4] <- "4. distant"
 breast$stage[breast$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(breast$year.dx)))
-age.list <-  as.numeric(rownames(table(breast$age.dx.cat)))
+breast$cod[breast$cod!=26000] <- "other"
+breast$cod[breast$cod==26000] <- "breast"
 dead <- by(breast$dead, list(breast$age.dx.cat, breast$year.dx, breast$stage), sum)
+dead.cause <- by(breast$dead, list(breast$age.dx.cat, breast$year.dx, breast$stage, breast$cod), sum)
 exposure <- by(breast$surv.months/12, list(breast$age.dx.cat, breast$year.dx, breast$stage), sum)
 mx.breast <- dead/exposure
+mx.breast.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.breast <- prop.table(as.table(table(breast$year.dx, breast$stage)),1)
-save(mx.breast, file="~/Cancer/data/mx.breast.Rdata")
+save(mx.breast, mx.breast.cause, file="~/Cancer/data/mx.breast.Rdata")
 save(prop.breast, file="~/Cancer/data/prop.breast.Rdata") 
 print(paste("completed breast",date()))
 
