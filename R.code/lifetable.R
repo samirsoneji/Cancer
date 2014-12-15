@@ -1,10 +1,5 @@
 lifetab.grad.nax.nLxappr <- function(nMx, a0, Rdx)   {
 
-#kk<-as.matrix(nMx)
-#dime<-dim(kk)
-#NMx <- matrix(0,dime[1],1)
-#NMx[,1] <- kk
-
 x = c(0,1,seq(5,100,by=5))
 n <-c(1,4, rep(5,(length(nMx)-3)), 10)
 nax=c(a0,rep(2.5,(length(nMx)-2)), 0)
