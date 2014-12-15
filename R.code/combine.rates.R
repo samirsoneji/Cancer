@@ -63,6 +63,7 @@ prop.lymphoma <- aperm(prop.lymphoma,c(2,1,3))
 
 library(foreign)
 library(survival)
+library(cause.decomp)
 source("~/Cancer/R.code/lifetable.R")
 source("~/Cancer/R.code/nAx.fxn.allcause.mort.r")
 
