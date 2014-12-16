@@ -1,4 +1,4 @@
-nAx.fxn <- function(nDx, age.list, cause, n, Ri, LT, nQx) {
+nAx.fxn2 <- function(nDx, age.list, cause, n, Ri, LT, nQx) {
   y <- nDx[,cause]
   len <- length(y)
   nax <- rep(NA, len)

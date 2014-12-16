@@ -1,8 +1,12 @@
 decomp.ex.cd <- function(nMx1,a01,a11,a12,Rx,nMx2,a02,a21,a22) {
 
 
-#nMx1<-rates.85.100(data=nMx1,min.age=30,max.age=80);nMx1[is.na(nMx1)]<-0
-#nMx2<-rates.85.100(data=nMx2,min.age=30,max.age=80);nMx2[is.na(nMx2)]<-0
+#nMx1<-rates.85.100(data=nMx1,min.age=30,max.age=80)
+#nMx2<-rates.85.100(data=nMx2,min.age=30,max.age=80)
+  nMx1[is.na(nMx1)]<-0
+  nMx2[is.na(nMx2)]<-0
+  nMx1[nMx1==Inf]<-10^6
+  nMx2[nMx2==Inf]<-10^6
 
 age.grp<-c(0,1,seq(5,100,5))
 dime<-dim(nMx1)
@@ -15,8 +19,8 @@ t1.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx1),a01, Rx)
 t2.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx2),a02, Rx)
 
 
-t1.alt<-assoc.lt(nMx1,a01,a11,a12,Rx)
-t2.alt<-assoc.lt(nMx2,a02,a21,a22,Rx)
+t1.alt<-assoc.lt(nMx1,a01,Rx)
+t2.alt<-assoc.lt(nMx2,a02,Rx)
 
 t1.cdlt<-matrix(0,nrow=dime[1],ncol=dime[2])
 t2.cdlt<-matrix(0,nrow=dime[1],ncol=dime[2])

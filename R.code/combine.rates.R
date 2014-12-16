@@ -63,13 +63,13 @@ prop.lymphoma <- aperm(prop.lymphoma,c(2,1,3))
 
 library(foreign)
 library(survival)
-library(cause.decomp)
 source("~/Cancer/R.code/lifetable.R")
 source("~/Cancer/R.code/nAx.fxn.allcause.mort.r")
+source("~/Cancer/R.code/nAx.fxn.R")
 source("~/Cancer/R.code/decomp.ex.cd.fxn.R")
-source("R.code/Assoc_LT.r")
-nMx1 <- t(mx.breast.cause[,,"1980","1. localized"])
-nMx2 <- t(mx.breast.cause[,,"1990","1. localized"])
+source("~/Cancer/R.code/Assoc_LT.r")
+nMx1 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1980","1. localized"]))
+nMx2 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1990","1. localized"]))
 a01=0.1385
 a11=1.6325
 a12=2.2025
@@ -77,7 +77,7 @@ a02=0.1385
 a21=1.6325
 a22=2.2025
 Rx <- 1
-decomp.ex.cd(nMx1, a01, a11, a12, Rx, nMx2, a02, a21, a22)
+breast.decomp.80.90 <- decomp.ex.cd(nMx1, a01, a11, a12, Rx, nMx2, a02, a21, a22)
 
 
 
@@ -277,7 +277,7 @@ crc <- results.fxn(mx.crc, prop.crc, "crc", c(1973,2001))
 pancreas <- results.fxn(mx.pancreas, prop.pancreas, "pancreas", c(1973,2001))
 lung <- results.fxn(mx.lung, prop.lung, "lung", c(1988,2001))
 melanoma <- results.fxn(mx.melanoma, prop.melanoma, "melanoma", c(1973,2001))
-breast <- results.fxn(mx.breast, prop.breast, "breast", c(1973,2001))
+breast <- results.fxn(mx.breast, prop.breast, "breast", c(1980,1990))
 cervix <- results.fxn(mx.cervix, prop.cervix, "cervix", c(1973,2001))
 uterus <- results.fxn(mx.uterus, prop.uterus, "uterus", c(1973,2001))
 ovary <- results.fxn(mx.ovary, prop.ovary, "ovary", c(1973,2001))

@@ -15,7 +15,6 @@ Ri <-matrix(0,dime[1],dime[2])
        }
     }
 
-source("R.code/LifeTable_gradnax_nLxapprox.r")
 LT<-lifetab.grad.nax.nLxappr(nMx,a0, Rdx)
 
 nPx <-matrix(0,dime[1],dime[2])
@@ -44,10 +43,9 @@ nDx<-matrix(0,dime[1],dime[2])
 n <-c(1,4, rep(5,dime[1]-3), 10)
 x = c(0,1,seq(5,(dime[1]-3)*5,by=5), (dime[1]-3)*5+5)
 
-source("R.code/nAx.fxn.R")
 nAx <- matrix(0, dime[1],dime[2])
 for (c in 1:length(nms))
-  nAx[,c] <- nAx.fxn(nDx, age.list, c, n, Ri, LT, nQx)
+  nAx[,c] <- nAx.fxn2(nDx, age.list, c, n, Ri, LT, nQx)
 
 
 
