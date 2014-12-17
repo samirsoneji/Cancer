@@ -19,9 +19,11 @@ t1.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx1),a01, Rx)
 t2.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx2),a02, Rx)
 
 
-t1.alt<-assoc.lt(nMx1,a01,Rx)
-t2.alt<-assoc.lt(nMx2,a02,Rx)
-
+  t1.alt<-assoc.lt(nMx1,a01,Rx)
+  t1.alt[is.na(t1.alt)==TRUE] <- 0
+  t2.alt<-assoc.lt(nMx2,a02,Rx)
+  t2.alt[is.na(t2.alt)==TRUE] <- 0
+  
 t1.cdlt<-matrix(0,nrow=dime[1],ncol=dime[2])
 t2.cdlt<-matrix(0,nrow=dime[1],ncol=dime[2])
    for(j in 1:dime[2]){
@@ -30,7 +32,9 @@ t2.cdlt<-matrix(0,nrow=dime[1],ncol=dime[2])
      t2.cdlt[i,j]=(t2.lt$nLx[i]/t2.alt[i,j])*n[i]
      }
    }
-
+  t1.cdlt[t1.cdlt==Inf | t1.cdlt==-Inf] <- 0
+  t2.cdlt[t2.cdlt==Inf | t2.cdlt==-Inf] <- 0
+  
 term1<-matrix(0,dime[1],dime[2])
    for(j in 1:dime[2]){
     for(i in 1:dime[1]) {

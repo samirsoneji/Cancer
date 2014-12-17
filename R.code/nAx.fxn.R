@@ -23,8 +23,9 @@ nAx.fxn2 <- function(nDx, age.list, cause, n, Ri, LT, nQx) {
       c <- coef[1]*age2 + coef[2]
       nax[i] <- sum(age2*c)/sum(c)-age.list[i]
      }
- nax[nax==NaN | nax==Inf] <- 0
-  if (nQx[i,cause]==0) nax[i] <- 0
+  nax[is.na(nax)==TRUE] <- 0
+  nax[nax==Inf] <- 0
+  if (nQx[i,cause]==0 | is.na(nQx[i,cause])==TRUE) nax[i] <- 0
     }
   return(nax)
 }

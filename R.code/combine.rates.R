@@ -68,6 +68,7 @@ source("~/Cancer/R.code/nAx.fxn.allcause.mort.r")
 source("~/Cancer/R.code/nAx.fxn.R")
 source("~/Cancer/R.code/decomp.ex.cd.fxn.R")
 source("~/Cancer/R.code/Assoc_LT.r")
+
 nMx1 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1980","1. localized"]))
 nMx2 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1990","1. localized"]))
 a01=0.1385
@@ -79,13 +80,26 @@ a22=2.2025
 Rx <- 1
 breast.decomp.80.90 <- decomp.ex.cd(nMx1, a01, a11, a12, Rx, nMx2, a02, a21, a22)
 
+nMx1 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1980","2. regional"]))
+nMx2 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1990","2. regional"]))
+a01=0.1385
+a11=1.6325
+a12=2.2025
+a02=0.1385
+a21=1.6325
+a22=2.2025
+Rx <- 1
+breast.decomp.80.90 <- decomp.ex.cd(nMx1, a01, a11, a12, Rx, nMx2, a02, a21, a22)
 
 
-decomp.fxn <- function(datos, year.list) {
-  results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=9))
+decomp.fxn <- function(datos, year.list, mx.cause) {
+  results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=15))
   names(results) <- c("year.start","year.end","ex.overall.diff",
                       "change.stage.localized","change.stage.regional","change.stage.distant",
-                      "change.ex.localized","change.ex.regional","change.ex.distant")
+                      "change.ex.localized","change.ex.regional","change.ex.distant",
+                      "change.ex.localized.cancer","change.ex.localized.other",
+                      "change.ex.regional.cancer","change.ex.regional.other",
+                      "change.ex.distant.cancer","change.ex.distant.other")
   for (y in 1:(length(year.list)-1)) {
     year1 <- year.list[y]
     year2 <- year.list[y+1]
@@ -98,6 +112,21 @@ decomp.fxn <- function(datos, year.list) {
     results[y,"ex.overall.diff"] <- ex.overall.diff
     results[y,c("change.stage.localized","change.stage.regional","change.stage.distant")] <- change.stage
     results[y,c("change.ex.localized","change.ex.regional","change.ex.distant")] <- change.ex
+    results[y,c("change.ex.localized.cancer","change.ex.localized.other")] <-
+      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"1. localized"])),
+                     a01=0.1385, a11=1.6325, a12=2.2025, Rx=1,
+                     nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"1. localized"])),
+                     a02=0.1385, a21=1.6325, a22=2.2025)$Decomposition[1:2,2]*mean(datos$prop.localized[y:(y+1)])
+    results[y,c("change.ex.regional.cancer","change.ex.regional.other")] <-
+      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"2. regional"])),
+                     a01=0.1385, a11=1.6325, a12=2.2025, Rx=1,
+                     nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"2. regional"])),
+                     a02=0.1385, a21=1.6325, a22=2.2025)$Decomposition[1:2,2]*mean(datos$prop.regional[y:(y+1)])
+    results[y,c("change.ex.distant.cancer","change.ex.distant.other")] <-
+      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"4. distant"])),
+                     a01=0.1385, a11=1.6325, a12=2.2025, Rx=1,
+                     nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"4. distant"])),
+                     a02=0.1385, a21=1.6325, a22=2.2025)$Decomposition[1:2,2]*mean(datos$prop.distant[y:(y+1)])
   }
   return(results)
 }
@@ -246,12 +275,12 @@ create.datos.lymphoma.fxn <- function(mx, prop, year.list) {
   return(datos)
 }
 
-results.fxn <- function(mx, prop, cancer, year.list) {
+results.fxn <- function(mx, mx.cause, prop, cancer, year.list) {
   if (cancer %in% c("crc","lung","esophagus","stomach","pancreas","bladder","kidney","melanoma","headneck","lymphoma","leukemia")) sex <- "dual"
   if (cancer %in% c("breast","cervix","ovary","uterus","prostate")) sex <- "single"
   
   if (sex=="single" & cancer!="prostate")
-    results <- decomp.fxn(create.datos.fxn(mx, prop, year.list), year.list)
+    results <- decomp.fxn(create.datos.fxn(mx, prop, year.list), year.list, mx.cause)
   if (sex=="single" & cancer=="prostate")
     results <- decomp.prostate.fxn(create.datos.prostate.fxn(mx, prop, year.list), year.list)
   if (sex=="dual" & cancer!="lymphoma") {
@@ -271,31 +300,38 @@ results.fxn <- function(mx, prop, cancer, year.list) {
 }
 
 
-esophagus <- results.fxn(mx.esophagus, prop.esophagus, "esophagus", c(1973,2001)) 
-stomach <- results.fxn(mx.stomach, prop.stomach, "stomach", c(1973,2001))
-crc <- results.fxn(mx.crc, prop.crc, "crc", c(1973,2001))
-pancreas <- results.fxn(mx.pancreas, prop.pancreas, "pancreas", c(1973,2001))
-lung <- results.fxn(mx.lung, prop.lung, "lung", c(1988,2001))
-melanoma <- results.fxn(mx.melanoma, prop.melanoma, "melanoma", c(1973,2001))
-breast <- results.fxn(mx.breast, prop.breast, "breast", c(1980,1990))
-cervix <- results.fxn(mx.cervix, prop.cervix, "cervix", c(1973,2001))
-uterus <- results.fxn(mx.uterus, prop.uterus, "uterus", c(1973,2001))
-ovary <- results.fxn(mx.ovary, prop.ovary, "ovary", c(1973,2001))
-prostate <- results.fxn(mx.prostate, prop.prostate, "prostate", c(1995,2001))
-bladder <- results.fxn(mx.bladder, prop.bladder, "bladder", c(1973,2001))
-kidney <- results.fxn(mx.kidney, prop.kidney, "kidney", c(1973,2001))
-lymphoma <- results.fxn(mx.lymphoma, prop.lymphoma, "lymphoma", c(1983,2001))
+#esophagus <- results.fxn(mx.esophagus, prop.esophagus, "esophagus", c(1973,2001)) 
+#stomach <- results.fxn(mx.stomach, prop.stomach, "stomach", c(1973,2001))
+#crc <- results.fxn(mx.crc, prop.crc, "crc", c(1973,2001))
+#pancreas <- results.fxn(mx.pancreas, prop.pancreas, "pancreas", c(1973,2001))
+#lung <- results.fxn(mx.lung, prop.lung, "lung", c(1988,2001))
+#melanoma <- results.fxn(mx.melanoma, prop.melanoma, "melanoma", c(1973,2001))
+breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1980,1990))
+#cervix <- results.fxn(mx.cervix, prop.cervix, "cervix", c(1973,2001))
+#uterus <- results.fxn(mx.uterus, prop.uterus, "uterus", c(1973,2001))
+#ovary <- results.fxn(mx.ovary, prop.ovary, "ovary", c(1973,2001))
+#prostate <- results.fxn(mx.prostate, prop.prostate, "prostate", c(1995,2001))
+#bladder <- results.fxn(mx.bladder, prop.bladder, "bladder", c(1973,2001))
+#kidney <- results.fxn(mx.kidney, prop.kidney, "kidney", c(1973,2001))
+#lymphoma <- results.fxn(mx.lymphoma, prop.lymphoma, "lymphoma", c(1983,2001))
 
 #note (dec 11 2014): headneck mortality rates end at 95. there were no 100+ year olds that died of head and neck cancer.
 #headneck <- results.fxn(mx.headneck, prop.headneck, "headneck", c(1973,2001)) 
 
 breast.values <- c(unlist(breast[-c(1,2)]))
-breast.values2 <- c(breast.values[1],0,breast.values[2:4],0,breast.values[5:7]) 
+breast.values2 <- c(breast.values[1],0,breast.values[2:4],0,breast.values[5:7])
+width.value <- 1
 pdf("~/Cancer/figures/decomp.breast.pdf")
 ymin <- 1.15*min(breast.values2)
 ymax <- 1.15*max(breast.values2)
-barplot(breast.values2,col=c("black",NA,rep("red",3),NA,rep("blue",3)),yaxt="n",xaxt="n",ylim=c(ymin,ymax),border=FALSE)
+barplot(breast.values2,col=c("black",NA,rep("red",3),NA,rep(NA,3)),yaxt="n",xaxt="n",ylim=c(ymin,ymax),border=FALSE,width=width.value)
 x.values <- barplot(breast.values2,plot=FALSE)
+rect(x.values[7]-width.value/2,0,x.values[7]+width.value/2,breast.values[8],col="darkblue",border=FALSE)
+rect(x.values[7]-width.value/2,breast.values[8],x.values[7]+width.value/2,sum(breast.values[8:9]),col="lightblue",border=FALSE)
+rect(x.values[8]-width.value/2,0,x.values[8]+width.value/2,breast.values[10],col="darkblue",border=FALSE)
+rect(x.values[8]-width.value/2,breast.values[10],x.values[8]+width.value/2,sum(breast.values[10:11]),col="lightblue",border=FALSE)
+rect(x.values[9]-width.value/2,0,x.values[9]+width.value/2,breast.values[12],col="darkblue",border=FALSE)
+rect(x.values[9]-width.value/2,breast.values[12],x.values[9]+width.value/2,sum(breast.values[12:13]),col="lightblue",border=FALSE)
 select <- c(1,3:5,7:9)
 positions <- rep(3,length(breast.values2))
 positions[breast.values2<0] <- 1
@@ -308,60 +344,3 @@ text(x.values[8],breast.values[1],"Improvements in Mortality",col="blue")
 abline(h=0)
 dev.off()
 
-
-crc.values <- c(unlist(crc[-c(1,2)]))
-crc.values2 <- c(crc.values[1],0,crc.values[2:4],0,crc.values[5:7]) 
-pdf("~/Cancer/figures/decomp.crc.pdf")
-ymin <- 1.15*min(crc.values2)
-ymax <- 1.15*max(crc.values2)
-barplot(crc.values2,col=c("black",NA,rep("red",3),NA,rep("blue",3)),yaxt="n",xaxt="n",ylim=c(ymin,ymax),border=FALSE)
-x.values <- barplot(crc.values2,plot=FALSE)
-select <- c(1,3:5,7:9)
-positions <- rep(3,length(crc.values2))
-positions[crc.values2<0] <- 1
-text(x.values[select], crc.values2[select], round(crc.values2[select],1),pos=positions[select])
-text(x.values[1],crc.values2[1]/2,"Overall Gain in Life Exp.",srt=90,col="white")
-text(x.values[3:5],crc.values2[3:5]/2,c("L","R","D"),col="white")
-text(x.values[7:9],crc.values2[7:9]/2,c("L","R","D"),col="white")
-text(x.values[4],crc.values[1],"Stage Shift",col="red")
-text(x.values[8],crc.values[1],"Improvements in Mortality",col="blue")
-abline(h=0)
-dev.off()
-
-lung.values <- c(unlist(lung[-c(1,2)]))
-lung.values2 <- c(lung.values[1],0,lung.values[2:4],0,lung.values[5:7]) 
-pdf("~/Cancer/figures/decomp.lung.pdf")
-ymin <- 1.15*min(lung.values2)
-ymax <- 1.15*max(lung.values2)
-barplot(lung.values2,col=c("black",NA,rep("red",3),NA,rep("blue",3)),yaxt="n",xaxt="n",ylim=c(ymin,ymax),border=FALSE)
-x.values <- barplot(lung.values2,plot=FALSE)
-select <- c(1,3:5,7:9)
-positions <- rep(3,length(lung.values2))
-positions[lung.values2<0] <- 1
-text(x.values[select], lung.values2[select], round(lung.values2[select],1),pos=positions[select])
-text(x.values[1],lung.values2[1]/2,"Overall Gain in Life Exp.",srt=90,col="white")
-text(x.values[3:5],lung.values2[3:5]/2,c("L","R","D"),col="white")
-text(x.values[7:9],lung.values2[7:9]/2,c("L","R","D"),col="white")
-text(x.values[4],lung.values[1],"Stage Shift",col="red")
-text(x.values[8],lung.values[1],"Improvements in Mortality",col="blue")
-abline(h=0)
-dev.off()
-
-prostate.values <- c(unlist(prostate[-c(1,2)]))
-prostate.values2 <- c(prostate.values[1],0,prostate.values[2:3],0,prostate.values[4:5]) 
-pdf("~/Cancer/figures/decomp.prostate.pdf")
-ymin <- 1.15*min(prostate.values2)
-ymax <- 1.15*max(prostate.values2)
-barplot(prostate.values2,col=c("black",NA,rep("red",2),NA,rep("blue",2)),yaxt="n",xaxt="n",ylim=c(ymin,ymax),border=FALSE)
-x.values <- barplot(prostate.values2,plot=FALSE)
-select <- c(1,3:4,6:7)
-positions <- rep(3,length(prostate.values2))
-positions[prostate.values2<0] <- 1
-text(x.values[select], prostate.values2[select], round(prostate.values2[select],1),pos=positions[select])
-text(x.values[1],prostate.values2[1]/2,"Overall Gain in Life Exp.",srt=90,col="white")
-text(x.values[3:4],prostate.values2[3:4]/2,c("LR","D"),col="white")
-text(x.values[6:7],prostate.values2[6:7]/2,c("LR","D"),col="white")
-text(mean(x.values[3:4]),prostate.values[1],"Stage Shift",col="red")
-text(mean(x.values[6:7]),prostate.values[1],"Improvements in Mortality",col="blue")
-abline(h=0)
-dev.off()
