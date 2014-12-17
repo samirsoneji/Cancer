@@ -1,4 +1,4 @@
-assoc.lt <- function(Data,a0,Rdx)   {
+assoc.lt <- function(Data,nax,Rdx)   {
 
 datos<-as.matrix(Data)
 age.list <- c(0,1,seq(5,100,5))
@@ -15,7 +15,7 @@ Ri <-matrix(0,dime[1],dime[2])
        }
     }
 
-LT<-lifetab.grad.nax.nLxappr(nMx,a0, Rdx)
+LT<-lifetab.grad.nax.nLxappr(nMx, nax, Rdx)
 
 nPx <-matrix(0,dime[1],dime[2])
    for(i in 1:dime[2]) {
@@ -57,10 +57,8 @@ NLx<-matrix(0,dime[1],dime[2])
   for(i in 1:dime[2]) {
       for(k in 1:dime[1]-1) {
       NLx[k,i] = n[k]*Lx[k+1,i]+nAx[k,i]*nDx[k,i]
-      #NLx[k,i][is.nan(NLx[k,i])]<-n[k]
       }
       NLx[dime[1],i]=Lx[dime[1],i]*(1-exp(-10*Ri[dime[1],i]*LT$nMx[dime[1]]))/(Ri[dime[1],i]*LT$nMx[dime[1]])
-      #NLx[dime[1],i][is.nan(NLx[dime[1],i])]<-n[dime[1]]
   }
 #replacing nLx_i values with n*lx_i if nMx_i is 0
   for(j in 1:dime[2]) {
@@ -68,12 +66,9 @@ NLx<-matrix(0,dime[1],dime[2])
    }   
 
 result<-data.frame(N=n,Age=x,nAx=nAx,nPx=nPx,lx=Lx,dx=nDx,nLx=NLx)
-#write.csv(result, file="AssocLT.csv" )
-#write.csv(NLx,file="AssocLT_nLx.csv")
 
 colnames(nDx)<-nms
 rownames(nDx) <- x
-#write.csv(NLx,file="ALT_nLx.csv")
 
 return(NLx)
 

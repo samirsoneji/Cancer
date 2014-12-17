@@ -1,4 +1,3 @@
-
 nAx.fxn <- function(ndx, age.list, n, lx, nqx) {
   y<-ndx
   len <- length(ndx)
