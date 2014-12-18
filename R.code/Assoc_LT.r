@@ -45,7 +45,7 @@ x = c(0,1,seq(5,(dime[1]-3)*5,by=5), (dime[1]-3)*5+5)
 
 nAx <- matrix(0, dime[1],dime[2])
 for (c in 1:length(nms))
-  nAx[,c] <- nAx.fxn2(nDx, age.list, c, n, Ri, LT, nQx)
+  nAx[,c] <- nax#nAx.fxn2(nDx, age.list, c, n, Ri, LT, nQx)
 
 
 
