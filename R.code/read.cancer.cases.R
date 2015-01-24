@@ -47,7 +47,8 @@ sex <- as.numeric(apply(seer.crc, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.crc, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.crc, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.crc, 1, function(x) substr(x,301,304)))
-data.crc <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,sex=sex,stage=stage,vital.status=vital.status,surv.months=surv.months))
+cod <- as.numeric(apply(seer.crc, 1, function(x) substr(x,255,259)))
+data.crc <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,sex=sex,stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 drop <- which(data.crc$surv.months==9999 | data.crc$stage==9 | data.crc$age.dx < 40 | data.crc$age.dx==999)
 crc <- data.crc[-drop,]
 crc$sex[crc$sex==1] <- "male"
@@ -63,16 +64,18 @@ crc$stage[crc$stage==1] <- "1. localized"
 crc$stage[crc$stage==2] <- "2. regional"
 crc$stage[crc$stage==4] <- "4. distant"
 crc$stage[crc$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(crc$year.dx)))
-age.list <-  as.numeric(rownames(table(crc$age.dx.cat)))
-dead <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$sex, crc$stage), sum)
-exposure <- by(crc$surv.months/12, list(crc$age.dx.cat, crc$year.dx, crc$sex, crc$stage), sum)
+crc$cod[!(crc$cod %in% c(21040,21050))] <- "other"
+crc$cod[crc$cod %in% c(21040,21050)] <- "crc"
+dead <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$stage), sum)
+dead.cause <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$stage, crc$cod), sum)
+exposure <- by(crc$surv.months/12, list(crc$age.dx.cat, crc$year.dx, crc$stage), sum)
 mx.crc <- dead/exposure
-prop.crc <- apply(table(crc$year.dx, crc$sex, crc$stage),c(1,2),function(x) prop.table(x))
-save(mx.crc, file="~/Cancer/data/mx.crc.Rdata")
+mx.crc.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.crc <- prop.table(as.table(table(crc$year.dx, crc$stage)),1)
+save(mx.crc, mx.crc.cause, file="~/Cancer/data/mx.crc.Rdata")
 save(prop.crc, file="~/Cancer/data/prop.crc.Rdata") 
 print(paste("completed crc",date()))
-
+ 
 #############
 #Lung Cancer#
 #############
@@ -85,8 +88,9 @@ sex <- as.numeric(apply(seer.respir, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.respir, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.respir, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.respir, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.respir, 1, function(x) substr(x,255,259)))
 data.respir <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 data.lung <- subset(data.respir, site.recode %in% c(22030))
 drop <- which(data.lung$surv.months==9999 | data.lung$stage==9 | data.lung$age.dx < 40 | data.lung$age.dx==999)
 lung <- data.lung[-drop,]
@@ -103,16 +107,18 @@ lung$stage[lung$stage==1] <- "1. localized"
 lung$stage[lung$stage==2] <- "2. regional"
 lung$stage[lung$stage==4] <- "4. distant"
 lung$stage[lung$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(lung$year.dx)))
-age.list <-  as.numeric(rownames(table(lung$age.dx.cat)))
-dead <- by(lung$dead, list(lung$age.dx.cat, lung$year.dx, lung$sex, lung$stage), sum)
-exposure <- by(lung$surv.months/12, list(lung$age.dx.cat, lung$year.dx, lung$sex, lung$stage), sum)
+lung$cod[lung$cod!=22030] <- "other"
+lung$cod[lung$cod==22030] <- "lung"
+dead <- by(lung$dead, list(lung$age.dx.cat, lung$year.dx, lung$stage), sum)
+dead.cause <- by(lung$dead, list(lung$age.dx.cat, lung$year.dx, lung$stage, lung$cod), sum)
+exposure <- by(lung$surv.months/12, list(lung$age.dx.cat, lung$year.dx, lung$stage), sum)
 mx.lung <- dead/exposure
-prop.lung <- apply(table(lung$year.dx, lung$sex, lung$stage),c(1,2),function(x) prop.table(x))
-save(mx.lung, file="~/Cancer/data/mx.lung.Rdata")
+mx.lung.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.lung <- prop.table(as.table(table(lung$year.dx, lung$stage)),1)
+save(mx.lung, mx.lung.cause, file="~/Cancer/data/mx.lung.Rdata")
 save(prop.lung, file="~/Cancer/data/prop.lung.Rdata") 
 print(paste("completed lung",date()))
-
+ 
 #######################################################
 #Digestive Organ Cancers: Stomach, Pancreas, Esophagus#
 #######################################################
@@ -125,8 +131,9 @@ sex <- as.numeric(apply(seer.digothr, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.digothr, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.digothr, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.digothr, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.digothr, 1, function(x) substr(x,255,259)))
 data.digothr <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.esophagus <- subset(data.digothr, site.recode %in% c(21010))
 drop <- which(data.esophagus$surv.months==9999 | data.esophagus$stage==9 | data.esophagus$age.dx < 40 | data.esophagus$age.dx==999)
@@ -144,16 +151,18 @@ esophagus$stage[esophagus$stage==1] <- "1. localized"
 esophagus$stage[esophagus$stage==2] <- "2. regional"
 esophagus$stage[esophagus$stage==4] <- "4. distant"
 esophagus$stage[esophagus$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(esophagus$year.dx)))
-age.list <-  as.numeric(rownames(table(esophagus$age.dx.cat)))
-dead <- by(esophagus$dead, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$sex, esophagus$stage), sum)
-exposure <- by(esophagus$surv.months/12, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$sex, esophagus$stage), sum)
+esophagus$cod[esophagus$cod!=21010] <- "other"
+esophagus$cod[esophagus$cod==21010] <- "esophagus"
+dead <- by(esophagus$dead, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$stage), sum)
+dead.cause <- by(esophagus$dead, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$stage, esophagus$cod), sum)
+exposure <- by(esophagus$surv.months/12, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$stage), sum)
 mx.esophagus <- dead/exposure
-prop.esophagus <- apply(table(esophagus$year.dx, esophagus$sex, esophagus$stage),c(1,2),function(x) prop.table(x))
-save(mx.esophagus, file="~/Cancer/data/mx.esophagus.Rdata")
+mx.esophagus.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.esophagus <- prop.table(as.table(table(esophagus$year.dx, esophagus$stage)),1)
+save(mx.esophagus, mx.esophagus.cause, file="~/Cancer/data/mx.esophagus.Rdata")
 save(prop.esophagus, file="~/Cancer/data/prop.esophagus.Rdata") 
 print(paste("completed esophagus",date()))
-
+ 
 data.stomach <- subset(data.digothr, site.recode %in% c(21020))
 drop <- which(data.stomach$surv.months==9999 | data.stomach$stage==9 | data.stomach$age.dx < 40 | data.stomach$age.dx==999)
 stomach <- data.stomach[-drop,]
@@ -170,16 +179,18 @@ stomach$stage[stomach$stage==1] <- "1. localized"
 stomach$stage[stomach$stage==2] <- "2. regional"
 stomach$stage[stomach$stage==4] <- "4. distant"
 stomach$stage[stomach$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(stomach$year.dx)))
-age.list <-  as.numeric(rownames(table(stomach$age.dx.cat)))
-dead <- by(stomach$dead, list(stomach$age.dx.cat, stomach$year.dx, stomach$sex, stomach$stage), sum)
-exposure <- by(stomach$surv.months/12, list(stomach$age.dx.cat, stomach$year.dx, stomach$sex, stomach$stage), sum)
+stomach$cod[stomach$cod!=21020] <- "other"
+stomach$cod[stomach$cod==21020] <- "stomach"
+dead <- by(stomach$dead, list(stomach$age.dx.cat, stomach$year.dx, stomach$stage), sum)
+dead.cause <- by(stomach$dead, list(stomach$age.dx.cat, stomach$year.dx, stomach$stage, stomach$cod), sum)
+exposure <- by(stomach$surv.months/12, list(stomach$age.dx.cat, stomach$year.dx, stomach$stage), sum)
 mx.stomach <- dead/exposure
-prop.stomach <- apply(table(stomach$year.dx, stomach$sex, stomach$stage),c(1,2),function(x) prop.table(x))
-save(mx.stomach, file="~/Cancer/data/mx.stomach.Rdata")
+mx.stomach.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.stomach <- prop.table(as.table(table(stomach$year.dx, stomach$stage)),1)
+save(mx.stomach, mx.stomach.cause, file="~/Cancer/data/mx.stomach.Rdata")
 save(prop.stomach, file="~/Cancer/data/prop.stomach.Rdata") 
 print(paste("completed stomach",date()))
-
+ 
 data.pancreas <- subset(data.digothr, site.recode %in% c(21100))
 drop <- which(data.pancreas$surv.months==9999 | data.pancreas$stage==9 | data.pancreas$age.dx < 40 | data.pancreas$age.dx==999)
 pancreas <- data.pancreas[-drop,]
@@ -196,16 +207,18 @@ pancreas$stage[pancreas$stage==1] <- "1. localized"
 pancreas$stage[pancreas$stage==2] <- "2. regional"
 pancreas$stage[pancreas$stage==4] <- "4. distant"
 pancreas$stage[pancreas$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(pancreas$year.dx)))
-age.list <-  as.numeric(rownames(table(pancreas$age.dx.cat)))
-dead <- by(pancreas$dead, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$sex, pancreas$stage), sum)
-exposure <- by(pancreas$surv.months/12, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$sex, pancreas$stage), sum)
+pancreas$cod[pancreas$cod!=21100] <- "other"
+pancreas$cod[pancreas$cod==21100] <- "pancreas"
+dead <- by(pancreas$dead, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$stage), sum)
+dead.cause <- by(pancreas$dead, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$stage, pancreas$cod), sum)
+exposure <- by(pancreas$surv.months/12, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$stage), sum)
 mx.pancreas <- dead/exposure
-prop.pancreas <- apply(table(pancreas$year.dx, pancreas$sex, pancreas$stage),c(1,2),function(x) prop.table(x))
-save(mx.pancreas, file="~/Cancer/data/mx.pancreas.Rdata")
+mx.pancreas.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.pancreas <- prop.table(as.table(table(pancreas$year.dx, pancreas$stage)),1)
+save(mx.pancreas, mx.pancreas.cause, file="~/Cancer/data/mx.pancreas.Rdata")
 save(prop.pancreas, file="~/Cancer/data/prop.pancreas.Rdata") 
 print(paste("completed pancreas",date()))
-
+ 
 ###############################################
 #Female Genital Cancers: Ovary, Uterus, Cervix#
 ###############################################
@@ -218,8 +231,9 @@ sex <- as.numeric(apply(seer.femgen, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.femgen, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.femgen, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.femgen, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.femgen, 1, function(x) substr(x,255,259)))
 data.femgen <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.cervix <- subset(data.femgen, site.recode %in% c(27010))
 drop <- which(data.cervix$surv.months==9999 | data.cervix$stage==9 | data.cervix$age.dx < 40 | data.cervix$age.dx==999)
@@ -237,18 +251,18 @@ cervix$stage[cervix$stage==1] <- "1. localized"
 cervix$stage[cervix$stage==2] <- "2. regional"
 cervix$stage[cervix$stage==4] <- "4. distant"
 cervix$stage[cervix$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(cervix$year.dx)))
-age.list <-  as.numeric(rownames(table(cervix$age.dx.cat)))
-dead <- by(cervix$dead, list(cervix$age.dx.cat, cervix$year.dx, cervix$sex, cervix$stage), sum)
-exposure <- by(cervix$surv.months/12, list(cervix$age.dx.cat, cervix$year.dx, cervix$sex, cervix$stage), sum)
+cervix$cod[cervix$cod!=27010] <- "other"
+cervix$cod[cervix$cod==27010] <- "cervix"
+dead <- by(cervix$dead, list(cervix$age.dx.cat, cervix$year.dx, cervix$stage), sum)
+dead.cause <- by(cervix$dead, list(cervix$age.dx.cat, cervix$year.dx, cervix$stage, cervix$cod), sum)
+exposure <- by(cervix$surv.months/12, list(cervix$age.dx.cat, cervix$year.dx, cervix$stage), sum)
 mx.cervix <- dead/exposure
-prop.cervix <- apply(table(cervix$year.dx, cervix$sex, cervix$stage),c(1,2),function(x) prop.table(x))
-mx.cervix <- mx.cervix[,,"female",]
-prop.cervix <- prop.cervix[,,"female"]
-save(mx.cervix, file="~/Cancer/data/mx.cervix.Rdata")
+mx.cervix.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.cervix <- prop.table(as.table(table(cervix$year.dx, cervix$stage)),1)
+save(mx.cervix, mx.cervix.cause, file="~/Cancer/data/mx.cervix.Rdata")
 save(prop.cervix, file="~/Cancer/data/prop.cervix.Rdata") 
 print(paste("completed cervix",date()))
-
+ 
 data.uterus <- subset(data.femgen, site.recode %in% c(27020,27030))
 drop <- which(data.uterus$surv.months==9999 | data.uterus$stage==9 | data.uterus$age.dx < 40 | data.uterus$age.dx==999)
 uterus <- data.uterus[-drop,]
@@ -265,18 +279,18 @@ uterus$stage[uterus$stage==1] <- "1. localized"
 uterus$stage[uterus$stage==2] <- "2. regional"
 uterus$stage[uterus$stage==4] <- "4. distant"
 uterus$stage[uterus$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(uterus$year.dx)))
-age.list <-  as.numeric(rownames(table(uterus$age.dx.cat)))
-dead <- by(uterus$dead, list(uterus$age.dx.cat, uterus$year.dx, uterus$sex, uterus$stage), sum)
-exposure <- by(uterus$surv.months/12, list(uterus$age.dx.cat, uterus$year.dx, uterus$sex, uterus$stage), sum)
+uterus$cod[!(uterus$cod %in% c(27020,27030))] <- "other"
+uterus$cod[uterus$cod %in% c(27020,27030)] <- "uterus"
+dead <- by(uterus$dead, list(uterus$age.dx.cat, uterus$year.dx, uterus$stage), sum)
+dead.cause <- by(uterus$dead, list(uterus$age.dx.cat, uterus$year.dx, uterus$stage, uterus$cod), sum)
+exposure <- by(uterus$surv.months/12, list(uterus$age.dx.cat, uterus$year.dx, uterus$stage), sum)
 mx.uterus <- dead/exposure
-prop.uterus <- apply(table(uterus$year.dx, uterus$sex, uterus$stage),c(1,2),function(x) prop.table(x))
-mx.uterus <- mx.uterus[,,"female",]
-prop.uterus <- prop.uterus[,,"female"]
-save(mx.uterus, file="~/Cancer/data/mx.uterus.Rdata")
+mx.uterus.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.uterus <- prop.table(as.table(table(uterus$year.dx, uterus$stage)),1)
+save(mx.uterus, mx.uterus.cause, file="~/Cancer/data/mx.uterus.Rdata")
 save(prop.uterus, file="~/Cancer/data/prop.uterus.Rdata") 
 print(paste("completed uterus",date()))
-
+ 
 data.ovary <- subset(data.femgen, site.recode %in% c(27040))
 drop <- which(data.ovary$surv.months==9999 | data.ovary$stage==9 | data.ovary$age.dx < 40 | data.ovary$age.dx==999)
 ovary <- data.ovary[-drop,]
@@ -293,18 +307,18 @@ ovary$stage[ovary$stage==1] <- "1. localized"
 ovary$stage[ovary$stage==2] <- "2. regional"
 ovary$stage[ovary$stage==4] <- "4. distant"
 ovary$stage[ovary$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(ovary$year.dx)))
-age.list <-  as.numeric(rownames(table(ovary$age.dx.cat)))
-dead <- by(ovary$dead, list(ovary$age.dx.cat, ovary$year.dx, ovary$sex, ovary$stage), sum)
-exposure <- by(ovary$surv.months/12, list(ovary$age.dx.cat, ovary$year.dx, ovary$sex, ovary$stage), sum)
+ovary$cod[ovary$cod!=27040] <- "other"
+ovary$cod[ovary$cod==27040] <- "ovary"
+dead <- by(ovary$dead, list(ovary$age.dx.cat, ovary$year.dx, ovary$stage), sum)
+dead.cause <- by(ovary$dead, list(ovary$age.dx.cat, ovary$year.dx, ovary$stage, ovary$cod), sum)
+exposure <- by(ovary$surv.months/12, list(ovary$age.dx.cat, ovary$year.dx, ovary$stage), sum)
 mx.ovary <- dead/exposure
-prop.ovary <- apply(table(ovary$year.dx, ovary$sex, ovary$stage),c(1,2),function(x) prop.table(x))
-mx.ovary <- mx.ovary[,,"female",]
-prop.ovary <- prop.ovary[,,"female"]
-save(mx.ovary, file="~/Cancer/data/mx.ovary.Rdata")
+mx.ovary.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.ovary <- prop.table(as.table(table(ovary$year.dx, ovary$stage)),1)
+save(mx.ovary, mx.ovary.cause, file="~/Cancer/data/mx.ovary.Rdata")
 save(prop.ovary, file="~/Cancer/data/prop.ovary.Rdata") 
 print(paste("completed ovary",date()))
-
+ 
 ################################
 #Male Genital Cancers: Prostate#
 ################################
@@ -317,8 +331,9 @@ sex <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,255,259)))
 data.malegen <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.prostate <- subset(data.malegen, site.recode %in% c(28010))
 drop <- which(data.prostate$surv.months==9999 | data.prostate$stage==9 | data.prostate$age.dx < 40 | data.prostate$age.dx==999)
@@ -336,18 +351,18 @@ prostate$stage[prostate$stage==1] <- "1. localized"
 prostate$stage[prostate$stage==2] <- "2. regional"
 prostate$stage[prostate$stage==4] <- "4. distant"
 prostate$stage[prostate$stage==8] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(prostate$year.dx)))
-age.list <-  as.numeric(rownames(table(prostate$age.dx.cat)))
-dead <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$sex, prostate$stage), sum)
-exposure <- by(prostate$surv.months/12, list(prostate$age.dx.cat, prostate$year.dx, prostate$sex, prostate$stage), sum)
+prostate$cod[prostate$cod!=28010] <- "other"
+prostate$cod[prostate$cod==28010] <- "prostate"
+dead <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage), sum)
+dead.cause <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage, prostate$cod), sum)
+exposure <- by(prostate$surv.months/12, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage), sum)
 mx.prostate <- dead/exposure
-prop.prostate <- apply(table(prostate$year.dx, prostate$sex, prostate$stage),c(1,2),function(x) prop.table(x))
-mx.prostate <- mx.prostate[,,"male",]
-prop.prostate <- prop.prostate[,,"male"]
-save(mx.prostate, file="~/Cancer/data/mx.prostate.Rdata")
+mx.prostate.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.prostate <- prop.table(as.table(table(prostate$year.dx, prostate$stage)),1)
+save(mx.prostate, mx.prostate.cause, file="~/Cancer/data/mx.prostate.Rdata")
 save(prop.prostate, file="~/Cancer/data/prop.prostate.Rdata") 
 print(paste("completed prostate",date()))
-
+ 
 ########################################
 #Urinary Organ Cancers: Bladder, Kidney#
 ########################################
@@ -360,8 +375,9 @@ sex <- as.numeric(apply(seer.urinary, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.urinary, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.urinary, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.urinary, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.urinary, 1, function(x) substr(x,255,259)))
 data.urinary <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.bladder <- subset(data.urinary, site.recode %in% c(29010))
 drop <- which(data.bladder$surv.months==9999 | data.bladder$stage==9 | data.bladder$age.dx < 40 | data.bladder$age.dx==999)
@@ -379,16 +395,18 @@ bladder$stage[bladder$stage==1] <- "1. localized"
 bladder$stage[bladder$stage==2] <- "2. regional"
 bladder$stage[bladder$stage==4] <- "4. distant"
 bladder$stage[bladder$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(bladder$year.dx)))
-age.list <-  as.numeric(rownames(table(bladder$age.dx.cat)))
-dead <- by(bladder$dead, list(bladder$age.dx.cat, bladder$year.dx, bladder$sex, bladder$stage), sum)
-exposure <- by(bladder$surv.months/12, list(bladder$age.dx.cat, bladder$year.dx, bladder$sex, bladder$stage), sum)
+bladder$cod[bladder$cod!=29010] <- "other"
+bladder$cod[bladder$cod==29010] <- "bladder"
+dead <- by(bladder$dead, list(bladder$age.dx.cat, bladder$year.dx, bladder$stage), sum)
+dead.cause <- by(bladder$dead, list(bladder$age.dx.cat, bladder$year.dx, bladder$stage, bladder$cod), sum)
+exposure <- by(bladder$surv.months/12, list(bladder$age.dx.cat, bladder$year.dx, bladder$stage), sum)
 mx.bladder <- dead/exposure
-prop.bladder <- apply(table(bladder$year.dx, bladder$sex, bladder$stage),c(1,2),function(x) prop.table(x))
-save(mx.bladder, file="~/Cancer/data/mx.bladder.Rdata")
+mx.bladder.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.bladder <- prop.table(as.table(table(bladder$year.dx, bladder$stage)),1)
+save(mx.bladder, mx.bladder.cause, file="~/Cancer/data/mx.bladder.Rdata")
 save(prop.bladder, file="~/Cancer/data/prop.bladder.Rdata") 
 print(paste("completed bladder",date()))
-
+ 
 data.kidney <- subset(data.urinary, site.recode %in% c(29020))
 drop <- which(data.kidney$surv.months==9999 | data.kidney$stage==9 | data.kidney$age.dx < 40 | data.kidney$age.dx==999)
 kidney <- data.kidney[-drop,]
@@ -405,16 +423,18 @@ kidney$stage[kidney$stage==1] <- "1. localized"
 kidney$stage[kidney$stage==2] <- "2. regional"
 kidney$stage[kidney$stage==4] <- "4. distant"
 kidney$stage[kidney$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(kidney$year.dx)))
-age.list <-  as.numeric(rownames(table(kidney$age.dx.cat)))
-dead <- by(kidney$dead, list(kidney$age.dx.cat, kidney$year.dx, kidney$sex, kidney$stage), sum)
-exposure <- by(kidney$surv.months/12, list(kidney$age.dx.cat, kidney$year.dx, kidney$sex, kidney$stage), sum)
+kidney$cod[kidney$cod!=29020] <- "other"
+kidney$cod[kidney$cod==29020] <- "kidney"
+dead <- by(kidney$dead, list(kidney$age.dx.cat, kidney$year.dx, kidney$stage), sum)
+dead.cause <- by(kidney$dead, list(kidney$age.dx.cat, kidney$year.dx, kidney$stage, kidney$cod), sum)
+exposure <- by(kidney$surv.months/12, list(kidney$age.dx.cat, kidney$year.dx, kidney$stage), sum)
 mx.kidney <- dead/exposure
-prop.kidney <- apply(table(kidney$year.dx, kidney$sex, kidney$stage),c(1,2),function(x) prop.table(x))
-save(mx.kidney, file="~/Cancer/data/mx.kidney.Rdata")
+mx.kidney.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.kidney <- prop.table(as.table(table(kidney$year.dx, kidney$stage)),1)
+save(mx.kidney, mx.kidney.cause, file="~/Cancer/data/mx.kidney.Rdata")
 save(prop.kidney, file="~/Cancer/data/prop.kidney.Rdata") 
 print(paste("completed kidney",date()))
-
+ 
 ########################################
 #Other Organ Cancers: Melanoma, Head & Neck, Brain
 ########################################
@@ -427,8 +447,9 @@ sex <- as.numeric(apply(seer.other, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.other, 1, function(x) substr(x,236,236)))
 vital.status <- as.numeric(apply(seer.other, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.other, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.other, 1, function(x) substr(x,255,259)))
 data.other <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.melanoma <- subset(data.other, site.recode %in% c(25010))
 drop <- which(data.melanoma$surv.months==9999 | data.melanoma$stage==9 | data.melanoma$age.dx < 40 | data.melanoma$age.dx==999)
@@ -446,16 +467,18 @@ melanoma$stage[melanoma$stage==1] <- "1. localized"
 melanoma$stage[melanoma$stage==2] <- "2. regional"
 melanoma$stage[melanoma$stage==4] <- "4. distant"
 melanoma$stage[melanoma$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(melanoma$year.dx)))
-age.list <-  as.numeric(rownames(table(melanoma$age.dx.cat)))
-dead <- by(melanoma$dead, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$sex, melanoma$stage), sum)
-exposure <- by(melanoma$surv.months/12, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$sex, melanoma$stage), sum)
+melanoma$cod[melanoma$cod!=25010] <- "other"
+melanoma$cod[melanoma$cod==25010] <- "melanoma"
+dead <- by(melanoma$dead, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$stage), sum)
+dead.cause <- by(melanoma$dead, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$stage, melanoma$cod), sum)
+exposure <- by(melanoma$surv.months/12, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$stage), sum)
 mx.melanoma <- dead/exposure
-prop.melanoma <- apply(table(melanoma$year.dx, melanoma$sex, melanoma$stage),c(1,2),function(x) prop.table(x))
-save(mx.melanoma, file="~/Cancer/data/mx.melanoma.Rdata")
+mx.melanoma.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.melanoma <- prop.table(as.table(table(melanoma$year.dx, melanoma$stage)),1)
+save(mx.melanoma, mx.melanoma.cause, file="~/Cancer/data/mx.melanoma.Rdata")
 save(prop.melanoma, file="~/Cancer/data/prop.melanoma.Rdata") 
 print(paste("completed melanoma",date()))
-
+ 
 data.headneck <- subset(data.other, site.recode %in% c(20100))
 drop <- which(data.headneck$surv.months==9999 | data.headneck$stage==9 | data.headneck$age.dx < 40 | data.headneck$age.dx==999)
 headneck <- data.headneck[-drop,]
@@ -472,16 +495,18 @@ headneck$stage[headneck$stage==1] <- "1. localized"
 headneck$stage[headneck$stage==2] <- "2. regional"
 headneck$stage[headneck$stage==4] <- "4. distant"
 headneck$stage[headneck$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(headneck$year.dx)))
-age.list <-  as.numeric(rownames(table(headneck$age.dx.cat)))
-dead <- by(headneck$dead, list(headneck$age.dx.cat, headneck$year.dx, headneck$sex, headneck$stage), sum)
-exposure <- by(headneck$surv.months/12, list(headneck$age.dx.cat, headneck$year.dx, headneck$sex, headneck$stage), sum)
+headneck$cod[headneck$cod!=20100] <- "other"
+headneck$cod[headneck$cod==20100] <- "headneck"
+dead <- by(headneck$dead, list(headneck$age.dx.cat, headneck$year.dx, headneck$stage), sum)
+dead.cause <- by(headneck$dead, list(headneck$age.dx.cat, headneck$year.dx, headneck$stage, headneck$cod), sum)
+exposure <- by(headneck$surv.months/12, list(headneck$age.dx.cat, headneck$year.dx, headneck$stage), sum)
 mx.headneck <- dead/exposure
-prop.headneck <- apply(table(headneck$year.dx, headneck$sex, headneck$stage),c(1,2),function(x) prop.table(x))
-save(mx.headneck, file="~/Cancer/data/mx.headneck.Rdata")
-save(prop.headneck, file="~/Cancer/data/prop.headneck.Rdata")
+mx.headneck.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.headneck <- prop.table(as.table(table(headneck$year.dx, headneck$stage)),1)
+save(mx.headneck, mx.headneck.cause, file="~/Cancer/data/mx.headneck.Rdata")
+save(prop.headneck, file="~/Cancer/data/prop.headneck.Rdata") 
 print(paste("completed headneck",date()))
-
+ 
 #Note (Dec 11, 2014): There is no stage for brain cancer.  All brain cancers are unstaged (==9).  We should drop brain cancer from the list of cancers we consider.
 data.brain <- subset(data.other, site.recode %in% c(31010))
 drop <- which(data.brain$surv.months==9999 | data.brain$stage==9 | data.brain$age.dx < 40 | data.brain$age.dx==999)
@@ -499,16 +524,18 @@ brain$stage[brain$stage==1] <- "1. localized"
 brain$stage[brain$stage==2] <- "2. regional"
 brain$stage[brain$stage==4] <- "4. distant"
 brain$stage[brain$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(brain$year.dx)))
-age.list <-  as.numeric(rownames(table(brain$age.dx.cat)))
-dead <- by(brain$dead, list(brain$age.dx.cat, brain$year.dx, brain$sex, brain$stage), sum)
-exposure <- by(brain$surv.months/12, list(brain$age.dx.cat, brain$year.dx, brain$sex, brain$stage), sum)
+brain$cod[brain$cod!=31010] <- "other"
+brain$cod[brain$cod==31010] <- "brain"
+dead <- by(brain$dead, list(brain$age.dx.cat, brain$year.dx, brain$stage), sum)
+dead.cause <- by(brain$dead, list(brain$age.dx.cat, brain$year.dx, brain$stage, brain$cod), sum)
+exposure <- by(brain$surv.months/12, list(brain$age.dx.cat, brain$year.dx, brain$stage), sum)
 mx.brain <- dead/exposure
-prop.brain <- apply(table(brain$year.dx, brain$sex, brain$stage),c(1,2),function(x) prop.table(x))
-save(mx.brain, file="~/Cancer/data/mx.brain.Rdata")
+mx.brain.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.brain <- prop.table(as.table(table(brain$year.dx, brain$stage)),1)
+save(mx.brain, mx.brain.cause, file="~/Cancer/data/mx.brain.Rdata")
 save(prop.brain, file="~/Cancer/data/prop.brain.Rdata") 
 print(paste("completed brain",date()))
-
+ 
 ########################################
 #Blood Cancers: Lymphoma, Leukemia
 ########################################
@@ -522,8 +549,9 @@ stage <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,236,236)))
 stage.lymphoma <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,348,348))) #Ann Arbor staging, 1983+
 vital.status <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,301,304)))
+cod <- as.numeric(apply(seer.lymyleuk, 1, function(x) substr(x,255,259)))
 data.lymyleuk <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,stage.lymphoma=stage.lymphoma,vital.status=vital.status,surv.months=surv.months))
+                                stage=stage,stage.lymphoma=stage.lymphoma,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 #Note (Dec 11, 2014): Lymphoma staging follows Ann Arbor Staging (variable 348-348 in SEER data)
 data.lymphoma <- subset(data.lymyleuk, site.recode %in% c(33011,33012,33041,33042))
@@ -541,16 +569,18 @@ lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==1] <- "1. stage I"
 lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==2] <- "2. stage II"
 lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==3] <- "3. stage III"
 lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==4] <- "4. stage IV"
-year.list <- as.numeric(rownames(table(lymphoma$year.dx)))
-age.list <-  as.numeric(rownames(table(lymphoma$age.dx.cat)))
-dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$sex, lymphoma$stage.lymphoma), sum)
-exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$sex, lymphoma$stage.lymphoma), sum)
+lymphoma$cod[!(lymphoma$cod %in% c(33010,33040))] <- "other"
+lymphoma$cod[lymphoma$cod %in% c(33010,33040)] <- "lymphoma"
+dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage), sum)
+dead.cause <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage, lymphoma$cod), sum)
+exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage), sum)
 mx.lymphoma <- dead/exposure
-prop.lymphoma <- apply(table(lymphoma$year.dx, lymphoma$sex, lymphoma$stage.lymphoma),c(1,2),function(x) prop.table(x))
-save(mx.lymphoma, file="~/Cancer/data/mx.lymphoma.Rdata")
+mx.lymphoma.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.lymphoma <- prop.table(as.table(table(lymphoma$year.dx, lymphoma$stage)),1)
+save(mx.lymphoma, mx.lymphoma.cause, file="~/Cancer/data/mx.lymphoma.Rdata")
 save(prop.lymphoma, file="~/Cancer/data/prop.lymphoma.Rdata") 
 print(paste("completed lymphoma",date()))
-
+ 
 #Note (Dec 11, 2014): Leukemia stage seems to depend on type of leukemia.  Should we drop leukemia?
 data.leukemia <- subset(data.lymyleuk, site.recode %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043))
 drop <- which(data.leukemia$surv.months==9999 | data.leukemia$stage==9 | data.leukemia$age.dx < 40 | data.leukemia$age.dx==999)
@@ -568,13 +598,15 @@ leukemia$stage[leukemia$stage==1] <- "1. localized"
 leukemia$stage[leukemia$stage==2] <- "2. regional"
 leukemia$stage[leukemia$stage==4] <- "4. distant"
 leukemia$stage[leukemia$stage==4] <- "8. localized.regional"
-year.list <- as.numeric(rownames(table(leukemia$year.dx)))
-age.list <-  as.numeric(rownames(table(leukemia$age.dx.cat)))
-dead <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$sex, leukemia$stage), sum)
-exposure <- by(leukemia$surv.months/12, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$sex, leukemia$stage), sum)
+leukemia$cod[!(leukemia$cod %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043))] <- "other"
+leukemia$cod[leukemia$cod %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043)] <- "leukemia"
+dead <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$stage), sum)
+dead.cause <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$stage, leukemia$cod), sum)
+exposure <- by(leukemia$surv.months/12, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$stage), sum)
 mx.leukemia <- dead/exposure
-prop.leukemia <- apply(table(leukemia$year.dx, leukemia$sex, leukemia$stage),c(1,2),function(x) prop.table(x))
-save(mx.leukemia, file="~/Cancer/data/mx.leukemia.Rdata")
+mx.leukemia.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.leukemia <- prop.table(as.table(table(leukemia$year.dx, leukemia$stage)),1)
+save(mx.leukemia, mx.leukemia.cause, file="~/Cancer/data/mx.leukemia.Rdata")
 save(prop.leukemia, file="~/Cancer/data/prop.leukemia.Rdata") 
 print(paste("completed leukemia",date()))
  
