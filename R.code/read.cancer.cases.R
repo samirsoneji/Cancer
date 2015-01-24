@@ -571,9 +571,9 @@ lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==3] <- "3. stage III"
 lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==4] <- "4. stage IV"
 lymphoma$cod[!(lymphoma$cod %in% c(33010,33040))] <- "other"
 lymphoma$cod[lymphoma$cod %in% c(33010,33040)] <- "lymphoma"
-dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage), sum)
-dead.cause <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage, lymphoma$cod), sum)
-exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage), sum)
+dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage.lymphoma), sum)
+dead.cause <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage.lymphoma, lymphoma$cod), sum)
+exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage.lymphoma), sum)
 mx.lymphoma <- dead/exposure
 mx.lymphoma.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.lymphoma <- prop.table(as.table(table(lymphoma$year.dx, lymphoma$stage)),1)
@@ -593,19 +593,19 @@ leukemia$dead[leukemia$surv.months >= 120] <- 0
 leukemia$surv.months <- ifelse(leukemia$surv.months<=120,leukemia$surv.months,120)
 leukemia$age.dx.cat <- 5*floor(leukemia$age.dx/5)
 leukemia$age.dx.cat[leukemia$age.dx.cat>=100] <- 100
-leukemia$stage[leukemia$stage==0] <- "0. in situ"
-leukemia$stage[leukemia$stage==1] <- "1. localized"
-leukemia$stage[leukemia$stage==2] <- "2. regional"
-leukemia$stage[leukemia$stage==4] <- "4. distant"
-leukemia$stage[leukemia$stage==4] <- "8. localized.regional"
-leukemia$cod[!(leukemia$cod %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043))] <- "other"
-leukemia$cod[leukemia$cod %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043)] <- "leukemia"
-dead <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$stage), sum)
-dead.cause <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$stage, leukemia$cod), sum)
-exposure <- by(leukemia$surv.months/12, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$stage), sum)
+#leukemia$stage[leukemia$stage==0] <- "0. in situ"
+#leukemia$stage[leukemia$stage==1] <- "1. localized"
+#leukemia$stage[leukemia$stage==2] <- "2. regional"
+#leukemia$stage[leukemia$stage==4] <- "4. distant"
+#leukemia$stage[leukemia$stage==4] <- "8. localized.regional"
+#leukemia$cod[!(leukemia$cod %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043))] <- "other"
+#leukemia$cod[leukemia$cod %in% c(35011,35012,35013,35021,35031,35022,35023,35041,35043)] <- "leukemia"
+dead <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx), sum)
+dead.cause <- by(leukemia$dead, list(leukemia$age.dx.cat, leukemia$year.dx, leukemia$cod), sum)
+exposure <- by(leukemia$surv.months/12, list(leukemia$age.dx.cat, leukemia$year.dx), sum)
 mx.leukemia <- dead/exposure
-mx.leukemia.cause <- aaply(dead.cause, 4, function(x) x/exposure)
-prop.leukemia <- prop.table(as.table(table(leukemia$year.dx, leukemia$stage)),1)
+mx.leukemia.cause <- aaply(dead.cause, 3, function(x) x/exposure)
+prop.leukemia <- 1
 save(mx.leukemia, mx.leukemia.cause, file="~/Cancer/data/mx.leukemia.Rdata")
 save(prop.leukemia, file="~/Cancer/data/prop.leukemia.Rdata") 
 print(paste("completed leukemia",date()))
