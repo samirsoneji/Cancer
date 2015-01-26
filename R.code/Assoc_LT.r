@@ -56,7 +56,7 @@ for (c in 1:length(nms))
 NLx<-matrix(0,dime[1],dime[2])
   for(i in 1:dime[2]) {
       for(k in 1:dime[1]-1) {
-      NLx[k,i] = n[k]*Lx[k+1,i]+nAx[k,i]*nDx[k,i]
+      NLx[k,i] = Lx[k,i]*(-1/datos[k,i]*(exp(-n[k]*datos[k,i])-1))
       }
       NLx[dime[1],i]=Lx[dime[1],i]*(1-exp(-10*Ri[dime[1],i]*LT$nMx[dime[1]]))/(Ri[dime[1],i]*LT$nMx[dime[1]])
   }

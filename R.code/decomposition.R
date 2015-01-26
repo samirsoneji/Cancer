@@ -3,7 +3,7 @@ load("~/Cancer/data/prop.breast.Rdata")
 
 load("~/Cancer/data/mx.crc.Rdata")
 load("~/Cancer/data/prop.crc.Rdata") 
-prop.crc <- aperm(prop.crc,c(2,1,3))
+prop.crc <- aperm(prop.crc,c(1,3,2))
   
 load("~/Cancer/data/mx.lung.Rdata")
 load("~/Cancer/data/prop.lung.Rdata") 
@@ -11,15 +11,15 @@ prop.lung <- aperm(prop.lung,c(2,1,3))
 
 load("~/Cancer/data/mx.esophagus.Rdata")
 load("~/Cancer/data/prop.esophagus.Rdata") 
-prop.esophagus <- aperm(prop.esophagus,c(2,1,3))
+prop.esophagus <- aperm(prop.esophagus,c(1,3,2))
 
 load("~/Cancer/data/mx.stomach.Rdata")
 load("~/Cancer/data/prop.stomach.Rdata") 
-prop.stomach <- aperm(prop.stomach,c(2,1,3))
+prop.stomach <- aperm(prop.stomach,c(1,3,2))
 
 load("~/Cancer/data/mx.pancreas.Rdata")
 load("~/Cancer/data/prop.pancreas.Rdata") 
-prop.pancreas <- aperm(prop.pancreas,c(2,1,3))
+prop.pancreas <- aperm(prop.pancreas,c(1,3,2))
 
 load("~/Cancer/data/mx.cervix.Rdata")
 load("~/Cancer/data/prop.cervix.Rdata") 
@@ -39,27 +39,27 @@ prop.prostate <- t(prop.prostate)
 
 load("~/Cancer/data/mx.bladder.Rdata")
 load("~/Cancer/data/prop.bladder.Rdata") 
-prop.bladder <- aperm(prop.bladder,c(2,1,3))
+prop.bladder <- aperm(prop.bladder,c(1,3,2))
 
 load("~/Cancer/data/mx.kidney.Rdata")
 load("~/Cancer/data/prop.kidney.Rdata") 
-prop.kidney <- aperm(prop.kidney,c(2,1,3))
+prop.kidney <- aperm(prop.kidney,c(1,3,2))
 
 load("~/Cancer/data/mx.melanoma.Rdata")
 load("~/Cancer/data/prop.melanoma.Rdata") 
-prop.melanoma <- aperm(prop.melanoma,c(2,1,3))
+prop.melanoma <- aperm(prop.melanoma,c(1,3,2))
 
 load("~/Cancer/data/mx.headneck.Rdata")
 load("~/Cancer/data/prop.headneck.Rdata")
-prop.headneck <- aperm(prop.headneck,c(2,1,3))
+prop.headneck <- aperm(prop.headneck,c(1,3,2))
 
 load("~/Cancer/data/mx.lymphoma.Rdata")
 load("~/Cancer/data/prop.lymphoma.Rdata") 
-prop.lymphoma <- aperm(prop.lymphoma,c(2,1,3))
+prop.lymphoma <- aperm(prop.lymphoma,c(1,3,2))
 
-#load("~/Cancer/data/mx.leukemia.Rdata")
-#load("~/Cancer/data/prop.leukemia.Rdata") 
-#prop.leukemia <- aperm(prop.leukemia,c(2,1,3))
+load("~/Cancer/data/mx.leukemia.Rdata")
+load("~/Cancer/data/prop.leukemia.Rdata") 
+#prop.leukemia <- aperm(prop.leukemia,c(1,3,2))
 
 library(foreign)
 library(survival)
@@ -70,17 +70,7 @@ source("~/Cancer/R.code/decomp.ex.cd.fxn.R")
 source("~/Cancer/R.code/Assoc_LT.r")
 load("~/Cancer/data/ax.Rdata")
 
-
-nMx1 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"1981","4. distant"]))
-nMx2 <- rbind(matrix(0,nrow=9,ncol=2),t(mx.breast.cause[,,"2001","4. distant"]))
-a01=0.1385
-a11=1.6325
-a12=2.2025
-a02=0.1385
-a21=1.6325
-a22=2.2025
-Rx <- 1
-breast.decomp.80.90 <- decomp.ex.cd(nMx1, nMx2, nax, Rx)
+nax <- rep(1,22)
 
 decomp.fxn <- function(datos, year.list, mx.cause) {
   results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=15))
@@ -269,16 +259,16 @@ results.fxn <- function(mx, mx.cause, prop, cancer, year.list) {
   if (sex=="single" & cancer!="prostate")
     results <- decomp.fxn(create.datos.fxn(mx, prop, year.list), year.list, mx.cause)
   if (sex=="single" & cancer=="prostate")
-    results <- decomp.prostate.fxn(create.datos.prostate.fxn(mx, prop, year.list), year.list)
+    results <- decomp.prostate.fxn(create.datos.prostate.fxn(mx, prop, year.list), year.list, mx.cause)
   if (sex=="dual" & cancer!="lymphoma") {
-    results.male <-  decomp.fxn(create.datos.fxn(mx[,,"male",], prop[,,"male"], year.list), year.list)
-    results.female <-  decomp.fxn(create.datos.fxn(mx[,,"female",], prop[,,"female"], year.list), year.list)
+    results.male <-  decomp.fxn(1, year.list, mx.cause[,,,"male",])
+    results.female <-  decomp.fxn(create.datos.fxn(mx[,,"female",], prop[,,"female"], year.list), year.list, mx.cause[,,,"female",])
     results <- results.male + results.female
     results[,c("year.start","year.end")] <- results.male[,c("year.start","year.end")]
   }
   if (sex=="dual" & cancer=="lymphoma") {
-    results.male <-  decomp.lymphoma.fxn(create.datos.lymphoma.fxn(mx[,,"male",], prop[,,"male"], year.list), year.list)
-    results.female <-  decomp.lymphoma.fxn(create.datos.lymphoma.fxn(mx[,,"female",], prop[,,"female"], year.list), year.list)
+    results.male <-  decomp.lymphoma.fxn(create.datos.lymphoma.fxn(mx[,,"male",], prop[,,"male"], year.list), year.list, mx.cause[,,,"male",])
+    results.female <-  decomp.lymphoma.fxn(create.datos.lymphoma.fxn(mx[,,"female",], prop[,,"female"], year.list), year.list, mx.cause[,,,"female",])
     results <- results.male + results.female
     results[,c("year.start","year.end")] <- results.male[,c("year.start","year.end")]
   }
@@ -287,23 +277,23 @@ results.fxn <- function(mx, mx.cause, prop, cancer, year.list) {
 }
 
 
-#esophagus <- results.fxn(mx.esophagus, prop.esophagus, "esophagus", c(1973,2001)) 
-#stomach <- results.fxn(mx.stomach, prop.stomach, "stomach", c(1973,2001))
-#crc <- results.fxn(mx.crc, prop.crc, "crc", c(1973,2001))
-#pancreas <- results.fxn(mx.pancreas, prop.pancreas, "pancreas", c(1973,2001))
-#lung <- results.fxn(mx.lung, prop.lung, "lung", c(1988,2001))
-#melanoma <- results.fxn(mx.melanoma, prop.melanoma, "melanoma", c(1973,2001))
+esophagus <- results.fxn(mx.esophagus,mx.esophagus.cause, prop.esophagus, "esophagus", c(1981,2001)) 
+stomach <- results.fxn(mx.stomach, mx.stomach.cause, prop.stomach, "stomach", c(1981,2001))
+crc <- results.fxn(mx.crc, mx.crc.cause, prop.crc, "crc", c(1981,2001))
+pancreas <- results.fxn(mx.pancreas, mx.pancreas.cause, prop.pancreas, "pancreas", c(1981,2001))
+lung <- results.fxn(mx.lung, mx.lung.cause, prop.lung, "lung", c(1988,2001))
+melanoma <- results.fxn(mx.melanoma, mx.melanoma.cause, prop.melanoma, "melanoma", c(1981,2001))
 breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1981,2001))
-#cervix <- results.fxn(mx.cervix, prop.cervix, "cervix", c(1973,2001))
-#uterus <- results.fxn(mx.uterus, prop.uterus, "uterus", c(1973,2001))
-#ovary <- results.fxn(mx.ovary, prop.ovary, "ovary", c(1973,2001))
+#cervix <- results.fxn(mx.cervix, prop.cervix, "cervix", c(1981,2001))
+#uterus <- results.fxn(mx.uterus, prop.uterus, "uterus", c(1981,2001))
+#ovary <- results.fxn(mx.ovary, prop.ovary, "ovary", c(1981,2001))
 #prostate <- results.fxn(mx.prostate, prop.prostate, "prostate", c(1995,2001))
-#bladder <- results.fxn(mx.bladder, prop.bladder, "bladder", c(1973,2001))
-#kidney <- results.fxn(mx.kidney, prop.kidney, "kidney", c(1973,2001))
+#bladder <- results.fxn(mx.bladder, prop.bladder, "bladder", c(1981,2001))
+#kidney <- results.fxn(mx.kidney, prop.kidney, "kidney", c(1981,2001))
 #lymphoma <- results.fxn(mx.lymphoma, prop.lymphoma, "lymphoma", c(1983,2001))
 
 #note (dec 11 2014): headneck mortality rates end at 95. there were no 100+ year olds that died of head and neck cancer.
-#headneck <- results.fxn(mx.headneck, prop.headneck, "headneck", c(1973,2001)) 
+#headneck <- results.fxn(mx.headneck, prop.headneck, "headneck", c(1981,2001)) 
 
 breast.values <- c(unlist(breast[-c(1,2)]))
 breast.values2 <- c(breast.values[1],0,breast.values[2:4],0,breast.values[5:7])

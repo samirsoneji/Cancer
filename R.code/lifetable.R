@@ -43,7 +43,7 @@ names(ndx)<-names(lx)
 nLx=rep(NA, length(lx))
   for(age in 1:length(npx)){
     if(age<length(lx)) {
-      nLx[age]=n[age]*lx[age+1]+nax[age]*ndx[age]
+      nLx[age]=lx[age]*(-1/nMx[age]*(exp(-n[age]*nMx[age])-1))
      }
     if(age==length(lx)) {
       nLx[age]=lx[age]*(1-exp(-10*nMx[age]))/nMx[age]
