@@ -11,8 +11,12 @@ decomp.fxn <- function(datos, year.list, mx.cause) {
     year2 <- year.list[y+1]
     tmp <- datos[as.character(c(year1,year2)),]
     ex.overall.diff <- diff(tmp$ex.overall)
-    change.stage <- c(diff(tmp$prop.localized)*mean(tmp$ex.localized), diff(tmp$prop.regional)*mean(tmp$ex.regional),diff(tmp$prop.distant)*mean(tmp$ex.distant)) 
-    change.ex <- c(diff(tmp$ex.localized)*mean(tmp$prop.localized), diff(tmp$ex.regional)*mean(tmp$prop.regional), diff(tmp$ex.distant)*mean(tmp$prop.distant))
+    change.stage <- c(diff(tmp$prop.localized)*mean(tmp$ex.localized),
+                      diff(tmp$prop.regional)*mean(tmp$ex.regional),
+                      diff(tmp$prop.distant)*mean(tmp$ex.distant)) 
+    change.ex <- c(diff(tmp$ex.localized)*mean(tmp$prop.localized),
+                   diff(tmp$ex.regional)*mean(tmp$prop.regional),
+                   diff(tmp$ex.distant)*mean(tmp$prop.distant))
     results[y,"year.start"] <- year1
     results[y,"year.end"] <- year2
     results[y,"ex.overall.diff"] <- ex.overall.diff
