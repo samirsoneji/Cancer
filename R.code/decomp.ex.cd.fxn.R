@@ -1,4 +1,4 @@
-decomp.ex.cd <- function(nMx1,nMx2,nax,Rx) {
+decomp.ex.cd <- function(nMx1,nMx2,Rx) {
 
   nMx1[is.na(nMx1)]<-0
   nMx2[is.na(nMx2)]<-0
@@ -11,14 +11,13 @@ decomp.ex.cd <- function(nMx1,nMx2,nax,Rx) {
   n <-c(1,4, rep(5,dime[1]-3), 10)
   x = c(0,1,seq(5,(dime[1]-3)*5,by=5), (dime[1]-3)*5+5)
   
-  t1.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx1),nax, Rx)
-  t2.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx2),nax, Rx)
+  t1.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx1),Rx)
+  t2.lt<-lifetab.grad.nax.nLxappr(rowSums(nMx2),Rx)
 
-  a01 <- a02 <- nax[1]
-  t1.alt<-assoc.lt(nMx1,a01,Rx)
+  t1.alt<-assoc.lt(nMx1,Rx)
   t1.alt[which(is.na(t1.alt[,1])==TRUE),1] <- n[which(is.na(t1.alt[,1])==TRUE)]
   t1.alt[which(is.na(t1.alt[,2])==TRUE),2] <- n[which(is.na(t1.alt[,2])==TRUE)] 
-  t2.alt<-assoc.lt(nMx2,a01,Rx)
+  t2.alt<-assoc.lt(nMx2,Rx)
   t2.alt[which(is.na(t2.alt[,1])==TRUE),1] <- n[which(is.na(t2.alt[,1])==TRUE)]
   t2.alt[which(is.na(t2.alt[,2])==TRUE),2] <- n[which(is.na(t2.alt[,2])==TRUE)] 
   

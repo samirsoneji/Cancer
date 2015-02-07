@@ -1,11 +1,8 @@
-lifetab.grad.nax.nLxappr <- function(nMx, nax, Rdx)   {
+lifetab.grad.nax.nLxappr <- function(nMx, Rdx)   {
 
 x = c(0,1,seq(5,100,by=5))
 n <-c(1,4, rep(5,(length(nMx)-3)), 10)
 
-#==========================================================================================
-# First life table values assuming nax for ages 10-100 is 2.5
-#==========================================================================================
 nqx=1-exp(-n*nMx)
 npx=1-nqx
 lx=Rdx
@@ -17,12 +14,6 @@ names(lx)<-names(nMx)
 ndx=nqx*lx
 ndx[length(ndx)]=lx[length(ndx)] #making sure everybody dies in the last age interval
 names(ndx)<-names(lx)  
-
-#==========================================================================================
-#  nAx.fxn calibrates nax values by fitting a quadratic function for 3 successive age groups in the life table deaths
-#==========================================================================================
-#nAx <-   nAx.fxn(ndx,age.list=x, n, lx, nqx)
-#nAx[1]<-a0
 
 #==========================================================================================
 # Final life table using the calibrated nax values
@@ -54,7 +45,7 @@ nLx=rep(NA, length(lx))
 Tx <- rev(cumsum(rev(nLx)))
 Ex <- Tx/lx 
 
-lt<-data.frame(x=x, nax=nax, nMx=nMx, nqx=nqx, npx=npx, lx=lx, ndx=ndx, nLx=nLx, Tx=Tx, ex=Ex)            
+lt<-data.frame(x=x, nMx=nMx, nqx=nqx, npx=npx, lx=lx, ndx=ndx, nLx=nLx, Tx=Tx, ex=Ex)            
 return(lt)
 
 }
