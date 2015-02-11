@@ -1,3 +1,4 @@
+rm(list=ls())
 setwd("~/Dropbox/Cancer/Value/")
 library(plyr)
 library(abind)
@@ -50,7 +51,7 @@ vital.status <- as.numeric(apply(seer.crc, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.crc, 1, function(x) substr(x,301,304)))
 cod <- as.numeric(apply(seer.crc, 1, function(x) substr(x,255,259)))
 data.crc <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,sex=sex,stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
-drop <- which(data.crc$surv.months==9999 | data.crc$stage==9 | data.crc$age.dx < 40 | data.crc$age.dx==999 | data.crc$stage==0)
+drop <- which(data.crc$surv.months==9999 | data.crc$stage==9 | data.crc$age.dx < 40 | data.crc$age.dx==999)
 crc <- data.crc[-drop,]
 crc$sex[crc$sex==1] <- "male"
 crc$sex[crc$sex==2] <- "female"
@@ -60,6 +61,7 @@ crc$dead[crc$surv.months >= 120] <- 0
 crc$surv.months <- ifelse(crc$surv.months<=120,crc$surv.months,120)
 crc$age.dx.cat <- 5*floor(crc$age.dx/5)
 crc$age.dx.cat[crc$age.dx.cat>=100] <- 100
+crc$stage[crc$stage==0] <- "0. in situ"
 crc$stage[crc$stage==1] <- "1. localized"
 crc$stage[crc$stage==2] <- "2. regional"
 crc$stage[crc$stage==4] <- "4. distant"
@@ -104,7 +106,7 @@ cod <- as.numeric(apply(seer.respir, 1, function(x) substr(x,255,259)))
 data.respir <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
                                 stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 data.lung <- subset(data.respir, site.recode %in% c(22030))
-drop <- which(data.lung$surv.months==9999 | data.lung$stage==9 | data.lung$age.dx < 40 | data.lung$age.dx==999 | data.lung$stage==0)
+drop <- which(data.lung$surv.months==9999 | data.lung$stage==9 | data.lung$age.dx < 40 | data.lung$age.dx==999)
 lung <- data.lung[-drop,]
 lung$sex[lung$sex==1] <- "male"
 lung$sex[lung$sex==2] <- "female"
@@ -114,6 +116,7 @@ lung$dead[lung$surv.months >= 120] <- 0
 lung$surv.months <- ifelse(lung$surv.months<=120,lung$surv.months,120)
 lung$age.dx.cat <- 5*floor(lung$age.dx/5)
 lung$age.dx.cat[lung$age.dx.cat>=100] <- 100
+lung$stage[lung$stage==0] <- "0. in situ"
 lung$stage[lung$stage==1] <- "1. localized"
 lung$stage[lung$stage==2] <- "2. regional"
 lung$stage[lung$stage==4] <- "4. distant"
@@ -465,6 +468,8 @@ dead <- by(bladder.male$dead, list(bladder.male$age.dx.cat, bladder.male$year.dx
 dead.cause <- by(bladder.male$dead, list(bladder.male$age.dx.cat, bladder.male$year.dx, bladder.male$stage, bladder.male$cod), sum)
 exposure <- by(bladder.male$surv.months/12, list(bladder.male$age.dx.cat, bladder.male$year.dx, bladder.male$stage), sum)
 mx.bladder.male <- dead/exposure
+mx.bladder.male <- abind(mx.bladder.male,matrix(0,dim=dim(mx.bladder.male)[1:2]),along=3)
+
 mx.bladder.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.bladder.male <- apply(table(bladder.male$year.dx,bladder.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
 save(mx.bladder.male, mx.bladder.male.cause, file="~/Cancer/data/mx.bladder.male.Rdata")
