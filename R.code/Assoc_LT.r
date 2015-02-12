@@ -7,13 +7,14 @@ nms<-colnames(Data)
 
 nMx <- rowSums(datos)
 
-
-Ri <-matrix(0,dime[1],dime[2])
+Ri <-matrix(0,dime[1],dime[2]) #proportion of deaths due to each cause
     for(i in 1:dime[2]) {
        for(k in 1:dime[1]) {
           Ri[k,i]=datos[k,i]/nMx[k]
        }
     }
+Ri[which(is.na(Ri[,1])==TRUE),1] <- 0
+Ri[which(is.na(Ri[,2])==TRUE),2] <- 0
 
 LT<-lifetab.grad.nax.nLxappr(nMx, Rdx)
 
@@ -23,6 +24,7 @@ nPx <-matrix(0,dime[1],dime[2])
        nPx[k,i]=LT$npx[k]^Ri[k,i]
        }
    }
+nPx[nrow(nPx),] <- 0
 
 nQx <-1-nPx
 
@@ -60,11 +62,13 @@ NLx<-matrix(0,dime[1],dime[2])
    }   
 
 result<-data.frame(N=n,Age=x,nPx=nPx,lx=Lx,dx=nDx,nLx=NLx)
+result$nLx.1[which(is.na(result$nLx.1)==TRUE)] <- result$N[which(is.na(result$nLx.1)==TRUE)] * result$lx.1[which(is.na(result$nLx.1)==TRUE)]
+result$nLx.2[which(is.na(result$nLx.2)==TRUE)] <- result$N[which(is.na(result$nLx.2)==TRUE)] * result$lx.2[which(is.na(result$nLx.2)==TRUE)]
 
 colnames(nDx)<-nms
 rownames(nDx) <- x
 
-return(NLx)
+return(result[,c("nLx.1","nLx.2")])
 
 }  
 

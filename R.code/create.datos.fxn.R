@@ -10,7 +10,7 @@ create.datos.fxn <- function(mx, prop, year.list) {
     mx.distant <- c(rep(0,9),mx[,as.character(year.list[y]),"4. distant"])
     mx.insitu[which(is.na(mx.insitu)==TRUE)] <- 0
     mx.localized[which(is.na(mx.localized)==TRUE)] <- 0
-    mx.regional[which(is.na(mx.regional)==TRUE)] <- 0
+    mx.regional[which(is.na(mx.regional)==TRUE)] <- 0 
     mx.distant[which(is.na(mx.distant)==TRUE)] <- 0
     mx.insitu[mx.insitu==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
     mx.localized[mx.localized==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
