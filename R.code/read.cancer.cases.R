@@ -35,8 +35,8 @@ exposure <- by(breast$surv.months/12, list(breast$age.dx.cat, breast$year.dx, br
 mx.breast <- dead/exposure
 mx.breast.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.breast <- prop.table(as.table(table(breast$year.dx, breast$stage)),1)
-save(mx.breast, mx.breast.cause, file="~/Cancer/data/mx.breast.Rdata")
-save(prop.breast, file="~/Cancer/data/prop.breast.Rdata") 
+save(mx.breast, mx.breast.cause, file="~/Desktop/Cancer/data/mx.breast.Rdata")
+save(prop.breast, file="~/Desktop/Cancer/data/prop.breast.Rdata") 
 print(paste("completed breast",date()))
  
 ###################
@@ -68,6 +68,16 @@ crc$stage[crc$stage==4] <- "4. distant"
 crc$cod[!(crc$cod %in% c(21040,21050))] <- "other"
 crc$cod[crc$cod %in% c(21040,21050)] <- "crc"
 
+dead <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$stage), sum)
+dead.cause <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$stage, crc$cod), sum)
+exposure <- by(crc$surv.months/12, list(crc$age.dx.cat, crc$year.dx, crc$stage), sum)
+mx.crc <- dead/exposure
+mx.crc.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.crc <- apply(table(crc$year.dx,crc$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.crc, mx.crc.cause, file="~/Desktop/Cancer/data/mx.crc.Rdata")
+save(prop.crc, file="~/Desktop/Cancer/data/prop.crc.Rdata") 
+print(paste("completed crc",date()))
+ 
 crc.male <- subset(crc, sex=="male")
 dead <- by(crc.male$dead, list(crc.male$age.dx.cat, crc.male$year.dx, crc.male$stage), sum)
 dead.cause <- by(crc.male$dead, list(crc.male$age.dx.cat, crc.male$year.dx, crc.male$stage, crc.male$cod), sum)
@@ -75,8 +85,8 @@ exposure <- by(crc.male$surv.months/12, list(crc.male$age.dx.cat, crc.male$year.
 mx.crc.male <- dead/exposure
 mx.crc.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.crc.male <- apply(table(crc.male$year.dx,crc.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.crc.male, mx.crc.male.cause, file="~/Cancer/data/mx.crc.male.Rdata")
-save(prop.crc.male, file="~/Cancer/data/prop.crc.male.Rdata") 
+save(mx.crc.male, mx.crc.male.cause, file="~/Desktop/Cancer/data/mx.crc.male.Rdata")
+save(prop.crc.male, file="~/Desktop/Cancer/data/prop.crc.male.Rdata") 
 print(paste("completed crc.male",date()))
  
 crc.female <- subset(crc, sex=="female")
@@ -86,8 +96,8 @@ exposure <- by(crc.female$surv.months/12, list(crc.female$age.dx.cat, crc.female
 mx.crc.female <- dead/exposure
 mx.crc.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.crc.female <- apply(table(crc.female$year.dx,crc.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.crc.female, mx.crc.female.cause, file="~/Cancer/data/mx.crc.female.Rdata")
-save(prop.crc.female, file="~/Cancer/data/prop.crc.female.Rdata") 
+save(mx.crc.female, mx.crc.female.cause, file="~/Desktop/Cancer/data/mx.crc.female.Rdata")
+save(prop.crc.female, file="~/Desktop/Cancer/data/prop.crc.female.Rdata") 
 print(paste("completed crc.female",date()))
 
 #############
@@ -123,6 +133,16 @@ lung$stage[lung$stage==4] <- "4. distant"
 lung$cod[lung$cod!=22030] <- "other"
 lung$cod[lung$cod==22030] <- "lung"
 
+dead <- by(lung$dead, list(lung$age.dx.cat, lung$year.dx, lung$stage), sum)
+dead.cause <- by(lung$dead, list(lung$age.dx.cat, lung$year.dx, lung$stage, lung$cod), sum)
+exposure <- by(lung$surv.months/12, list(lung$age.dx.cat, lung$year.dx, lung$stage), sum)
+mx.lung <- dead/exposure
+mx.lung.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.lung <- apply(table(lung$year.dx,lung$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.lung, mx.lung.cause, file="~/Desktop/Cancer/data/mx.lung.Rdata")
+save(prop.lung, file="~/Desktop/Cancer/data/prop.lung.Rdata") 
+print(paste("completed lung",date()))
+ 
 lung.male <- subset(lung, sex=="male")
 dead <- by(lung.male$dead, list(lung.male$age.dx.cat, lung.male$year.dx, lung.male$stage), sum)
 dead.cause <- by(lung.male$dead, list(lung.male$age.dx.cat, lung.male$year.dx, lung.male$stage, lung.male$cod), sum)
@@ -130,8 +150,8 @@ exposure <- by(lung.male$surv.months/12, list(lung.male$age.dx.cat, lung.male$ye
 mx.lung.male <- dead/exposure
 mx.lung.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.lung.male <- apply(table(lung.male$year.dx,lung.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.lung.male, mx.lung.male.cause, file="~/Cancer/data/mx.lung.male.Rdata")
-save(prop.lung.male, file="~/Cancer/data/prop.lung.male.Rdata") 
+save(mx.lung.male, mx.lung.male.cause, file="~/Desktop/Cancer/data/mx.lung.male.Rdata")
+save(prop.lung.male, file="~/Desktop/Cancer/data/prop.lung.male.Rdata") 
 print(paste("completed lung.male",date()))
  
 lung.female <- subset(lung, sex=="female")
@@ -141,8 +161,8 @@ exposure <- by(lung.female$surv.months/12, list(lung.female$age.dx.cat, lung.fem
 mx.lung.female <- dead/exposure
 mx.lung.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.lung.female <- apply(table(lung.female$year.dx,lung.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.lung.female, mx.lung.female.cause, file="~/Cancer/data/mx.lung.female.Rdata")
-save(prop.lung.female, file="~/Cancer/data/prop.lung.female.Rdata") 
+save(mx.lung.female, mx.lung.female.cause, file="~/Desktop/Cancer/data/mx.lung.female.Rdata")
+save(prop.lung.female, file="~/Desktop/Cancer/data/prop.lung.female.Rdata") 
 print(paste("completed lung.female",date()))
 
 #######################################################
@@ -180,6 +200,16 @@ esophagus$stage[esophagus$stage==4] <- "8. localized.regional"
 esophagus$cod[esophagus$cod!=21010] <- "other"
 esophagus$cod[esophagus$cod==21010] <- "esophagus"
 
+dead <- by(esophagus$dead, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$stage), sum)
+dead.cause <- by(esophagus$dead, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$stage, esophagus$cod), sum)
+exposure <- by(esophagus$surv.months/12, list(esophagus$age.dx.cat, esophagus$year.dx, esophagus$stage), sum)
+mx.esophagus <- dead/exposure
+mx.esophagus.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.esophagus <- apply(table(esophagus$year.dx,esophagus$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.esophagus, mx.esophagus.cause, file="~/Desktop/Cancer/data/mx.esophagus.Rdata")
+save(prop.esophagus, file="~/Desktop/Cancer/data/prop.esophagus.Rdata") 
+print(paste("completed esophagus",date()))
+
 esophagus.male <- subset(esophagus, sex=="male")
 dead <- by(esophagus.male$dead, list(esophagus.male$age.dx.cat, esophagus.male$year.dx, esophagus.male$stage), sum)
 dead.cause <- by(esophagus.male$dead, list(esophagus.male$age.dx.cat, esophagus.male$year.dx, esophagus.male$stage, esophagus.male$cod), sum)
@@ -187,8 +217,8 @@ exposure <- by(esophagus.male$surv.months/12, list(esophagus.male$age.dx.cat, es
 mx.esophagus.male <- dead/exposure
 mx.esophagus.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.esophagus.male <- apply(table(esophagus.male$year.dx,esophagus.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.esophagus.male, mx.esophagus.male.cause, file="~/Cancer/data/mx.esophagus.male.Rdata")
-save(prop.esophagus.male, file="~/Cancer/data/prop.esophagus.male.Rdata") 
+save(mx.esophagus.male, mx.esophagus.male.cause, file="~/Desktop/Cancer/data/mx.esophagus.male.Rdata")
+save(prop.esophagus.male, file="~/Desktop/Cancer/data/prop.esophagus.male.Rdata") 
 print(paste("completed esophagus.male",date()))
  
 esophagus.female <- subset(esophagus, sex=="female")
@@ -198,8 +228,8 @@ exposure <- by(esophagus.female$surv.months/12, list(esophagus.female$age.dx.cat
 mx.esophagus.female <- dead/exposure
 mx.esophagus.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.esophagus.female <- apply(table(esophagus.female$year.dx,esophagus.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.esophagus.female, mx.esophagus.female.cause, file="~/Cancer/data/mx.esophagus.female.Rdata")
-save(prop.esophagus.female, file="~/Cancer/data/prop.esophagus.female.Rdata") 
+save(mx.esophagus.female, mx.esophagus.female.cause, file="~/Desktop/Cancer/data/mx.esophagus.female.Rdata")
+save(prop.esophagus.female, file="~/Desktop/Cancer/data/prop.esophagus.female.Rdata") 
 print(paste("completed esophagus.female",date()))
  
 data.stomach <- subset(data.digothr, site.recode %in% c(21020))
@@ -221,6 +251,16 @@ stomach$stage[stomach$stage==4] <- "8. localized.regional"
 stomach$cod[stomach$cod!=21020] <- "other"
 stomach$cod[stomach$cod==21020] <- "stomach"
 
+dead <- by(stomach$dead, list(stomach$age.dx.cat, stomach$year.dx, stomach$stage), sum)
+dead.cause <- by(stomach$dead, list(stomach$age.dx.cat, stomach$year.dx, stomach$stage, stomach$cod), sum)
+exposure <- by(stomach$surv.months/12, list(stomach$age.dx.cat, stomach$year.dx, stomach$stage), sum)
+mx.stomach <- dead/exposure
+mx.stomach.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.stomach <- apply(table(stomach$year.dx,stomach$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.stomach, mx.stomach.cause, file="~/Desktop/Cancer/data/mx.stomach.Rdata")
+save(prop.stomach, file="~/Desktop/Cancer/data/prop.stomach.Rdata") 
+print(paste("completed stomach",date()))
+
 stomach.male <- subset(stomach, sex=="male")
 dead <- by(stomach.male$dead, list(stomach.male$age.dx.cat, stomach.male$year.dx, stomach.male$stage), sum)
 dead.cause <- by(stomach.male$dead, list(stomach.male$age.dx.cat, stomach.male$year.dx, stomach.male$stage, stomach.male$cod), sum)
@@ -228,8 +268,8 @@ exposure <- by(stomach.male$surv.months/12, list(stomach.male$age.dx.cat, stomac
 mx.stomach.male <- dead/exposure
 mx.stomach.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.stomach.male <- apply(table(stomach.male$year.dx,stomach.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.stomach.male, mx.stomach.male.cause, file="~/Cancer/data/mx.stomach.male.Rdata")
-save(prop.stomach.male, file="~/Cancer/data/prop.stomach.male.Rdata") 
+save(mx.stomach.male, mx.stomach.male.cause, file="~/Desktop/Cancer/data/mx.stomach.male.Rdata")
+save(prop.stomach.male, file="~/Desktop/Cancer/data/prop.stomach.male.Rdata") 
 print(paste("completed stomach.male",date()))
  
 stomach.female <- subset(stomach, sex=="female")
@@ -239,8 +279,8 @@ exposure <- by(stomach.female$surv.months/12, list(stomach.female$age.dx.cat, st
 mx.stomach.female <- dead/exposure
 mx.stomach.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.stomach.female <- apply(table(stomach.female$year.dx,stomach.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.stomach.female, mx.stomach.female.cause, file="~/Cancer/data/mx.stomach.female.Rdata")
-save(prop.stomach.female, file="~/Cancer/data/prop.stomach.female.Rdata") 
+save(mx.stomach.female, mx.stomach.female.cause, file="~/Desktop/Cancer/data/mx.stomach.female.Rdata")
+save(prop.stomach.female, file="~/Desktop/Cancer/data/prop.stomach.female.Rdata") 
 print(paste("completed stomach.female",date()))
  
 data.pancreas <- subset(data.digothr, site.recode %in% c(21100))
@@ -262,6 +302,16 @@ pancreas$stage[pancreas$stage==4] <- "8. localized.regional"
 pancreas$cod[pancreas$cod!=21100] <- "other"
 pancreas$cod[pancreas$cod==21100] <- "pancreas"
 
+dead <- by(pancreas$dead, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$stage), sum)
+dead.cause <- by(pancreas$dead, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$stage, pancreas$cod), sum)
+exposure <- by(pancreas$surv.months/12, list(pancreas$age.dx.cat, pancreas$year.dx, pancreas$stage), sum)
+mx.pancreas <- dead/exposure
+mx.pancreas.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.pancreas <- apply(table(pancreas$year.dx,pancreas$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.pancreas, mx.pancreas.cause, file="~/Desktop/Cancer/data/mx.pancreas.Rdata")
+save(prop.pancreas, file="~/Desktop/Cancer/data/prop.pancreas.Rdata") 
+print(paste("completed pancreas",date()))
+
 pancreas.male <- subset(pancreas, sex=="male")
 dead <- by(pancreas.male$dead, list(pancreas.male$age.dx.cat, pancreas.male$year.dx, pancreas.male$stage), sum)
 dead.cause <- by(pancreas.male$dead, list(pancreas.male$age.dx.cat, pancreas.male$year.dx, pancreas.male$stage, pancreas.male$cod), sum)
@@ -269,8 +319,8 @@ exposure <- by(pancreas.male$surv.months/12, list(pancreas.male$age.dx.cat, panc
 mx.pancreas.male <- dead/exposure
 mx.pancreas.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.pancreas.male <- apply(table(pancreas.male$year.dx,pancreas.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.pancreas.male, mx.pancreas.male.cause, file="~/Cancer/data/mx.pancreas.male.Rdata")
-save(prop.pancreas.male, file="~/Cancer/data/prop.pancreas.male.Rdata") 
+save(mx.pancreas.male, mx.pancreas.male.cause, file="~/Desktop/Cancer/data/mx.pancreas.male.Rdata")
+save(prop.pancreas.male, file="~/Desktop/Cancer/data/prop.pancreas.male.Rdata") 
 print(paste("completed pancreas.male",date()))
  
 pancreas.female <- subset(pancreas, sex=="female")
@@ -280,8 +330,8 @@ exposure <- by(pancreas.female$surv.months/12, list(pancreas.female$age.dx.cat, 
 mx.pancreas.female <- dead/exposure
 mx.pancreas.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.pancreas.female <- apply(table(pancreas.female$year.dx,pancreas.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.pancreas.female, mx.pancreas.female.cause, file="~/Cancer/data/mx.pancreas.female.Rdata")
-save(prop.pancreas.female, file="~/Cancer/data/prop.pancreas.female.Rdata") 
+save(mx.pancreas.female, mx.pancreas.female.cause, file="~/Desktop/Cancer/data/mx.pancreas.female.Rdata")
+save(prop.pancreas.female, file="~/Desktop/Cancer/data/prop.pancreas.female.Rdata") 
 print(paste("completed pancreas.female",date()))
  
 ###############################################
@@ -324,8 +374,8 @@ exposure <- by(cervix$surv.months/12, list(cervix$age.dx.cat, cervix$year.dx, ce
 mx.cervix <- dead/exposure
 mx.cervix.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.cervix <- prop.table(as.table(table(cervix$year.dx, cervix$stage)),1)
-save(mx.cervix, mx.cervix.cause, file="~/Cancer/data/mx.cervix.Rdata")
-save(prop.cervix, file="~/Cancer/data/prop.cervix.Rdata") 
+save(mx.cervix, mx.cervix.cause, file="~/Desktop/Cancer/data/mx.cervix.Rdata")
+save(prop.cervix, file="~/Desktop/Cancer/data/prop.cervix.Rdata") 
 print(paste("completed cervix",date()))
  
 data.uterus <- subset(data.femgen, site.recode %in% c(27020,27030))
@@ -352,8 +402,8 @@ exposure <- by(uterus$surv.months/12, list(uterus$age.dx.cat, uterus$year.dx, ut
 mx.uterus <- dead/exposure
 mx.uterus.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.uterus <- prop.table(as.table(table(uterus$year.dx, uterus$stage)),1)
-save(mx.uterus, mx.uterus.cause, file="~/Cancer/data/mx.uterus.Rdata")
-save(prop.uterus, file="~/Cancer/data/prop.uterus.Rdata") 
+save(mx.uterus, mx.uterus.cause, file="~/Desktop/Cancer/data/mx.uterus.Rdata")
+save(prop.uterus, file="~/Desktop/Cancer/data/prop.uterus.Rdata") 
 print(paste("completed uterus",date()))
  
 data.ovary <- subset(data.femgen, site.recode %in% c(27040))
@@ -380,8 +430,8 @@ exposure <- by(ovary$surv.months/12, list(ovary$age.dx.cat, ovary$year.dx, ovary
 mx.ovary <- dead/exposure
 mx.ovary.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.ovary <- prop.table(as.table(table(ovary$year.dx, ovary$stage)),1)
-save(mx.ovary, mx.ovary.cause, file="~/Cancer/data/mx.ovary.Rdata")
-save(prop.ovary, file="~/Cancer/data/prop.ovary.Rdata") 
+save(mx.ovary, mx.ovary.cause, file="~/Desktop/Cancer/data/mx.ovary.Rdata")
+save(prop.ovary, file="~/Desktop/Cancer/data/prop.ovary.Rdata") 
 print(paste("completed ovary",date()))
  
 ################################
@@ -424,8 +474,8 @@ exposure <- by(prostate$surv.months/12, list(prostate$age.dx.cat, prostate$year.
 mx.prostate <- dead/exposure
 mx.prostate.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.prostate <- prop.table(as.table(table(prostate$year.dx, prostate$stage)),1)
-save(mx.prostate, mx.prostate.cause, file="~/Cancer/data/mx.prostate.Rdata")
-save(prop.prostate, file="~/Cancer/data/prop.prostate.Rdata") 
+save(mx.prostate, mx.prostate.cause, file="~/Desktop/Cancer/data/mx.prostate.Rdata")
+save(prop.prostate, file="~/Desktop/Cancer/data/prop.prostate.Rdata") 
 print(paste("completed prostate",date()))
  
 ########################################
@@ -463,6 +513,22 @@ bladder$stage[bladder$stage==4] <- "8. localized.regional"
 bladder$cod[bladder$cod!=29010] <- "other"
 bladder$cod[bladder$cod==29010] <- "bladder"
 
+dead <- by(bladder$dead, list(bladder$age.dx.cat, bladder$year.dx, bladder$stage), sum)
+dead.cause <- by(bladder$dead, list(bladder$age.dx.cat, bladder$year.dx, bladder$stage, bladder$cod), sum)
+exposure <- by(bladder$surv.months/12, list(bladder$age.dx.cat, bladder$year.dx, bladder$stage), sum)
+mx.bladder <- dead/exposure
+mx.bladder <- abind(array(0,dim=dim(mx.bladder)[1:2]),mx.bladder,along=3)
+dimnames(mx.bladder)[[3]] <- c("0. in situ","1. localized","2. regional","4. distant")
+mx.bladder.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+mx.bladder.cause <- abind(array(0,dim=dim(mx.bladder.cause)[1:3]),mx.bladder.cause,along=4)
+dimnames(mx.bladder.cause)[[4]] <- c("0. in situ","1. localized","2. regional","4. distant")
+prop.bladder <- apply(table(bladder$year.dx,bladder$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+prop.bladder <- abind(array(0,dim=dim(prop.bladder)[2]),prop.bladder,along=1)
+dimnames(prop.bladder)[[1]] <- c("0. in situ","1. localized","2. regional","4. distant")
+save(mx.bladder, mx.bladder.cause, file="~/Desktop/Cancer/data/mx.bladder.Rdata")
+save(prop.bladder, file="~/Desktop/Cancer/data/prop.bladder.Rdata") 
+print(paste("completed bladder",date()))
+
 bladder.male <- subset(bladder, sex=="male")
 dead <- by(bladder.male$dead, list(bladder.male$age.dx.cat, bladder.male$year.dx, bladder.male$stage), sum)
 dead.cause <- by(bladder.male$dead, list(bladder.male$age.dx.cat, bladder.male$year.dx, bladder.male$stage, bladder.male$cod), sum)
@@ -476,8 +542,8 @@ dimnames(mx.bladder.male.cause)[[4]] <- c("0. in situ","1. localized","2. region
 prop.bladder.male <- apply(table(bladder.male$year.dx,bladder.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
 prop.bladder.male <- abind(array(0,dim=dim(prop.bladder.male)[2]),prop.bladder.male,along=1)
 dimnames(prop.bladder.male)[[1]] <- c("0. in situ","1. localized","2. regional","4. distant")
-save(mx.bladder.male, mx.bladder.male.cause, file="~/Cancer/data/mx.bladder.male.Rdata")
-save(prop.bladder.male, file="~/Cancer/data/prop.bladder.male.Rdata") 
+save(mx.bladder.male, mx.bladder.male.cause, file="~/Desktop/Cancer/data/mx.bladder.male.Rdata")
+save(prop.bladder.male, file="~/Desktop/Cancer/data/prop.bladder.male.Rdata") 
 print(paste("completed bladder.male",date()))
  
 bladder.female <- subset(bladder, sex=="female")
@@ -493,8 +559,8 @@ dimnames(mx.bladder.female.cause)[[4]] <- c("0. in situ","1. localized","2. regi
 prop.bladder.female <- apply(table(bladder.female$year.dx,bladder.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
 prop.bladder.female <- abind(array(0,dim=dim(prop.bladder.female)[2]),prop.bladder.female,along=1)
 dimnames(prop.bladder.female)[[1]] <- c("0. in situ","1. localized","2. regional","4. distant")
-save(mx.bladder.female, mx.bladder.female.cause, file="~/Cancer/data/mx.bladder.female.Rdata")
-save(prop.bladder.female, file="~/Cancer/data/prop.bladder.female.Rdata") 
+save(mx.bladder.female, mx.bladder.female.cause, file="~/Desktop/Cancer/data/mx.bladder.female.Rdata")
+save(prop.bladder.female, file="~/Desktop/Cancer/data/prop.bladder.female.Rdata") 
 print(paste("completed bladder.female",date()))
 
 data.kidney <- subset(data.urinary, site.recode %in% c(29020))
@@ -516,6 +582,16 @@ kidney$stage[kidney$stage==4] <- "8. localized.regional"
 kidney$cod[kidney$cod!=29020] <- "other"
 kidney$cod[kidney$cod==29020] <- "kidney"
 
+dead <- by(kidney$dead, list(kidney$age.dx.cat, kidney$year.dx, kidney$stage), sum)
+dead.cause <- by(kidney$dead, list(kidney$age.dx.cat, kidney$year.dx, kidney$stage, kidney$cod), sum)
+exposure <- by(kidney$surv.months/12, list(kidney$age.dx.cat, kidney$year.dx, kidney$stage), sum)
+mx.kidney <- dead/exposure
+mx.kidney.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.kidney <- apply(table(kidney$year.dx,kidney$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.kidney, mx.kidney.cause, file="~/Desktop/Cancer/data/mx.kidney.Rdata")
+save(prop.kidney, file="~/Desktop/Cancer/data/prop.kidney.Rdata") 
+print(paste("completed kidney",date()))
+
 kidney.male <- subset(kidney, sex=="male")
 dead <- by(kidney.male$dead, list(kidney.male$age.dx.cat, kidney.male$year.dx, kidney.male$stage), sum)
 dead.cause <- by(kidney.male$dead, list(kidney.male$age.dx.cat, kidney.male$year.dx, kidney.male$stage, kidney.male$cod), sum)
@@ -523,8 +599,8 @@ exposure <- by(kidney.male$surv.months/12, list(kidney.male$age.dx.cat, kidney.m
 mx.kidney.male <- dead/exposure
 mx.kidney.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.kidney.male <- apply(table(kidney.male$year.dx,kidney.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.kidney.male, mx.kidney.male.cause, file="~/Cancer/data/mx.kidney.male.Rdata")
-save(prop.kidney.male, file="~/Cancer/data/prop.kidney.male.Rdata") 
+save(mx.kidney.male, mx.kidney.male.cause, file="~/Desktop/Cancer/data/mx.kidney.male.Rdata")
+save(prop.kidney.male, file="~/Desktop/Cancer/data/prop.kidney.male.Rdata") 
 print(paste("completed kidney.male",date()))
  
 kidney.female <- subset(kidney, sex=="female")
@@ -534,8 +610,8 @@ exposure <- by(kidney.female$surv.months/12, list(kidney.female$age.dx.cat, kidn
 mx.kidney.female <- dead/exposure
 mx.kidney.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.kidney.female <- apply(table(kidney.female$year.dx,kidney.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.kidney.female, mx.kidney.female.cause, file="~/Cancer/data/mx.kidney.female.Rdata")
-save(prop.kidney.female, file="~/Cancer/data/prop.kidney.female.Rdata") 
+save(mx.kidney.female, mx.kidney.female.cause, file="~/Desktop/Cancer/data/mx.kidney.female.Rdata")
+save(prop.kidney.female, file="~/Desktop/Cancer/data/prop.kidney.female.Rdata") 
 print(paste("completed kidney.female",date()))
  
 ########################################
@@ -573,6 +649,16 @@ melanoma$stage[melanoma$stage==4] <- "8. localized.regional"
 melanoma$cod[melanoma$cod!=25010] <- "other"
 melanoma$cod[melanoma$cod==25010] <- "melanoma"
 
+dead <- by(melanoma$dead, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$stage), sum)
+dead.cause <- by(melanoma$dead, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$stage, melanoma$cod), sum)
+exposure <- by(melanoma$surv.months/12, list(melanoma$age.dx.cat, melanoma$year.dx, melanoma$stage), sum)
+mx.melanoma <- dead/exposure
+mx.melanoma.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.melanoma <- apply(table(melanoma$year.dx,melanoma$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.melanoma, mx.melanoma.cause, file="~/Desktop/Cancer/data/mx.melanoma.Rdata")
+save(prop.melanoma, file="~/Desktop/Cancer/data/prop.melanoma.Rdata") 
+print(paste("completed melanoma",date()))
+
 melanoma.male <- subset(melanoma, sex=="male")
 dead <- by(melanoma.male$dead, list(melanoma.male$age.dx.cat, melanoma.male$year.dx, melanoma.male$stage), sum)
 dead.cause <- by(melanoma.male$dead, list(melanoma.male$age.dx.cat, melanoma.male$year.dx, melanoma.male$stage, melanoma.male$cod), sum)
@@ -580,8 +666,8 @@ exposure <- by(melanoma.male$surv.months/12, list(melanoma.male$age.dx.cat, mela
 mx.melanoma.male <- dead/exposure
 mx.melanoma.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.melanoma.male <- apply(table(melanoma.male$year.dx,melanoma.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.melanoma.male, mx.melanoma.male.cause, file="~/Cancer/data/mx.melanoma.male.Rdata")
-save(prop.melanoma.male, file="~/Cancer/data/prop.melanoma.male.Rdata") 
+save(mx.melanoma.male, mx.melanoma.male.cause, file="~/Desktop/Cancer/data/mx.melanoma.male.Rdata")
+save(prop.melanoma.male, file="~/Desktop/Cancer/data/prop.melanoma.male.Rdata") 
 print(paste("completed melanoma.male",date()))
  
 melanoma.female <- subset(melanoma, sex=="female")
@@ -591,8 +677,8 @@ exposure <- by(melanoma.female$surv.months/12, list(melanoma.female$age.dx.cat, 
 mx.melanoma.female <- dead/exposure
 mx.melanoma.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.melanoma.female <- apply(table(melanoma.female$year.dx,melanoma.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.melanoma.female, mx.melanoma.female.cause, file="~/Cancer/data/mx.melanoma.female.Rdata")
-save(prop.melanoma.female, file="~/Cancer/data/prop.melanoma.female.Rdata") 
+save(mx.melanoma.female, mx.melanoma.female.cause, file="~/Desktop/Cancer/data/mx.melanoma.female.Rdata")
+save(prop.melanoma.female, file="~/Desktop/Cancer/data/prop.melanoma.female.Rdata") 
 print(paste("completed melanoma.female",date()))
  
 data.headneck <- subset(data.other, site.recode %in% c(20100))
@@ -614,6 +700,22 @@ headneck$stage[headneck$stage==4] <- "8. localized.regional"
 headneck$cod[headneck$cod!=20100] <- "other"
 headneck$cod[headneck$cod==20100] <- "headneck"
 
+dead <- by(headneck$dead, list(headneck$age.dx.cat, headneck$year.dx, headneck$stage), sum)
+dead <- abind(dead, matrix(0,dim(dead)[2],dim(dead)[3]),along=1)
+dimnames(dead)[[1]] <- seq(40,100,5)
+dead.cause <- by(headneck$dead, list(headneck$age.dx.cat, headneck$year.dx, headneck$stage, headneck$cod), sum)
+dead.cause <- abind(dead.cause, array(0,dim=c(dim(dead.cause)[2],dim(dead.cause)[3],dim(dead.cause)[4])),along=1)
+dimnames(dead.cause)[[1]] <- seq(40,100,5)
+exposure <- by(headneck$surv.months/12, list(headneck$age.dx.cat, headneck$year.dx, headneck$stage), sum)
+exposure <- abind(exposure, matrix(0,dim(exposure)[2],dim(exposure)[3]),along=1)
+dimnames(exposure)[[1]] <- seq(40,100,5)
+mx.headneck <- dead/exposure
+mx.headneck.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.headneck <- apply(table(headneck$year.dx,headneck$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.headneck, mx.headneck.cause, file="~/Desktop/Cancer/data/mx.headneck.Rdata")
+save(prop.headneck, file="~/Desktop/Cancer/data/prop.headneck.Rdata") 
+print(paste("completed headneck",date()))
+
 headneck.male <- subset(headneck, sex=="male")
 dead <- by(headneck.male$dead, list(headneck.male$age.dx.cat, headneck.male$year.dx, headneck.male$stage), sum)
 dead <- abind(dead, matrix(0,dim(dead)[2],dim(dead)[3]),along=1)
@@ -627,8 +729,8 @@ dimnames(exposure)[[1]] <- seq(40,100,5)
 mx.headneck.male <- dead/exposure
 mx.headneck.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.headneck.male <- apply(table(headneck.male$year.dx,headneck.male$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.headneck.male, mx.headneck.male.cause, file="~/Cancer/data/mx.headneck.male.Rdata")
-save(prop.headneck.male, file="~/Cancer/data/prop.headneck.male.Rdata") 
+save(mx.headneck.male, mx.headneck.male.cause, file="~/Desktop/Cancer/data/mx.headneck.male.Rdata")
+save(prop.headneck.male, file="~/Desktop/Cancer/data/prop.headneck.male.Rdata") 
 print(paste("completed headneck.male",date()))
  
 headneck.female <- subset(headneck, sex=="female")
@@ -644,8 +746,8 @@ dimnames(exposure)[[1]] <- seq(40,100,5)
 mx.headneck.female <- dead/exposure
 mx.headneck.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.headneck.female <- apply(table(headneck.female$year.dx,headneck.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.headneck.female, mx.headneck.female.cause, file="~/Cancer/data/mx.headneck.female.Rdata")
-save(prop.headneck.female, file="~/Cancer/data/prop.headneck.female.Rdata") 
+save(mx.headneck.female, mx.headneck.female.cause, file="~/Desktop/Cancer/data/mx.headneck.female.Rdata")
+save(prop.headneck.female, file="~/Desktop/Cancer/data/prop.headneck.female.Rdata") 
 print(paste("completed headneck.female",date()))
  
  
@@ -674,8 +776,8 @@ print(paste("completed headneck.female",date()))
 #mx.brain <- dead/exposure
 #mx.brain.cause <- aaply(dead.cause, 5, function(x) x/exposure)
 #prop.brain <- prop.table(as.table(table(brain$year.dx, brain$sex, brain$stage)),1)
-#save(mx.brain, mx.brain.cause, file="~/Cancer/data/mx.brain.Rdata")
-#save(prop.brain, file="~/Cancer/data/prop.brain.Rdata") 
+#save(mx.brain, mx.brain.cause, file="~/Desktop/Cancer/data/mx.brain.Rdata")
+#save(prop.brain, file="~/Desktop/Cancer/data/prop.brain.Rdata") 
 #print(paste("completed brain",date()))
  
 ########################################
@@ -714,6 +816,16 @@ lymphoma$stage.lymphoma[lymphoma$stage.lymphoma==4] <- "4. stage IV"
 lymphoma$cod[!(lymphoma$cod %in% c(33010,33040))] <- "other"
 lymphoma$cod[lymphoma$cod %in% c(33010,33040)] <- "lymphoma"
 
+dead <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage.lymphoma), sum)
+dead.cause <- by(lymphoma$dead, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage.lymphoma, lymphoma$cod), sum)
+exposure <- by(lymphoma$surv.months/12, list(lymphoma$age.dx.cat, lymphoma$year.dx, lymphoma$stage.lymphoma), sum)
+mx.lymphoma <- dead/exposure
+mx.lymphoma.cause <- aaply(dead.cause, 4, function(x) x/exposure)
+prop.lymphoma <- apply(table(lymphoma$year.dx,lymphoma$stage.lymphoma),c(1),function(x) x/sum(x,na.rm=TRUE))
+save(mx.lymphoma, mx.lymphoma.cause, file="~/Desktop/Cancer/data/mx.lymphoma.Rdata")
+save(prop.lymphoma, file="~/Desktop/Cancer/data/prop.lymphoma.Rdata") 
+print(paste("completed lymphoma",date()))
+
 lymphoma.male <- subset(lymphoma, sex=="male")
 dead <- by(lymphoma.male$dead, list(lymphoma.male$age.dx.cat, lymphoma.male$year.dx, lymphoma.male$stage.lymphoma), sum)
 dead.cause <- by(lymphoma.male$dead, list(lymphoma.male$age.dx.cat, lymphoma.male$year.dx, lymphoma.male$stage.lymphoma, lymphoma.male$cod), sum)
@@ -721,8 +833,8 @@ exposure <- by(lymphoma.male$surv.months/12, list(lymphoma.male$age.dx.cat, lymp
 mx.lymphoma.male <- dead/exposure
 mx.lymphoma.male.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.lymphoma.male <- apply(table(lymphoma.male$year.dx,lymphoma.male$stage.lymphoma),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.lymphoma.male, mx.lymphoma.male.cause, file="~/Cancer/data/mx.lymphoma.male.Rdata")
-save(prop.lymphoma.male, file="~/Cancer/data/prop.lymphoma.male.Rdata") 
+save(mx.lymphoma.male, mx.lymphoma.male.cause, file="~/Desktop/Cancer/data/mx.lymphoma.male.Rdata")
+save(prop.lymphoma.male, file="~/Desktop/Cancer/data/prop.lymphoma.male.Rdata") 
 print(paste("completed lymphoma.male",date()))
  
 lymphoma.female <- subset(lymphoma, sex=="female")
@@ -732,8 +844,8 @@ exposure <- by(lymphoma.female$surv.months/12, list(lymphoma.female$age.dx.cat, 
 mx.lymphoma.female <- dead/exposure
 mx.lymphoma.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.lymphoma.female <- apply(table(lymphoma.female$year.dx,lymphoma.female$stage.lymphoma),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.lymphoma.female, mx.lymphoma.female.cause, file="~/Cancer/data/mx.lymphoma.female.Rdata")
-save(prop.lymphoma.female, file="~/Cancer/data/prop.lymphoma.female.Rdata") 
+save(mx.lymphoma.female, mx.lymphoma.female.cause, file="~/Desktop/Cancer/data/mx.lymphoma.female.Rdata")
+save(prop.lymphoma.female, file="~/Desktop/Cancer/data/prop.lymphoma.female.Rdata") 
 print(paste("completed lymphoma.female",date()))
 
 #Note (Dec 11, 2014): Leukemia stage seems to depend on type of leukemia.  Should we drop leukemia?
@@ -761,8 +873,8 @@ print(paste("completed lymphoma.female",date()))
 #mx.leukemia <- dead/exposure
 #mx.leukemia.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 #prop.leukemia <- 1
-#save(mx.leukemia, mx.leukemia.cause, file="~/Cancer/data/mx.leukemia.Rdata")
-#save(prop.leukemia, file="~/Cancer/data/prop.leukemia.Rdata") 
+#save(mx.leukemia, mx.leukemia.cause, file="~/Desktop/Cancer/data/mx.leukemia.Rdata")
+#save(prop.leukemia, file="~/Desktop/Cancer/data/prop.leukemia.Rdata") 
 #print(paste("completed leukemia",date()))
  
  
