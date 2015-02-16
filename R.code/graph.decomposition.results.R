@@ -137,4 +137,54 @@ abline(h=0,col="grey")
 
 
 
+keep <- c("breast","lung","crc","esophagus","stomach","pancreas","cervix","uterus","ovary","prostate","bladder","kidney",
+          "melanoma","headneck","lymphoma")
+total <- unlist(lapply(results, function(x) x[["ex.overall.diff"]]))
 
+decomp.mat <- matrix(NA,nrow=length(keep),ncol=4)
+colnames(decomp.mat) <- c("total gain","stage shift","mort, cancer","mort, other")
+rownames(decomp.mat) <- keep
+for (i in 1:length(keep)) {
+    if (!(keep[i] %in% c("prostate","lymphoma")))
+        decomp.mat[i,] <- c(results[[keep[i]]][["ex.overall.diff"]],
+                            sum(results[[keep[i]]][c("change.stage.insitu","change.stage.localized","change.stage.regional","change.stage.distant")]),
+                            sum(results[[keep[i]]][c("change.ex.insitu.cancer","change.ex.localized.cancer","change.ex.regional.cancer","change.ex.distant.cancer")]),
+                            sum(results[[keep[i]]][c("change.ex.insitu.other","change.ex.localized.other","change.ex.regional.other","change.ex.distant.other")]))
+    if (keep[i]=="prostate")
+        decomp.mat[i,] <- c(results[[keep[i]]][["ex.overall.diff"]],
+                            sum(results[[keep[i]]][c("change.stage.insitu","change.stage.localized.regional","change.stage.distant")]),
+                            sum(results[[keep[i]]][c("change.ex.insitu.cancer","change.ex.localized.regional.cancer","change.ex.distant.cancer")]),
+                            sum(results[[keep[i]]][c("change.ex.insitu.other","change.ex.localized.regional.other","change.ex.distant.other")]))
+    
+    if (keep[i]=="lymphoma")
+       decomp.mat[i,] <- c(results[[keep[i]]][["ex.overall.diff"]],
+                            sum(results[[keep[i]]][c("change.stage.stageI","change.stage.stageII","change.stage.stageIII","change.stage.stageIV")]),
+                            sum(results[[keep[i]]][c("change.ex.stageI.cancer","change.ex.stageII.cancer","change.ex.stageIII.cancer","change.ex.stageIV.cancer")]),
+                            sum(results[[keep[i]]][c("change.ex.stageI.other","change.ex.stageII.other","change.ex.stageIII.other","change.ex.stageIV.other")]))
+}
+decomp.mat <- decomp.mat[order(decomp.mat[,1]),]
+xmin <- min(decomp.mat[,1])
+xmax <- max(decomp.mat[,1])
+xmin2 <- min(100*decomp.mat[,-1]/decomp.mat[,1])
+xmax2 <- max(100*decomp.mat[,-1]/decomp.mat[,1])
+ypos <- barplot(t(decomp.mat[,1]),horiz=TRUE,plot=FALSE)
+yline <- rep(NA,length(ypos)-1)
+for (i in 1:length(yline))
+    yline[i] <- mean(c(ypos[i],ypos[i+1]))
+pdf("~/Desktop/Cancer/figures/decomp.results2.pdf", height=5.5, width=11, paper="special")
+par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.66,cex.main=0.66)
+for (i in 1:4) {
+    if (i==1) barplot(t(decomp.mat[,1]),horiz=TRUE,border=FALSE,names.arg=rownames(decomp.mat),las=1,xaxt="n",xlim=c(xmin,xmax))
+     if (i>1) barplot(t(100*decomp.mat[,i]/decomp.mat[,1]),horiz=TRUE,border=FALSE,yaxt="n",las=1,xaxt="n",xlim=c(xmin2,xmax2))
+    if (i==1) axis(1,at=seq(floor(xmin),ceiling(xmax),1),cex=0.75)
+    if (i>1) axis(1,at=seq(10*floor(xmin2/10),10*ceiling(xmax2/10),10))
+    abline(v=0,col="grey")
+    abline(h=yline,col="grey",lty=2)
+       }     
+mtext("Years",side=1,line=0,outer=TRUE,at=1/8,cex=1)
+mtext("Percentage",side=1,line=0,outer=TRUE,at=c(3,5,7)/8,cex=1)
+mtext("Total Gain in Life Expectancy",side=3,line=0,outer=TRUE,at=1/8,cex=1)
+mtext("Stage Shift",side=3,line=0,outer=TRUE,at=3/8,cex=1)
+mtext("Mortality, Cancer",side=3,line=0,outer=TRUE,at=5/8,cex=1)
+mtext("Mortality, Competing Causes",side=3,line=0,outer=TRUE,at=7/8,cex=1)
+dev.off()
