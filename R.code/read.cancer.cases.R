@@ -350,8 +350,10 @@ cod <- as.numeric(apply(seer.femgen, 1, function(x) substr(x,255,259)))
 data.femgen <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
                                 stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 
+#Note: CIN III and carcinoma of the cervix in situ are no longer reportable to NPCR or CoC and are not reportable for SEER starting with cases diagnosed after 1/1/1996
+#Source: http://seer.cancer.gov/registrars/data-collection.html
 data.cervix <- subset(data.femgen, site.recode %in% c(27010))
-drop <- which(data.cervix$surv.months==9999 | data.cervix$stage==9 | data.cervix$age.dx < 40 | data.cervix$age.dx==999)
+drop <- which(data.cervix$surv.months==9999 | data.cervix$stage==9 | data.cervix$age.dx < 40 | data.cervix$age.dx==999 | data.cervix$stage==0)
 cervix <- data.cervix[-drop,]
 cervix$sex[cervix$sex==1] <- "male"
 cervix$sex[cervix$sex==2] <- "female"
