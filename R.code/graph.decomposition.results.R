@@ -192,10 +192,13 @@ dev.off()
 
 b <- apply(breast,1,function(x) c(x[3],sum(x[4:7]),sum(x[c(12,14,16,18)]),sum(x[c(13,15,17,19)])))
 rownames(b) <- c("total gain in life exp","stage shift","mortality, cancer", "mortality, other")
-colnames(b) <- c(1979,1989,1999)
+colnames(b) <- c("1973-1981","1981-1991","1991-2001")
 pdf("~/Desktop/Cancer/figures/breast.pdf", height=5.5, width=5.5, paper="special")
 par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.66,cex.main=0.66)
-barplot(b[2:4,],beside=FALSE,border=FALSE,col=c("red","light blue","dark blue"),las=1)
+barplot(b[2:4,],beside=FALSE,border=FALSE,col=c("red","light blue","dark blue"),las=1,xaxt="n")
 legend("topright",c("stage shift","mortality, cancer","mortality, other"),col=c("red","light blue","dark blue"),pch=15,text.col=c("red","light blue","dark blue"),bty="n")
 axis(1,at=barplot(b[2:3,],beside=FALSE,plot=FALSE),paste(c("1973 vs 1981 cohort","1981 vs 1991 cohort","1991 vs 2001 cohort")))
 dev.off()
+
+b <- apply(breast,1,function(x) c(x[3],sum(x[4:7]),sum(x[c(12,14,16,18)]),sum(x[c(13,15,17,19)]),
+                                  x[12],x[13],x[14],x[15],x[16],x[17],x[18],x[19]))
