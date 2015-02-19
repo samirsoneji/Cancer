@@ -20,3 +20,4 @@ year1 <- 2001
 
 breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973,1980,1990,2000))
  
+save(breast, file="~/Desktop/Cancer/results/breast.decomp.Rdata")
