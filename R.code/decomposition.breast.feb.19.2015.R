@@ -18,5 +18,7 @@ results.fxn <- function(mx, mx.cause, prop, cancer, year.list) {
 year0 <- 1973
 year1 <- 2001
 
-breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973,1980,1990,2000))
- 
+
+breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973,1981,1991,2001))
+breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973,2001))
+
