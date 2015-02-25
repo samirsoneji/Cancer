@@ -27,8 +27,20 @@ breast$stage[breast$stage==1] <- "1. localized"
 breast$stage[breast$stage==2] <- "2. regional"
 breast$stage[breast$stage==4] <- "4. distant"
 breast$stage[breast$stage==4] <- "8. localized.regional"
-breast$cod[breast$cod!=26000] <- "other"
-breast$cod[breast$cod==26000] <- "breast"
+breast$cod2 <- "other"
+breast$cod2[breast$cod==26000] <- "breast"
+breast$cod2[breast$cod>=20010 & breast$cod<=37000 & breast$cod!=26000] <- "cancer other than breast"
+breast$cod2[breast$cod==50050] <- "diabetes"
+breast$cod2[breast$cod==50051] <- "alzheimers"
+breast$cod2[breast$cod %in% c(50060,50070,50080,50090,50100,50110)] <- "cvd"
+breast$cod2[breast$cod %in% c(5000,50010,50040,50030,50120)] <- "infectious diseases"
+breast$cod2[breast$cod %in% c(50210,50220,50230)] <- "accidents/violence"
+breast$cod2[breast$cod==50150] <- "liver disease"
+breast$cod2[breast$cod==50130] <- "copd"
+breast$cod[breast$cod2!="breast"] <- "other"
+breast$cod[breast$cod2=="breast"] <- "breast"
+
+
 dead <- by(breast$dead, list(breast$age.dx.cat, breast$year.dx, breast$stage), sum)
 dead.cause <- by(breast$dead, list(breast$age.dx.cat, breast$year.dx, breast$stage, breast$cod), sum)
 exposure <- by(breast$surv.months/12, list(breast$age.dx.cat, breast$year.dx, breast$stage), sum)
