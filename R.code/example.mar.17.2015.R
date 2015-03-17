@@ -6,6 +6,7 @@ source("~/Desktop/Cancer/R.code/decomp.ex.cd.fxn.R")
 source("~/Desktop/Cancer/R.code/Assoc_LT.r")
 source("~/Desktop/Cancer/R.code/create.datos.fxn.R")
 source("~/Desktop/Cancer/R.code/decomp.fxn.R")
+source("~/Desktop/Cancer/R.code/results.fxn.R")
 
 wrap_sentence <- function(string, width) {
   words <- unlist(strsplit(string, " "))
