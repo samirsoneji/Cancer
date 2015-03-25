@@ -37,14 +37,25 @@ cervix <- results.fxn(mx.cervix, mx.cervix.cause, prop.cervix, "cervix", c(year0
 prostate <- results.fxn(mx.prostate, mx.prostate.cause, prop.prostate, "prostate", c(1995,year1))
 
 summary.fxn <- function(x)
-    c(x[3],sum(x[4:7]),sum(x[8:11]),sum(x[seq(12,18,2)]),sum(x[seq(13,19,2)]))
+    c(x[3],sum(x[4:7]),x[12],x[14],x[16],x[18],sum(x[seq(13,19,2)]))
 
 summary.fxn2 <- function(x)
-    c(x[3],sum(x[4:6]),sum(x[7:9]),sum(x[seq(10,14,2)]),sum(x[seq(11,15,2)]))
+    c(x[3],sum(x[4:6]),x[10],x[12],x[14],sum(x[seq(11,15,2)]))
 
 summary.breast <- summary.fxn(breast)
 summary.crc <- summary.fxn(crc)
 summary.prostate <- summary.fxn2(prostate)
 summary.cervix <- summary.fxn2(cervix)
 
+names(summary.breast) <- names(summary.crc) <-
+    c("gain in life expectancy","stage","mort, in situ","mort, loc", "mort, reg", "mort, dis", "mort, other")
+names(summary.prostate) <-  c("gain in life expectancy","stage","mort, in situ","mort, locreg", "mort, dis", "mort, other")
+names(summary.cervix) <- 
+    c("gain in life expectancy","stage","mort, loc", "mort, reg", "mort, dis", "mort, other")
 
+
+ymax <- max(summary.breast[[2]],sum(unlist(summary.breast[3:7])))
+barplot(c(summary.breast[["stage"]],NA),las=1,axes=FALSE,ylim=c(0,ymax),border=FALSE,col="darkgrey")
+barplot(matrix(c(rep(NA,5),unlist(summary.breast[3:7])),ncol=2,nrow=5),add=TRUE,axes=FALSE)
+axis(2,at=seq(0,ceiling(ymax)),las=1)
+axis(1,at=barplot(c(summary.breast[["stage"]],NA),plot=FALSE),paste(c("Stage","Mortality")),tick=FALSE)
