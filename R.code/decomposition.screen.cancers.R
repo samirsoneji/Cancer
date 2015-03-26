@@ -245,3 +245,25 @@ mtext("Colorectal Cancer",side=3,line=0,outer=TRUE,at=5/8,cex=1)
 mtext("Prostate Cancer",side=3,line=0,outer=TRUE,at=7/8,cex=1)
 mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=1)
 dev.off()
+
+
+breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973,1981,1991,2001))
+summary.breast <- apply(breast,1,summary.fxn)
+rownames(summary.breast) <- c("gain in life expectancy","stage","mort, in situ","mort, loc", "mort, reg", "mort, dis", "mort, other")
+
+
+pdf("~/Desktop/Cancer/figures/breast_decomp_by_decade.pdf", height=5.5, width=5.5, paper="special")
+par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
+
+barplot(t(matrix(c(summary.breast["stage",],rep(NA,3)),byrow=TRUE,ncol=3,nrow=2)),beside=TRUE,space=rep(0.25,2),xlim=c(0,9),col="black",border=FALSE,axes=FALSE,ylim=c(-0.1,5))
+barplot(matrix(c(rep(NA,5),summary.breast[3:7,]),ncol=4,nrow=5),col=c(color,"darkgrey"),border=c(color,"darkgrey"),add=TRUE,space=c(4,0.25,0.25,0.25),axes=FALSE)
+axis(2,at=0:5,las=1)
+abline(h=0,col="grey",lty=1)
+axis(1,at=barplot(t(matrix(c(summary.breast["stage",],rep(NA,3)),byrow=TRUE,ncol=3,nrow=2)),beside=TRUE,space=rep(0.25,2),plot=FALSE)[,1],paste(c("1973-\n1981","1981-\n1991","1991-\n2001")),tick=FALSE)
+axis(1,at=barplot(matrix(c(rep(NA,5),summary.breast[3:7,]),ncol=4,nrow=5),col=c(color,"darkgrey"),border=c(color,"darkgrey"),add=TRUE,space=c(4,0.25,0.25,0.25),axes=FALSE,plot=FALSE)[-1],paste(c("1973-\n1981","1981-\n1991","1991-\n2001")),tick=FALSE)
+
+mtext("Changes in Stage at Diagnosis",side=1,line=0,outer=TRUE,at=0.3,cex=1)
+mtext("Changes in Mortality",side=1,line=0,outer=TRUE,at=0.75,cex=1)
+mtext("Gain in Life Expectancy (Years)",side=2,line=0,outer=TRUE,at=1/2,cex=1)
+
+dev.off()
