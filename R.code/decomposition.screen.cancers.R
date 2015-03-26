@@ -247,7 +247,7 @@ mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=1)
 dev.off()
 
 
-breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973,1981,1991,2001))
+breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1973:2001))
 summary.breast <- apply(breast,1,summary.fxn)
 rownames(summary.breast) <- c("gain in life expectancy","stage","mort, in situ","mort, loc", "mort, reg", "mort, dis", "mort, other")
 
