@@ -125,16 +125,23 @@ dev.off()
 
 
 prop.breast["2001",] <- prop.breast["1981",]
-mx.breast.cause["other",,"2001","4. distant"] <- (1-0.2) * mx.breast.cause["other",,"2001","4. distant"]
-mx.breast[,"2001","4. distant"] <- mx.breast
+mx.breast.cause[,,"1981",] <- (1+2) * mx.breast.cause[,,"1981",]
+mx.breast.cause["breast",,"1981","0. in situ"] <- (1+100) * mx.breast.cause["breast",,"1981","0. in situ"]
+mx.breast.cause["other",,"2001","4. distant"] <- (1-0.99) * mx.breast.cause["other",,"2001","4. distant"]
+mx.breast.cause["breast",,"2001","4. distant"] <- (1-0.99) * mx.breast.cause["breast",,"2001","4. distant"]
+mx.breast.cause["other",,"2001","0. in situ"] <- (1-1) * mx.breast.cause["other",,"2001","0. in situ"]
+mx.breast.cause["breast",,"2001","0. in situ"] <- (1-1) * mx.breast.cause["breast",,"2001","0. in situ"]
+mx.breast[,"1981",] <- mx.breast.cause["other",,"1981",] +  mx.breast.cause["breast",,"1981",]
+mx.breast[,"2001",] <- mx.breast.cause["other",,"2001",] +  mx.breast.cause["breast",,"2001",]
 breast <- results.fxn(mx.breast, mx.breast.cause, prop.breast, "breast", c(1981,2001))
 ex <- create.datos.fxn(mx.breast,prop.breast,c(1981,2001))[,"ex.overall"]
 decomp <- unlist(c(breast[12],breast[14],breast[16],breast[18],sum(breast[c(13,15,17,19)])))
-decomp.mat <- as.matrix(cbind(decomp,rep(NA,5)))
+decomp.mat <- as.matrix(cbind(rep(NA,5),decomp))
 
 pdf("~/Desktop/Cancer/figures/example_decomp2.pdf", height=5.5, width=11, paper="special")
 par (mfrow=c(1,3),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
+load("~/Desktop/Cancer/data/mx.breast.Rdata")
 mx <- mx.breast.cause[,"75",c("1981","2001"),]
 matplot(t(mx[,,2]),yaxt="n",xaxt="n",bty="l",pch=NA,xlim=c(0.85,2.15),ylab=NA,axes=FALSE,
         ylim=c(min(mx),max(mx)))
@@ -158,17 +165,17 @@ axis(1,at=xpos,paste(c("Time 1","Time 2")),tick=FALSE)
 arrows(1.3,ex[1],1.3,ex[2],code=3,length=0.1)
 text(1.3,mean(ex),"Gain",pos=2)
 
-barplot(decomp.mat,xlim=c(0,2),ylim=c(0,max(ex)),axes=FALSE,xlab=NA,names.arg=c("Time 2 - Time 1",NA),
+barplot(decomp.mat,xlim=c(1,2.75),ylim=c(0,max(ex)),axes=FALSE,xlab=NA,names.arg=c(NA,"Time 2 - Time 1"),
         border=c(color,"darkgrey"),col=c(color,"darkgrey"))
-text(1.6,3,"In Situ, Cancer",col=1)
-arrows(1.45,2,1.2,0.2,col=1,length=0.05)
-text(0.7,1.2,"Localized, Cancer",col="black")
-text(0.7,4.4,"Regional, Cancer",col="black")
-text(1.6,9,"Distant, Cancer",col=1)
-arrows(1.45,7.8,1.2,6,col=1,length=0.05)
-text(0.7,7,"Other Causes",col=1)
-text(1,30,
-     wrap_sentence("Gain in life exp. due to declines in mortality from cancer among in situ patients (2%), declines in mortality from cancer among localized patients (37%), declines in mortality from regional patients (40%), declines in mortality from distant patients (1%), and declines in other-cause mortality (21%)",35))
+arrows(1.2,0,1.2,diff(ex),code=3,length=0.1)
+text(1.2,diff(ex)/2,"Gain",pos=2)
+text(1.9,1.2,"In Situ, Cancer",col="black")
+text(1.9,5,"Localized, Cancer",col="black")
+text(1.9,11,"Regional, Cancer",col="black")
+text(1.9,15,"Distant, Cancer",col="white")
+text(1.9,20,"Other Causes",col=1)
+text(1.9,40,
+     wrap_sentence("Contribution of Reductions in Mortality from Cancer (By Stage of Diagnosis) and Mortality from All Other Causes to Gain in Life Expectancy",20))
 
 
 mtext("A. Stage-Specific Cancer Mortality Rates\nBy Cause of Death",side=3,line=0,outer=TRUE,at=1/6)
