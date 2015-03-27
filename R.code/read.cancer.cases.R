@@ -39,7 +39,7 @@ breast$cod2[breast$cod==50150] <- "liver disease"
 breast$cod2[breast$cod==50130] <- "copd"
 breast$cod[breast$cod2!="breast"] <- "other"
 breast$cod[breast$cod2=="breast"] <- "breast"
-
+number.breast <- nrow(breast)
 
 dead <- by(breast$dead, list(breast$age.dx.cat, breast$year.dx, breast$stage), sum)
 dead.cause <- by(breast$dead, list(breast$age.dx.cat, breast$year.dx, breast$stage, breast$cod), sum)
@@ -47,7 +47,7 @@ exposure <- by(breast$surv.months/12, list(breast$age.dx.cat, breast$year.dx, br
 mx.breast <- dead/exposure
 mx.breast.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.breast <- prop.table(as.table(table(breast$year.dx, breast$stage)),1)
-save(mx.breast, mx.breast.cause, file="~/Desktop/Cancer/data/mx.breast.Rdata")
+save(number.breast, mx.breast, mx.breast.cause, file="~/Desktop/Cancer/data/mx.breast.Rdata")
 save(prop.breast, file="~/Desktop/Cancer/data/prop.breast.Rdata") 
 print(paste("completed breast",date()))
  
@@ -79,6 +79,7 @@ crc$stage[crc$stage==2] <- "2. regional"
 crc$stage[crc$stage==4] <- "4. distant"
 crc$cod[!(crc$cod %in% c(21040,21050))] <- "other"
 crc$cod[crc$cod %in% c(21040,21050)] <- "crc"
+number.crc <- nrow(crc)
 
 dead <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$stage), sum)
 dead.cause <- by(crc$dead, list(crc$age.dx.cat, crc$year.dx, crc$stage, crc$cod), sum)
@@ -108,7 +109,7 @@ exposure <- by(crc.female$surv.months/12, list(crc.female$age.dx.cat, crc.female
 mx.crc.female <- dead/exposure
 mx.crc.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.crc.female <- apply(table(crc.female$year.dx,crc.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.crc.female, mx.crc.female.cause, file="~/Desktop/Cancer/data/mx.crc.female.Rdata")
+save(number.crc, mx.crc.female, mx.crc.female.cause, file="~/Desktop/Cancer/data/mx.crc.female.Rdata")
 save(prop.crc.female, file="~/Desktop/Cancer/data/prop.crc.female.Rdata") 
 print(paste("completed crc.female",date()))
 
@@ -382,13 +383,15 @@ cervix$stage[cervix$stage==4] <- "4. distant"
 cervix$stage[cervix$stage==4] <- "8. localized.regional"
 cervix$cod[cervix$cod!=27010] <- "other"
 cervix$cod[cervix$cod==27010] <- "cervix"
+number.cervix <- nrow(cervix)
+
 dead <- by(cervix$dead, list(cervix$age.dx.cat, cervix$year.dx, cervix$stage), sum)
 dead.cause <- by(cervix$dead, list(cervix$age.dx.cat, cervix$year.dx, cervix$stage, cervix$cod), sum)
 exposure <- by(cervix$surv.months/12, list(cervix$age.dx.cat, cervix$year.dx, cervix$stage), sum)
 mx.cervix <- dead/exposure
 mx.cervix.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.cervix <- prop.table(as.table(table(cervix$year.dx, cervix$stage)),1)
-save(mx.cervix, mx.cervix.cause, file="~/Desktop/Cancer/data/mx.cervix.Rdata")
+save(number.cervix, mx.cervix, mx.cervix.cause, file="~/Desktop/Cancer/data/mx.cervix.Rdata")
 save(prop.cervix, file="~/Desktop/Cancer/data/prop.cervix.Rdata") 
 print(paste("completed cervix",date()))
  
@@ -482,13 +485,16 @@ prostate$stage[prostate$stage==4] <- "4. distant"
 prostate$stage[prostate$stage==8] <- "8. localized.regional"
 prostate$cod[prostate$cod!=28010] <- "other"
 prostate$cod[prostate$cod==28010] <- "prostate"
+number.prostate <- nrow(prostate)
+
 dead <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage), sum)
 dead.cause <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage, prostate$cod), sum)
 exposure <- by(prostate$surv.months/12, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage), sum)
 mx.prostate <- dead/exposure
 mx.prostate.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.prostate <- prop.table(as.table(table(prostate$year.dx, prostate$stage)),1)
-save(mx.prostate, mx.prostate.cause, file="~/Desktop/Cancer/data/mx.prostate.Rdata")
+prop.prostate <- prop.prostate[,c(1,3,2)]
+save(number.prostate, mx.prostate, mx.prostate.cause, file="~/Desktop/Cancer/data/mx.prostate.Rdata")
 save(prop.prostate, file="~/Desktop/Cancer/data/prop.prostate.Rdata") 
 print(paste("completed prostate",date()))
  

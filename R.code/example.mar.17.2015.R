@@ -55,12 +55,24 @@ for (i in 1:2) {
              paste(stage.list[j],":\n ",round(100*stage[j,i]),"%",sep=""),cex=0.8)
 }
 
-mx <- mx.breast["75",as.character(c(1981,2001)),]
-matplot(mx,yaxt="n",xaxt="n",bty="l",pch=19,ylim=c(min(mx),max(mx)),xlim=c(0.85,2.15),cex=2,col=color,ylab=NA,axes=FALSE)
+#mx <- mx.breast["75",as.character(c(1981,2001)),]
+mx <- mx.breast.cause[,"75",as.character(c(1981,2001)),]
+mx["other","2001",] <- mx["other","1981",]
+mx["breast","2001",3:4] <- 0.5*mx["breast","2001",3:4]
+mx["breast",,3] <- 0.85*mx["breast",,3]
+mx["breast",,4] <- 0.1+mx["breast",,4]
+mx["other",,2] <- 0.09+mx["other",,2]
+mx["other",,3] <- 0.01+mx["other",,3]
+mx["other",,4] <- 0.01+mx["other",,4]
+matplot(log(mx[,,1]),yaxt="n",xaxt="n",bty="l",pch=NA,ylim=c(min(log(mx)),max(log(mx))),xlim=c(0.85,2.15),cex=2,col=color[1],ylab=NA,axes=FALSE)
 axis(1,at=1:2,labels=c("Time 1","Time 2"),tick=TRUE)
-matlines(mx,col=color,lty=1,lwd=2)
-text(rep(1.5,4),apply(mx,2,mean)+c(-0.025,0,0,0.01),pos=3,col=color,paste(c("In Situ","Localized","Regional","Distant")))
-
+for (i in 1:4) {
+    matpoints(log(t(mx[,,i])),col=color[i],pch=19)
+    matlines(log(t(mx[,,i])),col=color[i],lty=1:2,lwd=2)
+}
+text(rep(1.5,8),log(c(t(apply(mx,c(1,3),mean))))[c(4)],pos=3,col=color[4],paste(c("Distant, Cancer")),srt=-15)
+text(rep(1.5,8),log(c(t(apply(mx,c(1,3),mean))))[c(1,2,3)],pos=3,col=color[c(1,2,3)],paste(c("In Situ, Cancer","Localized, Cancer","Regional, Cancer")),srt=-20)
+text(rep(1.5,8),log(c(t(apply(mx,c(1,3),mean))))[c(5,6,7,8)],pos=3,col=color[c(1,2,3,4)],paste(c("In Situ, Other","Localized, Other","Regional, Other","Distant, Other")))
 barplot(c(t(ex.stage)),space=c(0.1,0.1,0.1,0.1,1,0.1,0.1,0.1),col=color,border=FALSE,las=1,xaxt="n",yaxt="n")
 xpos <- barplot(c(t(ex.stage)),space=c(0.1,0.1,0.1,0.1,1,0.1,0.1,0.1),plot=FALSE)
 text(xpos,ex.stage[2,4]/2,paste(stage.list),srt=90)
@@ -70,8 +82,8 @@ barplot(ex.overall,border=FALSE,las=1,xaxt="n",yaxt="n",ylim=c(0,max(ex.overall)
 xpos <- barplot(ex.overall,plot=FALSE)
 axis(1,at=xpos,paste(c("Time 1","Time 2")),tick=FALSE)
 arrows(1.3,ex.overall[1],1.3,ex.overall[2],code=3,length=0.1)
-text(xpos[1],mean(ex.overall)+1,
-     wrap_sentence("Gain in life exp. entirely due to decreases in stage specific mort. rates",12),cex=0.8)
+text(xpos[1],mean(ex.overall)+1.5,
+     wrap_sentence("Gain in life exp. entirely due to decreases in stage specific mort. rates from cancer",12),cex=0.8)
 
 mtext("A. Stage Distribution",side=3,line=0,outer=TRUE,at=1/8,cex=1)
 mtext("B. Stage-Specific Mortality Rates",side=3,line=0,outer=TRUE,at=3/8,cex=1)
