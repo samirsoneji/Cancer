@@ -1,4 +1,5 @@
 rm(list=ls())
+library(ggplot2)
 
 load("~/Desktop/Cancer/data/mx.breast.Rdata")
 load("~/Desktop/Cancer/data/prop.breast.Rdata") 
@@ -84,7 +85,7 @@ axis(2,at=seq(0,100,10),las=1)
 text(1987,100*prop.breast["1987",1]/2,"In Situ",cex=0.66)
 text(1987,100*(prop.breast["1987",1]+ prop.breast["1987",2]/2),"Localized",cex=0.66)
 text(1987,100*(sum(prop.breast["1987",1:2])+ prop.breast["1987",3]/2),"Regional",cex=0.66)
-text(1987,100*(sum(prop.breast["1987",1:3])+ prop.breast["1987",4]/2),"Distant",cex=0.66)
+text(1987,100*(sum(prop.breast["1987",1:3])+ prop.breast["1987",4]/2),"Distant",cex=0.66,col="white")
 
 stand.mx <- apply(mx.breast.cause,c(1,3,4),function(x) sum(x * stand.female, na.rm=TRUE))
 matplot(year,log10(stand.mx["breast",as.character(year),]),col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l")
