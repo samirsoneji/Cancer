@@ -1,0 +1,646 @@
+@charset "utf-8";
+/* CSS Document */
+
+html {	
+	overflow-y: scroll;
+}
+
+body  {
+	font: .8em Arial, Helvetica, sans-serif;
+	background-color: #C7DFF4;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	color: #000000;
+}
+h1 {
+	font-size: 2em;
+}
+h2 {
+	font-size: 1.6em;
+}
+h3 {
+	font-size: 1.3em;
+}
+h4 {
+	font-size: 1.1em;
+}
+h1, h2 {
+	color: #2E6AB3;
+	margin-bottom: 0;
+}
+h3 {
+	color: #000000;
+	margin-bottom: 0;
+}
+p, li {
+	line-height: 1.3em;
+}
+#container { 
+	width: 67em; 
+	background: #FFFFFF;
+	margin: 0 auto;
+	border: 1px solid #666666;
+	text-align: left;
+}
+#nciBanner { height: 40px; background-color: #a90101; color: #FFF; text-align: right; font: 11px/1  Verdana, Helvetica, "Trebuchet MS", Arial, sans-serif; overflow: visible; min-width: 600px; }
+#nciBanner a { color: #FFF; text-decoration: none; }
+#nciBanner a:hover, #nciBanner a:focus { text-decoration: underline; }
+#nciBanner img { float: left; border: none; }
+#nciBanner span { display: block; padding: 15px 10px 0 0; }
+#nciBanner .extlink {
+	display: none;
+}
+#skip, #skip:hover, #skip:visited { position: absolute; top: -200px; right: 44%; padding: 8px 15px; font-weight: bold; border: 2px solid #ccc; border-top: none; border-radius: 0 0 3px 3px; transition: all .2s ease-in-out; }
+#skip:active, #skip:focus { position: absolute; top: 0; color: #a90101; background: #fff; box-shadow: 0 1px 5px rgba(0,0,0,.7); }
+
+#skip a, #skip a:hover, #skip a:visited {
+	position: absolute;
+	left: 0px;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+#skip a:active, #skip a:focus {
+	position: static;
+	display: block;
+	color: #FFFFFF;
+	float: right;
+	margin-right: 1.5em;
+	width: auto;
+	height: auto;
+}
+#cisnetBanner h1 {
+	margin: 0;
+	padding: 10px 0 0 0;
+	font-size: 2em;
+}
+#cisnetBanner h2 {
+	margin: 0;
+	padding: 0;
+	font-size: 1.2em;
+	font-weight: normal;
+	font-style: italic;
+	color: #2E6AB3;
+}
+#cisnetLogo img{
+	margin: 4px;
+}
+/* ---------------------- MAIN NAV CSS ---------------------- */
+
+#navBar {
+	padding: .1em 0;
+	border: 1px solid #b5d539;
+	border-bottom-color: #95b227;
+	border-right: 0;
+	border-left: 0;
+	background: #cfe35f url(/images/menu_grad.gif) repeat-x center left;
+	margin: 0;
+	text-align: center;
+	font-size: .9em;
+	display: block;
+	width: 100%;
+}
+#mainNav {
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0;
+	margin: 0 auto;
+	width: 55em;
+	list-style: none;
+	white-space: nowrap;
+	text-align: center;
+}
+#mainNav li {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+#mainNav li a {
+	display: block;
+	float: left; 
+	height: 2.5em;
+	line-height: 2.5em;
+	letter-spacing: .1em;	
+	text-decoration: none;
+	color: #000033;
+	/*background: #b5d539 url(/images/menu_grad.gif) repeat-x center left; */
+	border-right: 1px solid #b5d539;
+	border-left: 1px solid #dfeb75;
+	margin: 0 auto;
+}
+#mainNav li a.homeNav {
+	width: 6em;
+}
+#mainNav li a.aboutNav {
+	width: 6.2em;
+}
+#mainNav li a.modelNav {
+	width: 15.2em;
+}
+#mainNav li a.sitesNav {
+	width: 13em;
+}
+#mainNav li a.resourcesNav {
+	width: 12em;
+}
+#mainNav li a:hover {
+	background: #dfeb75 url(/images/menu_grad_hover.gif) repeat-x center top;
+	color: #000033;
+	text-align: center; 
+}
+#mainNav li a:hover strong {
+	display: block;
+	background: url(/images/down_arrow.gif) no-repeat center top;
+	float: left;
+	cursor: pointer;
+	width: 100%; 
+}
+
+
+/* ----------------------- SIDEBAR CSS ---------------------- */
+#addNav {
+	float: left;
+	display: inline;
+	padding: 0;
+	margin: 20px 0 20px 20px;
+	width: 177px;
+}
+.sidebarEnd {
+	display: block;
+	height: 11px;
+	width: 181px;
+	line-height: 1px;
+}
+#sidebarTop {
+	background: url(/images/round_top.gif) bottom center no-repeat;
+}
+#sidebarBottom {
+	background: url(/images/round_bottom.gif) top center no-repeat;
+}
+#sidebarContent {
+	border: 1px solid #FFC330;
+	border-top: 0;
+	width: 181px;
+	border-bottom: 0;
+	margin: 0;
+	padding: 0;
+}
+#sidebarContent h3 {
+	color: #2E6AB3;
+	font-size: 1.1em;
+	margin-top: 0;
+}
+#sidebarContent.leftnav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid #FFC330;
+}
+#sidebarContent.leftnav li {
+	display: inline;
+}
+#sidebarContent.leftnav a {
+	display: block;
+	padding: 5px 10px;
+	font-size: 1.1em;
+	color: #000000;
+	text-decoration: none;
+}
+#sidebarContent.leftnav a:hover {
+	text-decoration: underline;
+}
+#sidebarContent.leftnav a.current, #sidebarContent a.current:hover {
+	text-decoration: none;
+	background-color: #F8F2A9;
+}
+#sidebarContent.leftnav h3 a {
+	color: #2E6AB3;
+	text-decoration: none;
+}
+#sidebarContent.leftnav h3 a:hover {
+	text-decoration: none;
+}
+/* The following styles apply only to the "Highlights" bar on the homepage */
+#addNav.home #sidebarContent {
+	padding-bottom: 10px;
+}
+#addNav.home {
+	float: right;
+	margin: 20px 20px 20px 0;
+	padding: 0;
+}
+#addNav.home h3 {
+	margin: 0 10px;
+	padding-top: 10px;
+}
+#addNav.home ul {
+	list-style: disc;
+	margin: 0 10px 0 0;
+	padding: 0 0 0 25px;
+	border: 0;
+}
+#addNav.home li {
+	list-style: disc;
+	margin-left: 0;
+	margin-top: 5px;
+}
+#projections {
+	margin-top: 10px;
+	border: 1px solid #888888;
+}
+/* -------------------- MAIN CONTENT CSS -------------------- */
+
+#mainContent {
+  	margin: 20px;
+	margin-left: 215px;
+}
+/* The following styles apply only to the main content area of the homepage */
+#mainContent.home {
+	/*margin-right: 215px; */
+	float: left;
+	width: 71%;
+	margin-left: 20px;
+} 
+#mainContent.noSidebar {
+	margin-left: 20px;
+}
+#mainContent.home table {
+	margin: 10px 0 0 0;
+	padding: 0;
+	border-collapse: collapse;
+	border: 0;
+}
+#mainContent.home table td {
+	vertical-align: middle;
+	border: 0;
+	padding: 0;
+}
+#mainContent.home h2 {
+	font-size: 1.2em;
+	margin: 0;
+	padding: 0;
+}
+#mainContent.home h2 a {
+	color: #000000;
+	text-decoration: none;
+}
+#mainContent.home h2 a:hover {
+	color: #2E6AB3;
+	border-bottom: 1px solid #2E6AB3;
+}
+#cisnetInfo, #cisnetSites {
+	width: 21em;
+	margin: 0;
+}
+#cisnetInfo p, #cisnetSites p {
+	margin: 0;
+}
+#cisnetInfo ul, #cisnetSites ul {
+	margin: 0;
+	padding: 0 0 0 35px;
+}
+#cisnetInfo li, #cisnetSites li {
+	margin-bottom: 5px;
+}
+
+/* ----------------- MORE RESEARCH AREAS CSS ----------------- */
+.more {
+  display: none;
+  border-top: 1px solid #B3D335;
+  border-bottom: 1px solid #B3D335; 
+}
+a.showLink, a.hideLink {
+  text-decoration: none;
+  color: #2E6AB3;
+}
+a.hideLink {
+}
+a.showLink:hover, a.hideLink:hover {
+  border-bottom: 1px dotted #36f; }
+
+/* ----------------------- FOOTER CSS ----------------------- */
+#footer {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #666666;
+    font-size: 0.8em;
+	list-style: none;
+	text-align: center;
+	padding: 5px;
+}
+#footer ul {
+	display: block;
+	list-style-type: none;
+	margin: 10px 0 0 0;
+	padding: 0;
+}
+#footer a {
+	color: #666666;
+}
+#footer a:hover {
+	color: #333333;
+}
+#footer li {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+#footer .extlink {
+	display: none;
+}
+.flinks a {
+	margin-left: .7em;
+	margin-right: .7em;
+}
+.nihTag {
+	font-style:italic;
+	margin-top: 2px;
+}
+p.siteLinks {
+	width: auto;
+	margin: 18px 0 0 22em;
+	padding-left: 20px;
+}
+
+/* ------------------ RESOURCES PAGE CSS -------------------- */
+
+#resources_wrapper {
+	font-size: 100%;
+}
+
+	#resources_wrapper h1 {
+		font-size: 1.5em;
+	}
+	
+	#resources_wrapper hr {
+		border: 1px solid #D8E86C;
+		margin: 0;
+	}
+	
+	#resources_wrapper h2 {
+		font-size: 1.2em;
+		text-align: center;
+		margin-top: 15px;
+	}
+
+	#resources_wrapper #resources {
+		width: 80%;
+		margin: 10px auto 0;
+		background: #f3f8fd;
+		padding: 8px 10px 5px;
+		border: 1px solid #e0edf9;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+	}
+
+		#resources_wrapper #resources h3 {
+			font-size: 1em;
+			padding: 0;
+			margin: 0;
+		}
+
+/* ------------------- ABSTRACT PAGE CSS -------------------- */
+body.abstracts {
+	background: #FFFFFF;
+}
+#abstracts {
+	text-align: left;
+	margin: 20px;
+}
+/* Lists */
+
+UL.spaced > LI { margin-bottom: 0.5em; 
+                 margin-top: 0.5em; 
+}
+OL.spaced > LI { margin-bottom: 0.5em;
+                 margin-top: 0.5em; 
+}
+
+/* ----------------------- TABLES CSS ----------------------- */
+
+#mainContent table {
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+#mainContent th, #mainContent td {
+	border: 1px solid #666666;
+	padding: 4px 6px;
+}
+#mainContent th {
+	background-color: #C7DFF4;
+	text-align: center;
+}
+#mainContent td.centered {
+	text-align: center;
+}
+#mainContent .noBorders td {		
+	border-collapse: collapse;
+	border: 0px;
+	padding: 2px 0;
+}
+/* These styles only apply to the tables on the Awarded Grants page */
+#mainContent th.investigators {
+	width: auto;
+}
+#mainContent th.pub_title {
+	width: 16em;
+}
+#mainContent th.cisnet1, #mainContent th.cisnet2  {
+	width: 5em;
+}
+.imgHolder {
+	text-align: center;
+}
+
+/* ------------------------ IMAGE CSS ----------------------- */
+
+.imgHolder {
+	margin: 0 auto;
+}
+.imgHolder p.imgTitle {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.imgHolder p.caption {
+	text-align: left;
+	font-size: .9em;
+	margin: 5px 0 0 0;
+	font-style: italic;
+}
+.secondImg {
+	margin-top: 20px;
+}
+#figure1 {
+	width: 458px;
+}
+#figure3 {
+	width: 536px;
+}
+#figure5 {
+	width: 466px;
+}
+#figure6 {
+	width: 538px;
+}
+#figure7, #figure17 {
+	width: 531px;
+}
+#figure10, #figure11 {
+	width: 545px;
+}
+#figure13, #figure14 {
+	width: 527px;
+}
+#figure20 {
+	width: 491px;
+}
+#figure21 {
+	width: 436px;
+}
+.iconic-people-person-center { fill: #858585;  width: 75px; height: 75px;}
+.iconic-property-accent {fill: #ccc;}
+
+/* ------------------- MISC CSS FOR REUSE ------------------- */
+/* Clearfix */
+.cf:before, .cf:after { content: ""; display: table; }
+.cf:after { clear: both; }
+.cf { zoom: 1; }
+.callout {
+	border: 1px solid #BAD73F;
+	padding: .5em 1em;
+	margin: 1em 0 2em ;
+	box-shadow: 3px 3px  #BAD73F;
+}
+.calloutIcon {	
+	float: left;
+	width: 15%;
+}
+.calloutText {
+	float: left;
+	width: 85%;
+}
+.flag {
+	background-color: #FF3;
+}
+.fltrt {
+	float: right;
+}
+.fltlft {
+	float: left;
+}
+.clearFlt {
+	clear: both;
+    height: 0;
+    font-size: 1px;
+    line-height: 0;
+}
+.highlightBox {
+	border: 1px solid #FFC330;
+	border-radius: 3px;
+	padding: 0 15px;
+	margin-top: 15px;
+	background-color: #fdfcea;
+}
+.noMarginBottom {
+	margin-bottom: 0;
+}
+.notetext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:  10px;
+	text-align: center;
+}
+.returnLink {
+	text-align: right;
+}	
+
+/****Menu styles****/
+
+#main-menu {
+	margin: 0 auto;
+    text-align: center;
+    width: 532px;
+	background:none;
+	border-bottom:none;	
+}
+
+#main-menu a {
+	color: #000033;	
+	font-size: 1em;
+}
+
+#navBar {
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/images/menu_grad.gif") repeat-x scroll left center #cfe35f;
+    border-color: #b5d539;
+    border-image: none;
+    border-style: solid none;
+    border-width: 1px 0;
+    display: block;
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0.1em 0;
+    text-align: center;
+    width: 100%;
+}
+
+.sm-nowrap {
+	width:100% !important;	
+}
+
+#main-menu ul li a {
+	border:none;	
+}
+
+body.homepage #main-menu li a.homeNav, body.about #main-menu li a.aboutNav, body.model #main-menu li a.modelNav, body.sites #main-menu li a.sitesNav, body.breast #main-menu li a.sitesNav, body.colorectal #main-menu li a.sitesNav, body.esophagus #main-menu li a.sitesNav, body.lung #main-menu li a.sitesNav, body.prostate #main-menu li a.sitesNav, body.resources #main-menu li a.resourcesNav {
+    background: url("/images/menu_grad_white.gif") repeat-x scroll center top #d1e588;
+    color: #000033;
+    display: block;
+}
+
+#main-menu a:hover {
+	background: #dfeb75 url(/images/menu_grad_hover.gif) repeat-x center top;
+	color: #000033;	
+}
+
+#main-menu li {
+	border-left: 1px solid #dfeb75;
+    border-right: 1px solid #b5d539;
+	height: 2.5em;
+    line-height: 2.5em;	
+}
+
+#main-menu li ul li a {
+	background: url("/images/menu_grad.gif") repeat-x scroll left center #cfe35f;
+	text-align:left;	
+	border-bottom: 2px solid #b5d539;
+	line-height:.8em;
+}
+
+#main-menu li ul li a:hover {
+	background: #cfe35f;
+	text-align:left;
+	border-bottom: 2px solid #b5d539;
+}
+/*~~~~~Stephanie's Style Changes~~~~~*/
+#main-menu {
+	width: 562px;
+	padding-left: 9px;
+}
+#main-menu li {
+margin: 0 0 0 -2px;
+}
+#container {
+	width: 859px;
+}
+#navBar {
+	border-bottom-color: #95b227;
+	padding: 1px 0 0;
+}
+:focus {
+	outline: none !important;	
+}

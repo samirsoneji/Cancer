@@ -1,0 +1,75 @@
+html { overflow-y: scroll; }
+h2, h3, h4, h5, h6, p { margin-top: 0; }
+
+
+/* Header */
+.nciBanner { background-color: #706f5d; text-align: right; padding: .6em 0; color: #fff; font: .70em/1 Verdana, Helvetica, "Trebuchet MS", Arial, sans-serif; overflow: visible; vertical-align: middle; border-bottom: 1px solid #7f7e6e; }
+.nciBanner a { color: #fff; text-decoration: none; }
+.nciBanner a:hover, .nciBanner a:focus { text-decoration: underline; }
+.nciBanner img { float: left; }
+.nciBanner span { display: inline-block; zoom: 1; *display: inline; padding-top: .9em; }
+#skip, #skip:hover, #skip:visited { position: absolute; top: -20em; right: 44%; padding: .7em 1.5em; font-weight: bold; border: 2px solid #ccc; border-top: none; border-radius: 0 0 3px 3px; transition: all .2s ease-in-out; z-index: 999; }
+#skip:active, #skip:focus { position: absolute; top: 0; color: #a90101; background: #fff; box-shadow: 0 1px 5px rgba(0,0,0,.7); }
+
+.header { background: #fbfbfb; border-bottom: 1px solid #ccc; }
+
+.search { margin-top: 1em; float: right; }
+.search label { margin-bottom: 0; font-size: .8em; }
+@media (max-width: 47.99em) {
+	/*.search { margin: 0; }*/
+}
+
+
+/* Mobile Bar w/ Nav Toggle */
+.mobileNav { display: none; }
+@media (max-width: 47.99em) {
+	/*.mobileNav { display: block; background: #8db863; padding: .3em; }
+	.navToggle, .searchToggle { display: block; width: 100%; text-align: center; color: #fff; background: darkgreen; border: 1px solid #333; padding: .3em 0; text-decoration: none; border-radius: 3px; box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
+		.navToggle:hover { background: darkgreen; border-color: #333; }
+	.navToggle span { padding-right: 1.3em; background: url("../i/mob-toggle.png") right 3px no-repeat; }
+	.navToggle span.active { background-position: right -90px; }
+}
+
+
+/* Left Nav */
+.subNav { display: inline-block; list-style: none; margin: 0; padding: 0 1em; border: 1px solid #ccc; border-radius: 3px; background: #fbfbfb; box-shadow: inset 2px 2px 0 #eee, inset -2px -2px 0 #eee; text-shadow: 0 1px 0 #fff; }
+.subNav li { border-bottom: 1px dashed #ccc; padding: .5em 1.3em; }
+	.subNav li:last-child { border-bottom: none; }
+.subNav a { text-decoration: none; }
+	.subNav a:hover, subNav a:focus { text-decoration: underline; }
+@media (max-width: 61.99em) {
+	.subNav { display: block; margin-top: 2em; border-radius: 0 3px 3px 3px; position: relative; }
+	.subNav:before { background: #8db863; color: #fff; text-shadow: none; border: 1px solid #8db863; border-radius: 3px 3px 0 0; top: -32px; content: "In this section..."; display: inline-block; font-size: 0.9em; font-weight: bold; left: -1px; padding: 0.3em 1em; position: absolute; }	
+	.subNav li { padding-left: 0; }
+}
+
+
+/* Main Content */
+.section { padding-top: 2em; }
+
+
+/* Footer */
+.mobileReturn { border-top: 1px solid #ccc; padding: 0 2.5%; margin: 2em 0 1em; }
+.mobileReturn a { display: none; }
+.footerLinks, .divisions { list-style: none; padding: 0; margin: 0; text-align: center; font-size: .85em; }
+.footerLinks li, .divisions li { display: inline-block; zoom: 1; *display: inline; padding: 0 .75em; margin-bottom: 1em; }
+.divisions li { border-right: 1px solid #666; margin: .25em 0;}
+	.divisions li:last-child { border-right: none; }
+.tagline { text-align: center; font-size: .8em; margin-top: 1em; }
+@media (max-width: 47.99em) {
+	.divisions li { border-right: none; display: block; }
+	.mobileReturn { text-align: center; border-bottom: 1px solid #ccc; }
+	.mobileReturn a { display: block; text-decoration: none; background: #fbfbfb; padding: .3em 0; font-size: .9em; }
+		.mobileReturn a:focus, .mobileReturn a:hover { text-decoration: underline; }
+}
+
+
+/* Misc */
+table { border: medium double #ccc; }
+td, th { border: 1px solid #ccc; vertical-align: middle!important; }
+caption { text-align: left; color: #fff; font-weight: bold; padding: .3em .5em; border-radius: 3px 3px 0 0; background: #8db863; }
+th { background: #eee; }
+
+.returnTop { text-align: right; font-size: .8em; border-bottom: 1px dotted #ccc; margin-bottom: 2em; }
+.returnTop a { text-decoration: none; }
+	.returnTop a:focus, .returnTop a:hover { text-decoration: underline; }

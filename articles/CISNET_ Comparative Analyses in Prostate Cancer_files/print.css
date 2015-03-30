@@ -1,0 +1,18 @@
+@charset "utf-8";
+/* CSS Document */
+
+#container { 
+	width: auto;
+	background: transparent;
+	border: 0;
+}
+#cisnetBanner h1 {
+	padding-top: 15px;
+	font-size: 1.7em;
+}
+#mainContent, #mainContent.home {
+	margin: 0;
+}
+#nciBanner, #skip a, #prevNext, #navBar, #addNav, #footer {
+	display: none;
+}

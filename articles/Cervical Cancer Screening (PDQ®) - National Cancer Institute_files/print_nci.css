@@ -1,0 +1,372 @@
+@media print
+ {
+/* 
+****************************************************
+                 PRINT VERSION                      
+ NEW CLASSES FOR 2011 restyling OF CANCER.GOV       
+ Last edited by Josh Soldan July 17, 2012            
+*****************************************************/
+body {
+background:none repeat scroll 0 0 transparent;
+color:#000;
+font-family:Georgia, "Times New Roman", Times, serif;
+font-size:14px;
+line-height:1.5em;
+margin:0;
+}
+
+#cgovContainer {
+background:none repeat scroll 0 0 transparent;
+width:95%;
+margin:30px auto;
+padding:0;
+}
+
+#mainContainer {
+overflow:inherit;
+margin:0;
+}
+
+.defaultTemplateContentContainer {
+width:100%;
+}
+
+#logoandsearchcontainer {
+background:none repeat scroll 0 0 transparent;
+border-top:medium none;
+}
+
+#NCILogo {
+border-bottom:3px solid #000000;
+float:none;
+height:40px;
+width:100%;
+margin-bottom:30px;
+}
+
+#NCILogo h1 {
+display:block;
+float:left;
+font-size:16px;
+font-family:Arial, Helvetica, sans-serif;
+margin:0;
+}
+
+#NCILogo h2 {
+color:#000;
+display:block;
+float:right;
+font-size:14px;
+font-family:Arial, Helvetica, sans-serif;
+font-weight:normal;
+margin:0;
+}
+
+A.Summary-GlossaryTermRef:hover,A.Protocol-GlossaryTermRef:hover {
+border:none;
+color:#000;
+text-decoration:none;
+}
+
+h1,.document-title {
+font-size:18px;
+}
+
+h2,H2,.page-title,.DrugInfoSummary-SummarySection-Title-Level1 {
+font-size:17px;
+margin:1.5em 0;
+}
+
+h3,H3,.header-A,.header-a {
+font-size:16px;
+margin:2em 0 0;
+}
+
+div.keyPoints {
+border:none;
+margin-bottom:6px;
+padding:0 10px;
+}
+
+div.keyPoints h4 {
+background:none;
+border-bottom:none;
+text-align:left;
+color:#000;
+font-size:16px;
+}
+
+.document-title-block {
+background:none repeat scroll 0 0 transparent !important;
+display:block;
+min-height:35px !important;
+margin-bottom:20px;
+position:relative;
+padding:0;
+}
+/*
+.cdrMediaImage {
+width:500px;
+}
+*/
+.shaded-box {
+background:none;
+border:none;
+margin:0 !important;
+padding:10px 0;
+}
+
+.document-title-block h1 {
+color:#000000;
+font-weight:bold !important;
+padding:0 0 30px;
+}
+
+.wyntk-banner {
+background-image:none;
+background-color:#FFF;
+padding:0;
+}
+
+.document-dates {
+float:left !important;
+margin:0 0 30px !important;
+}
+
+.document-dates ul li {
+float:left;
+margin-left:0 !important;
+}
+
+.document-dates li {
+list-style:none outside none;
+padding-right:20px !important;
+}
+
+.contentzone {
+float:none;
+width:100%;
+margin:0;
+}
+
+ul.no-bullets {
+padding-left:0;
+margin-left:0;
+}
+
+ul.no-bullets li {
+margin-left:0;
+list-style:none;
+padding:0;
+}
+div.TileSlot {
+display:none;
+}
+.right-content-box {
+display: none;
+}
+/* Above style is hiding the right content box so these styles are no longer necessary
+.right-content-box {
+border:none;
+margin-bottom:6px;
+padding:0 8px;
+}
+
+.right-content-box h3 {
+background:none;
+font-size:17px;
+}
+
+.right-content-box li {
+list-style:none outside none;
+}
+*/
+ul li {
+background:none repeat scroll 0 0 transparent;
+list-style-type:disc;
+}
+
+.contentzone ul li {
+background:none repeat scroll 0 0 transparent;
+list-style-type:disc;
+padding: 0;
+}
+
+table.no-bullet-padding ul {
+border:0 solid blue;
+margin-left:15px;
+}
+
+table.no-bullet-padding ul li {
+border:0 solid red;
+list-style-type:disc;
+margin-left:0;
+padding-left:0;
+}
+
+#cgvFooter ul#findHelp li {
+margin:0 20px;
+}
+
+#cgvFooter ul#findHelp,#cgvFooter ul#findHelpEspanol {
+border-bottom:1px solid #AAAAAA;
+border-top:1px solid #AAAAAA;
+letter-spacing:2px;
+margin:0 0 15px;
+padding:10px 0;
+}
+
+div.bulletin-header img.bulletin-header-right {
+position: absolute;
+right: 0;
+}
+
+.cancer-bulletin-home-page-left-column {
+float:left;
+margin-bottom:20px;
+padding-right:20px;
+width:360px;
+}
+
+.cancer-bulletin-home-page-right-column {
+float:right;
+margin-bottom:20px;
+width:240px;
+}
+
+ul.cancer-bulletin-home-page-in-depth li {
+background:none repeat scroll 0 0 transparent;
+list-style-type:none;
+}
+
+.cancer-bulletin-home-page-in-depth-text {
+width:auto;
+}
+
+h1.guest-commentary {
+background:none repeat scroll 0 0 transparent;
+color:#000000;
+}
+
+.cancer-bulletin-inside-page h1 {
+font-size:36px;
+height:auto;
+text-indent:0;
+margin:30px 0 20px;
+}
+
+.cancer-research-news ul li {
+list-style-type: none!important;
+}
+
+.BodySlotPortal {
+padding-right:0;
+}
+
+/* hide all version languages and then only show the active one */
+div.version-language {
+float: none;
+}
+
+div.version-language li {
+display: none;
+}
+div.version-language li.active {
+display: block;
+background: none;
+font-weight: bold;
+font-size: 14px;
+padding: 0 10px 0 0;
+left: 0;
+}
+div.version-language ul {
+border-left: none;
+}
+div.document-dates ul {
+margin: 0;
+}
+div.document-dates, div.document-dates ul li {
+display: block;
+}
+div.dictionary-box ul li {list-style-type: none; }
+
+#NCILogo div#printThisPage a,#NCILogo a,#languageToggle,#bannerRight,.document-title-block span.backtomain,.document-title-block img,.genSiteMainNav,.leftzone,p a.backtotop-link,#cgvBodyNav,#footerUtility,.wyntk-right-image,div#cgvFooter,.cancer-bulletin-options-box,.bulletin-header-bottom-right,.pptRightNav,.bottom-related-pages,a.right,.videoPlayer,.video-carousel-container {
+display:none;
+}
+
+a,a:active,a:visited,a:hover,a.definition,a.definition:visited,a.definition:active,a.definition:hover,A.Summary-GlossaryTermRef,A.Summary-GlossaryTermRef:visited,A.Summary-GlossaryTermRef:active,A.Protocol-GlossaryTermRef,A.Protocol-GlossaryTermRef:active,A.Protocol-GlossaryTermRef:visited {
+color:#000;
+text-decoration:none;
+border:none;
+}
+
+.boletinArticle a, .boletinArticle a:link , .boletinArticle a:hover, .boletinArticle a:visited {
+text-decoration: none;
+}
+ 
+/* remove background bullets from li elements */ 
+ul.generic-bullet li, ul.cancer-bulletin-home-page-list-item li ul li {
+background: none;
+}
+ 
+.Summary-KeyPoint,.Summary-SummarySection-Title-Level2 {
+font-size:16px;
+}
+
+.bulletin-header-text {
+background:none;
+}
+
+h2.factsheet-banner, h2.factsheet-banner-es { 
+    background: none repeat scroll 0 0 transparent;
+    text-indent: 0;
+}
+
+.wyntk-banner h1,.red-text,.bulletin-header-date {
+color:#000;
+}
+
+div.ui-accordion-content {
+display: block!important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+border: 1px solid #AAA;
+background: white url(/PublishedContent/Images/images/jquery/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+font-weight: normal;
+color: #212121;
+}
+
+.ui-state-active .ui-icon {
+background-image: url(/PublishedContent/Images/images/jquery/ui-icons_454545_256x240.png);
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { 
+border: 1px solid #aaaaaa; 
+background: #ffffff url(/PublishedContent/Images/images/jquery/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x; 
+font-weight: normal; 
+color: #212121; 
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { 
+color: #212121; 
+text-decoration: none; 
+}
+
+a.exitNotification {
+display: none;
+}
+
+.ui-widget-content {
+color: #000!important
+}
+
+h3.no-link, div.title-red-arrow h3 a:link, div.title-red-arrow h3 a:visited, div.title-red-arrow h3 a:active {
+padding-left: 0px;
+}
+
+h1.cancer-bulletin-conversation-with,h1.cancer-bulletin-cancer-center-profile,h1.cancer-bulletin-cancer-gov-update,h1.cancer-bulletin-cancer-research-highlights,h1.cancer-bulletin-cdc-update,h1.cancer-bulletin-closer-look,h1.cancer-bulletin-cms-update,h1.cancer-bulletin-community-update,h1.cancer-bulletin-directors-update,h1.cancer-bulletin-fda-update,h1.cancer-bulletin-featured-article,h1.cancer-bulletin-featured-clinical-trial,h1.cancer-bulletin-guest-commentary,h1.cancer-bulletin-guest-directors-update,h1.cancer-bulletin-hhs-update,h1.cancer-bulletin-legislative-update,h1.cancer-bulletin-nih-update,h1.cancer-bulletin-notes,h1.cancer-bulletin-profiles-cancer-research,h1.cancer-bulletin-sr-adolescent,h1.cancer-bulletin-sr-bioinformatics,h1.cancer-bulletin-sr-crt,h1.cancer-bulletin-sr-gc,h1.cancer-bulletin-sr-cte,h1.cancer-bulletin-special-report,h1.cancer-bulletin-spotlight {
+background:none repeat scroll 0 0 transparent;
+}
+
+}
