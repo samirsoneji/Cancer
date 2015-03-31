@@ -57,7 +57,7 @@ names(summary.cervix) <-
 
 library(RColorBrewer)
 color <- brewer.pal(6,"YlGnBu")[-c(1,2)]
-ymax <- max(summary.breast[[2]],sum(unlist(summary.breast[3:7])))
+ymax <- max(summary.breast[[1]],summary.breast[[2]],sum(unlist(summary.breast[3:7])))
 popl <- read.table("~/Desktop/Cancer/data/Population5.txt",skip=2,header=TRUE)
 stand.female <- prop.table(c(subset(popl,Year==2000)$Female[10:21],sum(subset(popl,Year==2000)$Female[22:24])))
 stand.male <- prop.table(c(subset(popl,Year==2000)$Male[10:21],sum(subset(popl,Year==2000)$Male[22:24])))
@@ -96,16 +96,16 @@ legend(1973,log10(0.2),ncol=2,cex=0.5,paste(c("Distant, Cancer","Distant, Other"
        lty=1:2,col=c(color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),
        text.col=c(color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),bty="n")
 
-xpos <- barplot(c(summary.breast[["stage"]],NA),plot=FALSE)
-barplot(c(summary.breast[["stage"]],NA),las=1,axes=FALSE,ylim=c(0,ymax),border=FALSE,col="black")
-barplot(matrix(c(rep(NA,5),unlist(summary.breast[3:7])),ncol=2,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"))
+xpos <- barplot(c(summary.breast[["gain in life expectancy"]],summary.breast[["stage"]],NA),plot=FALSE)
+barplot(c(summary.breast[["gain in life expectancy"]],summary.breast[["stage"]],NA),las=1,axes=FALSE,ylim=c(0,ymax),border=FALSE,col=c("black","darkgrey"))
+barplot(matrix(c(rep(NA,10),unlist(summary.breast[3:7])),ncol=3,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"))
 axis(2,at=seq(0,ceiling(ymax)),las=1)
-axis(1,at=xpos,paste(c("Stage","Mortality")),tick=FALSE)
-text(xpos[2],summary.breast[[3]]/2,"In Situ, Cancer",cex=0.66)
-text(xpos[2],summary.breast[[3]]+summary.breast[[4]]/2,"Localized, Cancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.breast[3:4]))+summary.breast[[5]]/2,"Regional, Cancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.breast[3:5]))+summary.breast[[6]]/2,"Distant, Cancer",cex=0.35,col="white")
-text(xpos[2],sum(unlist(summary.breast[3:6]))+summary.breast[[7]]/2,"All Other Causes",cex=0.66)
+axis(1,at=xpos,paste(c("Overall","Stage","Mortality")),tick=FALSE)
+text(xpos[3],summary.breast[[3]]/2,"In Situ, Cancer",cex=0.5)
+text(xpos[3],summary.breast[[3]]+summary.breast[[4]]/2,"Localized,\nCancer",cex=0.66)
+text(xpos[3],sum(unlist(summary.breast[3:4]))+summary.breast[[5]]/2,"Regional,\nCancer",cex=0.66)
+text(xpos[3],sum(unlist(summary.breast[3:5]))+summary.breast[[6]]/2,"Distant, Cancer",cex=0.35,col="white")
+text(xpos[3],sum(unlist(summary.breast[3:6]))+summary.breast[[7]]/2,"All Other\nCauses",cex=0.66)
    
 mtext("A. Stage Distribution",side=3,line=0,outer=TRUE,at=1/6,cex=1)
 mtext("B. Stage-Specific Mortality Rates",side=3,line=0,outer=TRUE,at=3/6,cex=1)
@@ -253,65 +253,62 @@ dev.off()
 
 
 pdf("~/Desktop/Cancer/figures/decomp_cancers.pdf", height=4.0, width=8.5, paper="special")
-par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
-
-ymin <- min(0,min(summary.cervix[[2]],sum(unlist(summary.cervix[3:6]))),min(summary.prostate[[2]],sum(unlist(summary.prostate[3:6]))))
-ymax <- max(max(summary.breast[[2]],sum(unlist(summary.breast[3:7]))), max(summary.cervix[[2]],sum(unlist(summary.cervix[3:6]))), max(summary.cervix[[2]],sum(unlist(summary.cervix[3:6]))),max(summary.prostate[[2]],sum(unlist(summary.prostate[3:6]))))
-
-#breast cancer
-xpos <- barplot(c(summary.breast[["stage"]],NA),plot=FALSE)
-barplot(c(summary.breast[["stage"]],NA),las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col="black")
-barplot(matrix(c(rep(NA,5),unlist(summary.breast[3:7])),ncol=2,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"))
-axis(2,at=seq(floor(ymin),ceiling(ymax)),las=1)
-axis(1,at=xpos,paste(c("Stage","Mortality")),tick=FALSE)
-text(xpos[2],summary.breast[[3]]/2,"In Situ, Cancer",cex=0.5)
-text(xpos[2],summary.breast[[3]]+summary.breast[[4]]/2,"Localized,\nCancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.breast[3:4]))+summary.breast[[5]]/2,"Regional,\nCancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.breast[3:5]))+summary.breast[[6]]/2,"Distant, Cancer",cex=0.35)
-text(xpos[2],sum(unlist(summary.breast[3:6]))+summary.breast[[7]]/2,"All Other\nCauses",cex=0.66)
-abline(h=0,col="grey")
+par (mfrow=c(1,3),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
 #cervical cancer
-xpos <- barplot(c(summary.cervix[["stage"]],NA),plot=FALSE)
-barplot(c(summary.cervix[["stage"]],NA),las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col="black")
-barplot(matrix(c(rep(NA,4),unlist(summary.cervix[3:6])),ncol=2,nrow=4),add=TRUE,axes=FALSE,col=c(color[-1],"darkgrey"),border=c(color[-1],"darkgrey"))
+ymin <- min(0,min(summary.cervix[[2]],sum(unlist(summary.cervix[3:6]))))
+ymax <- max(max(summary.cervix[["gain in life expectancy"]],
+                summary.cervix[[2]],sum(unlist(summary.cervix[3:6]))))
+xpos <- barplot(c(summary.cervix[["gain in life expectancy"]],
+                  summary.cervix[["stage"]],NA),plot=FALSE)
+barplot(c(summary.cervix[["gain in life expectancy"]],
+          summary.cervix[["stage"]],NA),
+        las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col=c("black","darkgrey"))
+barplot(matrix(c(rep(NA,8),unlist(summary.cervix[3:6])),ncol=3,nrow=4),add=TRUE,axes=FALSE,col=c(color[-1],"darkgrey"),border=c(color[-1],"darkgrey"))
 axis(2,at=seq(floor(ymin),ceiling(ymax)),las=1)
-axis(1,at=xpos,paste(c("Stage","Mortality")),tick=FALSE)
-text(xpos[2],summary.cervix[[3]]/2,"Localized,\nCancer",cex=0.66)
-text(xpos[2],summary.cervix[[3]]+summary.cervix[[4]]/2,"Regional,\nCancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.cervix[3:4]))+summary.cervix[[5]]/2,"Distant, Cancer",cex=0.33)
-text(xpos[2],sum(unlist(summary.cervix[3:5]))+summary.cervix[[6]]/2,"All Other\nCauses",cex=0.66)
+axis(1,at=xpos,paste(c("Overall","Stage","Mortality")),tick=FALSE)
+text(xpos[3],summary.cervix[[3]]/2,"Localized,\nCancer",cex=0.66)
+text(xpos[3],summary.cervix[[3]]+summary.cervix[[4]]/2,"Regional,\nCancer",cex=0.66)
+text(xpos[3],sum(unlist(summary.cervix[3:4]))+summary.cervix[[5]]/2,"Distant, Cancer",cex=0.33,col="white")
+text(xpos[3],sum(unlist(summary.cervix[3:5]))+summary.cervix[[6]]/2,"All Other\nCauses",cex=0.66)
 abline(h=0,col="grey")
 
 #crc cancer
-xpos <- barplot(c(summary.crc[["stage"]],NA),plot=FALSE)
-barplot(c(summary.crc[["stage"]],NA),las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col="black")
-barplot(matrix(c(rep(NA,5),unlist(summary.crc[3:7])),ncol=2,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"))
+ymin <- min(0,min(summary.crc[[2]],sum(unlist(summary.crc[3:7]))))
+ymax <- max(summary.crc[["gain in life expectancy"]],summary.crc[[2]],sum(unlist(summary.crc[3:7])))
+xpos <- barplot(c(summary.crc[["gain in life expectancy"]],summary.crc[["stage"]],NA),plot=FALSE)
+barplot(c(summary.crc[["gain in life expectancy"]],summary.crc[["stage"]],NA),las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col=c("black","darkgrey"))
+barplot(matrix(c(rep(NA,10),unlist(summary.crc[3:7])),ncol=3,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"))
 axis(2,at=seq(floor(ymin),ceiling(ymax)),las=1)
-axis(1,at=xpos,paste(c("Stage","Mortality")),tick=FALSE)
-text(xpos[2],summary.crc[[3]]/2,"In Situ, Cancer",cex=0.33)
-text(xpos[2],summary.crc[[3]]+summary.crc[[4]]/2,"Localized,\nCancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.crc[3:4]))+summary.crc[[5]]/2,"Regional,\nCancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.crc[3:5]))+summary.crc[[6]]/2,"Distant, Cancer",cex=0.66)
-text(xpos[2],sum(unlist(summary.crc[3:6]))+summary.crc[[7]]/2,"All Other\nCauses",cex=0.66)
+axis(1,at=xpos,paste(c("Overall","Stage","Mortality")),tick=FALSE)
+text(xpos[3],summary.crc[[3]]/2,"In Situ, Cancer",cex=0.25)
+text(xpos[3],summary.crc[[3]]+summary.crc[[4]]/2,"Localized,\nCancer",cex=0.66)
+text(xpos[3],sum(unlist(summary.crc[3:4]))+summary.crc[[5]]/2,"Regional,\nCancer",cex=0.66)
+text(xpos[3],sum(unlist(summary.crc[3:5]))+summary.crc[[6]]/2,"Distant, Cancer",cex=0.55,col="white")
+text(xpos[3],sum(unlist(summary.crc[3:6]))+summary.crc[[7]]/2,"All Other\nCauses",cex=0.66)
 abline(h=0,col="grey")
 
 #prostate cancer
-xpos <- barplot(c(summary.prostate[["stage"]],NA),plot=FALSE)
-barplot(c(summary.prostate[["stage"]],NA),las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col="black")
-barplot(matrix(c(rep(NA,4),unlist(summary.prostate[3:6])),ncol=2,nrow=4),add=TRUE,axes=FALSE,col=c(color[-1],"darkgrey"),border=c(color[-1],"darkgrey"))
+ymin <- min(0,min(summary.prostate[[2]],sum(unlist(summary.prostate[3:6]))))
+ymax <- max(max(summary.prostate[["gain in life expectancy"]],
+                summary.prostate[[2]],sum(unlist(summary.prostate[3:6]))))
+xpos <- barplot(c(summary.prostate[["gain in life expectancy"]],
+                  summary.prostate[["stage"]],NA),plot=FALSE)
+barplot(c(summary.prostate[["gain in life expectancy"]],
+          summary.prostate[["stage"]],NA),
+        las=1,axes=FALSE,ylim=c(ymin,ymax),border=FALSE,col=c("black","darkgrey"))
+barplot(matrix(c(rep(NA,8),unlist(summary.prostate[3:6])),ncol=3,nrow=4),add=TRUE,axes=FALSE,col=c(color[-1],"darkgrey"),border=c(color[-1],"darkgrey"))
 axis(2,at=seq(floor(ymin),ceiling(ymax)),las=1)
-axis(1,at=xpos,paste(c("Stage","Mortality")),tick=FALSE)
-#text(xpos[2],summary.prostate[[3]]/2,"In Situ,\nCancer",cex=0.66)
-text(xpos[2],summary.prostate[[3]]+summary.prostate[[4]]/2,"Localized-Regional,\n Cancer",cex=0.4)
-#text(xpos[2],sum(unlist(summary.prostate[3:4]))+summary.prostate[[5]]/2,"Distant,\nCancer",cex=0.4)
-text(xpos[2],sum(unlist(summary.prostate[3:5]))+summary.prostate[[6]]/2,"All Other\nCauses",cex=0.66)
+axis(1,at=xpos,paste(c("Overall","Stage","Mortality")),tick=FALSE)
+#text(xpos[3],summary.prostate[[3]]/2,"In Situ,\nCancer",cex=0.66)
+text(xpos[3],summary.prostate[[3]]+summary.prostate[[4]]/2,"Localized-\nRegional,\n Cancer",cex=0.66)
+#text(xpos[3],sum(unlist(summary.prostate[3:4]))+summary.prostate[[5]]/2,"Distant,\nCancer",cex=0.4,col="white")
+text(xpos[3],sum(unlist(summary.prostate[3:5]))+summary.prostate[[6]]/2,"All Other\nCauses",cex=0.66)
 abline(h=0,col="grey")
 
-mtext("Breast Cancer",side=3,line=0,outer=TRUE,at=1/8,cex=1)
-mtext("Cervical Cancer",side=3,line=0,outer=TRUE,at=3/8,cex=1)
-mtext("Colorectal Cancer",side=3,line=0,outer=TRUE,at=5/8,cex=1)
-mtext("Prostate Cancer",side=3,line=0,outer=TRUE,at=7/8,cex=1)
+mtext("Cervical Cancer",side=3,line=0,outer=TRUE,at=1/6,cex=1)
+mtext("Colorectal Cancer",side=3,line=0,outer=TRUE,at=3/6,cex=1)
+mtext("Prostate Cancer",side=3,line=0,outer=TRUE,at=5/6,cex=1)
 mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=1)
 dev.off()
 
