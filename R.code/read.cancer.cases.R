@@ -461,13 +461,17 @@ age.dx <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,25,27)))
 year.dx <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,39,42)))
 sex <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,236,236)))
+ajcc3 <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,237,238)))
 eod13 <- apply(seer.malegen, 1, function(x) substr(x,73,85))
 eod2 <- apply(seer.malegen, 1, function(x) substr(x,86,87))
+eod4 <- apply(seer.malegen, 1, function(x) substr(x,88,91))
+coding.system <- apply(seer.malegen, 1, function(x) substr(x,92,92))
 vital.status <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,301,304)))
 cod <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,255,259)))
 data.malegen <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
+                                stage=stage,ajcc3=ajcc3,eod13=eod13,eod2=eod2,eod4=eod4,coding.system=coding.system,
+                                 vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.prostate <- subset(data.malegen, site.recode %in% c(28010))
 drop <- which(data.prostate$surv.months==9999 | data.prostate$stage==9 | data.prostate$age.dx < 40 | data.prostate$age.dx==999)
