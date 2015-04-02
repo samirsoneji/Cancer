@@ -463,35 +463,45 @@ sex <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,24,24)))
 stage <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,236,236)))
 ajcc3 <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,237,238)))
 eod13 <- apply(seer.malegen, 1, function(x) substr(x,73,85))
+eod13.distant <- apply(seer.malegen, 1, function(x) substr(x,85,85))
 eod2 <- apply(seer.malegen, 1, function(x) substr(x,86,87))
 eod4 <- apply(seer.malegen, 1, function(x) substr(x,88,91))
+eod4.extension <- apply(seer.malegen, 1, function(x) substr(x,90,90))
 coding.system <- apply(seer.malegen, 1, function(x) substr(x,92,92))
 vital.status <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,301,304)))
 cod <- as.numeric(apply(seer.malegen, 1, function(x) substr(x,255,259)))
 data.malegen <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
-                                stage=stage,ajcc3=ajcc3,eod13=eod13,eod2=eod2,eod4=eod4,coding.system=coding.system,
+                                stage=stage,ajcc3=ajcc3,eod13=eod13,eod13.distant=eod13.distant,eod2=eod2,eod4=eod4,
+                                 eod4.extension=eod4.extension,
+                                 coding.system=coding.system,
                                  vital.status=vital.status,surv.months=surv.months,cod=cod))
 
 data.prostate <- subset(data.malegen, site.recode %in% c(28010))
-drop <- which(data.prostate$surv.months==9999 | data.prostate$stage==9 | data.prostate$age.dx < 40 | data.prostate$age.dx==999)
+drop <- which(data.prostate$surv.months==9999 | data.prostate$stage==9 |
+              data.prostate$age.dx %in% as.character(0:39) | data.prostate$age.dx==999)
 prostate <- data.prostate[-drop,]
-prostate$sex[prostate$sex==1] <- "male"
-prostate$sex[prostate$sex==2] <- "female"
-prostate$dead[prostate$vital.status==1] <- 0
-prostate$dead[prostate$vital.status==4] <- 1
-prostate$dead[prostate$surv.months >= 120] <- 0
-prostate$surv.months <- ifelse(prostate$surv.months<=120,prostate$surv.months,120)
-prostate$age.dx.cat <- 5*floor(prostate$age.dx/5)
-prostate$age.dx.cat[prostate$age.dx.cat>=100] <- 100
-prostate$stage[prostate$stage==0] <- "0. in situ"
-prostate$stage[prostate$stage==1] <- "1. localized"
-prostate$stage[prostate$stage==2] <- "2. regional"
-prostate$stage[prostate$stage==4] <- "4. distant"
-prostate$stage[prostate$stage==8] <- "8. localized.regional"
-prostate$cod[prostate$cod!=28010] <- "other"
-prostate$cod[prostate$cod==28010] <- "prostate"
+levels(prostate$sex) <- "male"
+prostate$dead[prostate$vital.status=="1"] <- 0
+prostate$dead[prostate$vital.status=="4"] <- 1
+prostate$dead[as.numeric(as.character(prostate$surv.months)) >= 120] <- 0
+prostate$surv.months <- ifelse(as.numeric(as.character(prostate$surv.months))<=120,
+                               as.numeric(as.character(prostate$surv.months)),120)
+prostate$age.dx.cat <- 5*floor(as.numeric(as.character(prostate$age.dx))/5)
+prostate$age.dx.cat[as.numeric(as.character(prostate$age.dx.cat))>=100] <- 100
+levels(prostate$stage) <- c("0. in situ","1. localized","2. regional","4. distant","8. localized.regional",NA)
+levels(prostate$cod) <- ifelse(rownames(table(prostate$cod))=="28010","prostate","other")
+prostate$stage <- as.character(prostate$stage)
+prostate$stage[which(prostate$year.dx %in% 1973:1977 & prostate$coding.system %in% c(0,1))] <- "8. localized.regional"
+prostate$stage[which(prostate$year.dx %in% 1973:1977 & prostate$coding.system %in% c(0,1) & prostate$eod2 %in% c("&1","&2","&3","&6","&7","&8"))] <- "4. distant"
+prostate$stage[which(prostate$year.dx %in% 1973:1982 & prostate$coding.system %in% c(2))] <- "8. localized.regional"
+prostate$stage[which(prostate$year.dx %in% 1973:1982 & prostate$coding.system %in% c(2) & prostate$eod13.distant %in% c(as.character(1:9),"&"))] <- "4. distant"
 number.prostate <- nrow(prostate)
+prostate$stage[which(prostate$year.dx %in% 1983:1987 & prostate$coding.system %in% c(3))] <- "8. localized.regional"
+prostate$stage[which(prostate$year.dx %in% 1983:1987 & prostate$coding.system %in% c(3) & prostate$eod4.extension %in% as.character(7:8))] <- "4. distant"
+prostate$stage[which(prostate$year.dx %in% 1988:2003)] <- "8. localized.regional"
+prostate$stage[which(prostate$year.dx %in% 1988:2003 & prostate$ajcc3 %in% c(0))] <- "0. in situ"
+prostate$stage[which(prostate$year.dx %in% 1988:2003 & prostate$ajcc3 %in% c(40,41,42,49))] <- "4. distant"
 
 dead <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage), sum)
 dead.cause <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage, prostate$cod), sum)
