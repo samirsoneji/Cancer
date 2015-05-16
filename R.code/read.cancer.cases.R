@@ -14,7 +14,7 @@ vital.status <- as.numeric(apply(seer.breast, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.breast, 1, function(x) substr(x,301,304)))
 cod <- as.numeric(apply(seer.breast, 1, function(x) substr(x,255,259)))
 data.breast <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
-drop <- which(data.breast$surv.months==9999 | data.breast$stage==9 | data.breast$age.dx < 40 | data.breast$age.dx==999)
+drop <- which(data.breast$surv.months==9999 | data.breast$stage==9 | data.breast$stage==0 | data.breast$age.dx < 40 | data.breast$age.dx==999) #drop in situ (4/8/15)
 breast <- data.breast[-drop,]
 breast$dead[breast$vital.status==1] <- 0
 breast$dead[breast$vital.status==4] <- 1
@@ -47,7 +47,9 @@ exposure <- by(breast$surv.months/12, list(breast$age.dx.cat, breast$year.dx, br
 mx.breast <- dead/exposure
 mx.breast.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.breast <- prop.table(as.table(table(breast$year.dx, breast$stage)),1)
-save(number.breast, mx.breast, mx.breast.cause, file="~/Desktop/Cancer/data/mx.breast.Rdata")
+mx.breast.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
+stand.breast <- prop.table(table(breast$age.dx.cat[breast$year==1987]))
+save(stand.breast, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, file="~/Desktop/Cancer/data/mx.breast.Rdata")
 save(prop.breast, file="~/Desktop/Cancer/data/prop.breast.Rdata") 
 print(paste("completed breast",date()))
  
@@ -63,7 +65,7 @@ vital.status <- as.numeric(apply(seer.crc, 1, function(x) substr(x,265,265)))
 surv.months <- as.numeric(apply(seer.crc, 1, function(x) substr(x,301,304)))
 cod <- as.numeric(apply(seer.crc, 1, function(x) substr(x,255,259)))
 data.crc <- data.frame(cbind(age.dx=age.dx,year.dx=year.dx,sex=sex,stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
-drop <- which(data.crc$surv.months==9999 | data.crc$stage==9 | data.crc$age.dx < 40 | data.crc$age.dx==999)
+drop <- which(data.crc$surv.months==9999 | data.crc$stage==9 | data.crc$stage==0 | data.crc$age.dx < 40 | data.crc$age.dx==999)
 crc <- data.crc[-drop,]
 crc$sex[crc$sex==1] <- "male"
 crc$sex[crc$sex==2] <- "female"
@@ -87,7 +89,8 @@ exposure <- by(crc$surv.months/12, list(crc$age.dx.cat, crc$year.dx, crc$stage),
 mx.crc <- dead/exposure
 mx.crc.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.crc <- apply(table(crc$year.dx,crc$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(mx.crc, mx.crc.cause, file="~/Desktop/Cancer/data/mx.crc.Rdata")
+stand.crc <- prop.table(table(crc$age.dx.cat[crc$year==1987]))
+save(stand.crc, mx.crc, mx.crc.cause, file="~/Desktop/Cancer/data/mx.crc.Rdata")
 save(prop.crc, file="~/Desktop/Cancer/data/prop.crc.Rdata") 
 print(paste("completed crc",date()))
  
@@ -109,7 +112,8 @@ exposure <- by(crc.female$surv.months/12, list(crc.female$age.dx.cat, crc.female
 mx.crc.female <- dead/exposure
 mx.crc.female.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.crc.female <- apply(table(crc.female$year.dx,crc.female$stage),c(1),function(x) x/sum(x,na.rm=TRUE))
-save(number.crc, mx.crc.female, mx.crc.female.cause, file="~/Desktop/Cancer/data/mx.crc.female.Rdata")
+mx.crc.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
+save(number.crc, mx.crc.female, mx.crc.female.cause, mx.crc.overall, file="~/Desktop/Cancer/data/mx.crc.female.Rdata")
 save(prop.crc.female, file="~/Desktop/Cancer/data/prop.crc.female.Rdata") 
 print(paste("completed crc.female",date()))
 
@@ -391,7 +395,9 @@ exposure <- by(cervix$surv.months/12, list(cervix$age.dx.cat, cervix$year.dx, ce
 mx.cervix <- dead/exposure
 mx.cervix.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.cervix <- prop.table(as.table(table(cervix$year.dx, cervix$stage)),1)
-save(number.cervix, mx.cervix, mx.cervix.cause, file="~/Desktop/Cancer/data/mx.cervix.Rdata")
+mx.cervix.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
+stand.cervix <- prop.table(table(cervix$age.dx.cat[cervix$year==1987]))
+save(stand.cervix, number.cervix, mx.cervix, mx.cervix.cause, mx.cervix.overall, file="~/Desktop/Cancer/data/mx.cervix.Rdata")
 save(prop.cervix, file="~/Desktop/Cancer/data/prop.cervix.Rdata") 
 print(paste("completed cervix",date()))
  
@@ -502,6 +508,7 @@ prostate$stage[which(prostate$year.dx %in% 1983:1987 & prostate$coding.system %i
 prostate$stage[which(prostate$year.dx %in% 1988:2003)] <- "8. localized.regional"
 prostate$stage[which(prostate$year.dx %in% 1988:2003 & prostate$ajcc3 %in% c(0))] <- "0. in situ"
 prostate$stage[which(prostate$year.dx %in% 1988:2003 & prostate$ajcc3 %in% c(40,41,42,49))] <- "4. distant"
+prostate <- prostate[-which(prostate$stage=="0. in situ"),] #remove in situ prostate cancer
 
 dead <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage), sum)
 dead.cause <- by(prostate$dead, list(prostate$age.dx.cat, prostate$year.dx, prostate$stage, prostate$cod), sum)
@@ -509,8 +516,9 @@ exposure <- by(prostate$surv.months/12, list(prostate$age.dx.cat, prostate$year.
 mx.prostate <- dead/exposure
 mx.prostate.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.prostate <- prop.table(as.table(table(prostate$year.dx, prostate$stage)),1)
-prop.prostate <- prop.prostate[,c(1,3,2)]
-save(number.prostate, mx.prostate, mx.prostate.cause, file="~/Desktop/Cancer/data/mx.prostate.Rdata")
+mx.prostate.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
+stand.prostate <- prop.table(table(prostate$age.dx.cat[prostate$year==1998]))
+save(stand.prostate, number.prostate, mx.prostate, mx.prostate.cause, mx.prostate.overall, file="~/Desktop/Cancer/data/mx.prostate.Rdata")
 save(prop.prostate, file="~/Desktop/Cancer/data/prop.prostate.Rdata") 
 print(paste("completed prostate",date()))
  

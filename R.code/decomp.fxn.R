@@ -1,9 +1,8 @@
 decomp.fxn <- function(datos, year.list, mx.cause) {
-  results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=19))
+  results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=15))
   names(results) <- c("year.start","year.end","ex.overall.diff",
-                      "change.stage.insitu","change.stage.localized","change.stage.regional","change.stage.distant",
-                      "change.ex.insitu","change.ex.localized","change.ex.regional","change.ex.distant",
-                      "change.ex.insitu.cancer","change.ex.insitu.other",
+                      "change.stage.localized","change.stage.regional","change.stage.distant",
+                      "change.ex.localized","change.ex.regional","change.ex.distant",
                       "change.ex.localized.cancer","change.ex.localized.other",
                       "change.ex.regional.cancer","change.ex.regional.other",
                       "change.ex.distant.cancer","change.ex.distant.other")
@@ -12,23 +11,17 @@ decomp.fxn <- function(datos, year.list, mx.cause) {
     year2 <- year.list[y+1]
     tmp <- datos[as.character(c(year1,year2)),]
     ex.overall.diff <- diff(tmp$ex.overall)
-    change.stage <- c(diff(tmp$prop.insitu)*mean(tmp$ex.insitu),
-                      diff(tmp$prop.localized)*mean(tmp$ex.localized),
+    change.stage <- c(diff(tmp$prop.localized)*mean(tmp$ex.localized),
                       diff(tmp$prop.regional)*mean(tmp$ex.regional),
                       diff(tmp$prop.distant)*mean(tmp$ex.distant)) 
-    change.ex <- c(diff(tmp$ex.insitu)*mean(tmp$prop.insitu),
-                   diff(tmp$ex.localized)*mean(tmp$prop.localized),
+    change.ex <- c(diff(tmp$ex.localized)*mean(tmp$prop.localized),
                    diff(tmp$ex.regional)*mean(tmp$prop.regional),
                    diff(tmp$ex.distant)*mean(tmp$prop.distant))
     results[y,"year.start"] <- year1
     results[y,"year.end"] <- year2
     results[y,"ex.overall.diff"] <- ex.overall.diff
-    results[y,c("change.stage.insitu","change.stage.localized","change.stage.regional","change.stage.distant")] <- change.stage
-    results[y,c("change.ex.insitu","change.ex.localized","change.ex.regional","change.ex.distant")] <- change.ex
-    results[y,c("change.ex.insitu.cancer","change.ex.insitu.other")] <-
-      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"0. in situ"])),
-                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"0. in situ"])),
-                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.insitu)
+    results[y,c("change.stage.localized","change.stage.regional","change.stage.distant")] <- change.stage
+    results[y,c("change.ex.localized","change.ex.regional","change.ex.distant")] <- change.ex
     results[y,c("change.ex.localized.cancer","change.ex.localized.other")] <-
       decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"1. localized"])),
                    nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"1. localized"])),
@@ -86,42 +79,79 @@ decomp.cervix.fxn <- function(datos, year.list, mx.cause) {
 }
 
 
+
+## decomp.prostate.fxn <- function(datos, year.list, mx.cause) {
+##   results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=11))
+##   names(results) <- c("year.start","year.end","ex.overall.diff",
+##                       "change.stage.localized.regional","change.stage.distant",
+##                       "change.ex.localized.regional","change.ex.distant",
+##                       "change.ex.localized.regional.cancer","change.ex.localized.regional.other",
+##                       "change.ex.distant.cancer","change.ex.distant.other")
+##   for (y in 1:(length(year.list)-1)) {
+##     year1 <- year.list[y]
+##     year2 <- year.list[y+1]
+##     tmp <- datos[as.character(c(year1,year2)),]
+##     ex.overall.diff <- diff(tmp$ex.overall)
+##     change.stage <- c(diff(tmp$prop.localized.regional)*mean(tmp$ex.localized.regional), diff(tmp$prop.distant)*mean(tmp$ex.distant)) 
+##     change.ex <- c(diff(tmp$ex.localized.regional)*mean(tmp$prop.localized.regional), diff(tmp$ex.distant)*mean(tmp$prop.distant))
+##     results[y,"year.start"] <- year1
+##     results[y,"year.end"] <- year2
+##     results[y,"ex.overall.diff"] <- ex.overall.diff
+##     results[y,c("change.stage.localized.regional","change.stage.distant")] <- change.stage
+##     results[y,c("change.ex.localized.regional","change.ex.distant")] <- change.ex
+##     results[y,c("change.ex.localized.regional.cancer","change.ex.localized.regional.other")] <-
+##       decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"8. localized.regional"])),
+##                    nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"8. localized.regional"])),
+##                    Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.localized)
+##     results[y,c("change.ex.distant.cancer","change.ex.distant.other")] <-
+##       decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"4. distant"])),
+##                    nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"4. distant"])),
+##                    Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.distant)
+##   }
+##   return(results)
+## }
+
+
 decomp.prostate.fxn <- function(datos, year.list, mx.cause) {
-  results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=15))
+  results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=19))
   names(results) <- c("year.start","year.end","ex.overall.diff",
-                      "change.stage.insitu","change.stage.localized.regional","change.stage.distant",
-                      "change.ex.insitu","change.ex.localized.regional","change.ex.distant",
-                      "change.ex.insitu.cancer","change.ex.insitu.other",
-                      "change.ex.localized.regional.cancer","change.ex.localized.regional.other",
-                      "change.ex.distant.cancer","change.ex.distant.other")
+                      "change.stage.I","change.stage.II","change.stage.III","change.stage.IV",
+                      "change.ex.I","change.ex.II","change.ex.III","change.ex.IV",
+                      "change.ex.I.cancer","change.ex.I.other",
+                      "change.ex.II.cancer","change.ex.II.other",
+                      "change.ex.III.cancer","change.ex.III.other",
+                      "change.ex.IV.cancer","change.ex.IV.other")
   for (y in 1:(length(year.list)-1)) {
     year1 <- year.list[y]
     year2 <- year.list[y+1]
     tmp <- datos[as.character(c(year1,year2)),]
     ex.overall.diff <- diff(tmp$ex.overall)
-    change.stage <- c(diff(tmp$prop.insitu)*mean(tmp$ex.insitu), diff(tmp$prop.localized.regional)*mean(tmp$ex.localized.regional), diff(tmp$prop.distant)*mean(tmp$ex.distant)) 
-    change.ex <- c(diff(tmp$ex.insitu)*mean(tmp$prop.insitu), diff(tmp$ex.localized.regional)*mean(tmp$prop.localized.regional), diff(tmp$ex.distant)*mean(tmp$prop.distant))
+    change.stage <- c(diff(tmp$prop.stageI)*mean(tmp$ex.stageI), diff(tmp$prop.stageII)*mean(tmp$ex.stageII),diff(tmp$prop.stageIII)*mean(tmp$ex.stageIII),diff(tmp$prop.stageIV)*mean(tmp$ex.stageIV))
+    change.ex <- c(diff(tmp$ex.stageI)*mean(tmp$prop.stageI), diff(tmp$ex.stageII)*mean(tmp$prop.stageII), diff(tmp$ex.stageIII)*mean(tmp$prop.stageIII), diff(tmp$ex.stageIV)*mean(tmp$prop.stageIV))
     results[y,"year.start"] <- year1
     results[y,"year.end"] <- year2
     results[y,"ex.overall.diff"] <- ex.overall.diff
-    results[y,c("change.stage.insitu","change.stage.localized.regional","change.stage.distant")] <- change.stage
-    results[y,c("change.ex.insitu","change.ex.localized.regional","change.ex.distant")] <- change.ex
-   results[y,c("change.ex.insitu.cancer","change.ex.insitu.other")] <-
-      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"0. in situ"])),
-                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"0. in situ"])),
-                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.insitu)
-    results[y,c("change.ex.localized.regional.cancer","change.ex.localized.regional.other")] <-
-      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"8. localized.regional"])),
-                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"8. localized.regional"])),
-                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.localized)
-    results[y,c("change.ex.distant.cancer","change.ex.distant.other")] <-
-      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"4. distant"])),
-                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"4. distant"])),
-                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.distant)
+    results[y,c("change.stage.I","change.stage.II","change.stage.III","change.stage.IV")] <- change.stage
+    results[y,c("change.ex.I","change.ex.II","change.ex.III","change.ex.IV")] <- change.ex
+    results[y,c("change.ex.I.cancer","change.ex.I.other")] <-
+      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"I"])),
+                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"I"])),
+                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.stageI)
+    results[y,c("change.ex.II.cancer","change.ex.II.other")] <-
+      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"II"])),
+                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"II"])),
+                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.stageII)
+    results[y,c("change.ex.III.cancer","change.ex.III.other")] <-
+        decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"III"])),
+                     nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"III"])),
+                     Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.stageIII)
+    results[y,c("change.ex.IV.cancer","change.ex.IV.other")] <-
+      decomp.ex.cd(nMx1=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year1),"IV"])),
+                   nMx2=rbind(matrix(0,nrow=9,ncol=2),t(mx.cause[,,as.character(year2),"IV"])),
+                   Rx=1)$Decomposition[1:2,2] * mean(tmp$prop.stageIV)
   }
   return(results)
 }
-
 
 decomp.lymphoma.fxn <- function(datos, year.list, mx.cause) {
   results <- data.frame(matrix(NA, nrow=length(year.list)-1, ncol=19))

@@ -1,0 +1,83 @@
+[System]
+Output filename=C:\Users\Honor Passow\Dropbox\Cancer\Value\data\prostate.grade.txt
+Matrix filename=Rate Session-1 Matrix-2
+Database name=Incidence - SEER 9 Regs Research Data, Nov 2013 Sub (1973-2011) <Katrina/Rita Population Adjustment> - Linked To County Attributes - Total U.S., 1969-2012 Counties
+
+[Session Options]
+Type=Rate
+RatesAsCasesPer=100000
+
+[Export Options]
+GZipped=false
+Variable format=numeric
+File format=DOS/Windows
+Field delimiter=semi-colon
+Missing character=space
+Fields with delimiter in quotes=false
+Remove thousands separators=true
+Flags included=true
+Variable names included=false
+Column Variables as Stats=false
+
+[Variables]
+Var1Name=Grade
+Var1Dimension=Row
+Var2Name=Year of diagnosis
+Var2Dimension=Column
+Var3Name=Age-Adjusted Rate
+Var4Name=Count
+Var5Name=Population
+
+[Format=Grade]
+0=Well differentiated; Grade I
+1=Moderately differentiated; Grade II
+2=Poorly differentiated; Grade III
+3=Undifferentiated; anaplastic; Grade IV
+4=T-cell
+5=B-cell; pre-B; B-precursor
+6=Null cell; non T-non B
+7=NK cell; natural killer cell (1995+)
+8=Unknown
+
+[Format=Year of diagnosis]
+0=1973-2011
+1=1973
+2=1974
+3=1975
+4=1976
+5=1977
+6=1978
+7=1979
+8=1980
+9=1981
+10=1982
+11=1983
+12=1984
+13=1985
+14=1986
+15=1987
+16=1988
+17=1989
+18=1990
+19=1991
+20=1992
+21=1993
+22=1994
+23=1995
+24=1996
+25=1997
+26=1998
+27=1999
+28=2000
+29=2001
+30=2002
+31=2003
+32=2004
+33=2005
+34=2006
+35=2007
+36=2008
+37=2009
+38=2010
+39=2011
+

@@ -28,12 +28,12 @@ wrap_sentence <- function(string, width) {
 year.list <- as.character(c(1981,2001))
 stage <- t(prop.breast[year.list,])
 mx <- mx.breast["75",as.character(c(2001)),]
-ex.stage <- as.matrix(create.datos.fxn(mx.breast,prop.breast,as.numeric(year.list))[c("ex.insitu","ex.localized","ex.regional","ex.distant")])
+ex.stage <- as.matrix(create.datos.fxn(mx.breast,prop.breast,as.numeric(year.list))[c("ex.localized","ex.regional","ex.distant")])
 ex.overall <- c(stage[,1] %*% ex.stage[2,]*0.9,stage[,2] %*% ex.stage[2,]) #*0.9 to create more vertical distance between two bars in panel C
 
 
-color <- brewer.pal(6,"YlGnBu")[-c(1,2)]
-stage.list <- c("In Situ","Localized","Regional","Distant")
+color <- brewer.pal(7,"YlGnBu")[c(3,5,7)]
+stage.list <- c("Localized","Regional","Distant")
 width <- 0.2
 offset <- 0.025
 grey.color <- brewer.pal(4,"Greys")[3]
@@ -46,27 +46,25 @@ stage[,2] <- stage[,1]
 barplot(100*stage,col=color,border=FALSE,las=1,xaxt="n",yaxt="n")
 xpos <- barplot(100*stage,plot=FALSE)
 axis(1,at=xpos,paste(c("Time 1","Time 2")),tick=FALSE)
-for (i in 1:2) {
-    for (j in c(1,4))
-        text(xpos[i],100*apply(stage,2,function(x) c(x[1]/2,cumsum(x)[-length(cumsum(x))]+(cumsum(x)[-1]-cumsum(x)[-length(cumsum(x))])/2))[j,i],
-             paste(stage.list[j],": ",round(100*stage[j,i]),"%",sep=""),cex=0.8)
-    for (j in c(2,3))
-        text(xpos[i],100*apply(stage,2,function(x) c(x[1]/2,cumsum(x)[-length(cumsum(x))]+(cumsum(x)[-1]-cumsum(x)[-length(cumsum(x))])/2))[j,i],
-             paste(stage.list[j],":\n ",round(100*stage[j,i]),"%",sep=""),cex=0.8)
-}
+#for (i in 1:2) {
+#    for (j in c(1,3))
+#        text(xpos[i],100*apply(stage,2,function(x) c(x[1]/2,cumsum(x)[-length(cumsum(x))]+(cumsum(x)[-1]-cumsum(x)[-length(cumsum(x))])/2))[j,i],
+#             paste(stage.list[j],": ",round(100*stage[j,i]),"%",sep=""),cex=0.8)
+#    for (j in c(2,3))
+#        text(xpos[i],100*apply(stage,2,function(x) c(x[1]/2,cumsum(x)[-length(cumsum(x))]+(cumsum(x)[-1]-cumsum(x)[-length(cumsum(x))])/2))[j,i],
+#             paste(stage.list[j],":\n ",round(100*stage[j,i]),"%",sep=""),cex=0.8)
+#}
 
 #mx <- mx.breast["75",as.character(c(1981,2001)),]
 mx <- mx.breast.cause[,"75",as.character(c(1981,2001)),]
 mx["other","2001",] <- mx["other","1981",]
-mx["breast","2001",3:4] <- 0.5*mx["breast","2001",3:4]
+mx["breast","2001",3] <- 0.5*mx["breast","2001",3]
 mx["breast",,3] <- 0.85*mx["breast",,3]
-mx["breast",,4] <- 0.1+mx["breast",,4]
 mx["other",,2] <- 0.09+mx["other",,2]
 mx["other",,3] <- 0.01+mx["other",,3]
-mx["other",,4] <- 0.01+mx["other",,4]
 matplot(log(mx[,,1]),yaxt="n",xaxt="n",bty="l",pch=NA,ylim=c(min(log(mx)),max(log(mx))),xlim=c(0.85,2.15),cex=2,col=color[1],ylab=NA,axes=FALSE)
 axis(1,at=1:2,labels=c("Time 1","Time 2"),tick=TRUE)
-for (i in 1:4) {
+for (i in 1:3) {
     matpoints(log(t(mx[,,i])),col=color[i],pch=19)
     matlines(log(t(mx[,,i])),col=color[i],lty=1:2,lwd=2)
 }
@@ -75,8 +73,8 @@ text(rep(1.5,8),log(c(t(apply(mx,c(1,3),mean))))[c(1,2,3)],pos=3,col=color[c(1,2
 text(rep(1.5,8),log(c(t(apply(mx,c(1,3),mean))))[c(5,6,7,8)],pos=3,col=color[c(1,2,3,4)],paste(c("In Situ, Other","Localized, Other","Regional, Other","Distant, Other")))
 barplot(c(t(ex.stage)),space=c(0.1,0.1,0.1,0.1,1,0.1,0.1,0.1),col=color,border=FALSE,las=1,xaxt="n",yaxt="n")
 xpos <- barplot(c(t(ex.stage)),space=c(0.1,0.1,0.1,0.1,1,0.1,0.1,0.1),plot=FALSE)
-text(xpos,ex.stage[2,4]/2,paste(stage.list),srt=90)
-axis(1,at=c(mean(xpos[1:4]),mean(xpos[5:8])),paste(c("Time 1","Time 2")),tick=FALSE)
+text(xpos,ex.stage[2,3]/2,paste(stage.list),srt=90)
+axis(1,at=c(mean(xpos[1:3]),mean(xpos[5:8])),paste(c("Time 1","Time 2")),tick=FALSE)
 
 barplot(ex.overall,border=FALSE,las=1,xaxt="n",yaxt="n",ylim=c(0,max(ex.overall)+5),col=1)
 xpos <- barplot(ex.overall,plot=FALSE)
@@ -91,7 +89,7 @@ mtext("C. Stage-Specific Life Expectancy",side=3,line=0,outer=TRUE,at=5/8,cex=1)
 mtext("D. Overall Life Expectancy",side=3,line=0,outer=TRUE,at=7/8,cex=1)
 dev.off()
 
-
+#####################
 
 stage <- t(prop.breast[year.list,])
 pdf("~/Desktop/Cancer/figures/example_decomp1b.pdf", height=5.5, width=11, paper="special")
