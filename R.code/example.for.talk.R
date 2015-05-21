@@ -41,7 +41,7 @@ offset <- 0.025
 grey.color <- brewer.pal(4,"Greys")[3]
 
 
-pdf("~/Dropbox/talks/figures/example_decomp1a1.pdf", height=5.5, width=11, paper="special")
+pdf("~/Dropbox/talks/figures/example_decomp1.pdf", height=5.5, width=11, paper="special")
 par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
 stage[,2] <- stage[,1]
@@ -57,7 +57,7 @@ mtext("A. Size Distribution",side=3,line=0,outer=TRUE,at=1/8,cex=1)
 dev.off()
 
 
-pdf("~/Dropbox/talks/figures/example_decomp1a2.pdf", height=5.5, width=11, paper="special")
+pdf("~/Dropbox/talks/figures/example_decomp2.pdf", height=5.5, width=11, paper="special")
 par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
 stage[,2] <- stage[,1]
@@ -90,7 +90,7 @@ mtext("B. Size-Specific Mortality Rates",side=3,line=0,outer=TRUE,at=3/8,cex=1)
 dev.off()
 
 
-pdf("~/Dropbox/talks/figures/example_decomp1a3.pdf", height=5.5, width=11, paper="special")
+pdf("~/Dropbox/talks/figures/example_decomp3.pdf", height=5.5, width=11, paper="special")
 par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
 stage[,2] <- stage[,1]
@@ -129,7 +129,7 @@ mtext("C. Size-Specific Life Expectancy",side=3,line=0,outer=TRUE,at=5/8,cex=1)
 dev.off()
 
 
-pdf("~/Dropbox/talks/figures/example_decomp1a4.pdf", height=5.5, width=11, paper="special")
+pdf("~/Dropbox/talks/figures/example_decomp4.pdf", height=5.5, width=11, paper="special")
 par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
 stage[,2] <- stage[,1]

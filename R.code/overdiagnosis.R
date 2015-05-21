@@ -44,18 +44,16 @@ graph.decomp.results.fxn <- function(i,breast.results.sum)
    year <- 1975:2002
    xpos <-  barplot(c(summary.breast[["ex.overall.diff"]],NA,NA),plot=FALSE,width=c(1,1,1))
    barplot(c(summary.breast[["ex.overall.diff"]],NA,NA),las=1,axes=FALSE,ylim=c(-6,12),border=FALSE,col=c("black","darkgrey"),width=c(1,1,1))
-   rect(xpos[2]-width/2,0,xpos[2]+width/2,summary.breast[[2]],col=color2[1],border=NA)
-   rect(xpos[2]-width/2,summary.breast[[2]],xpos[2]+width/2,summary.breast[[2]]+summary.breast[[3]],col=color2[2],border=NA)
-   rect(xpos[2]-width/2,0,xpos[2]+width/2,summary.breast[[4]],col=color2[3],border=NA)
-   rect(xpos[2]-width/2,summary.breast[[4]],xpos[2]+width/2,summary.breast[[4]]+summary.breast[[5]],col=color2[4],border=NA)
-     barplot(c(NA,sum(unlist(summary.breast[c(2,3,4,5)])),NA),add=TRUE,axes=FALSE,
-             col=alpha("grey",0.5),border=alpha("grey",0.5),width=c(1,1,1))
+   rect(xpos[2]-width/2,0,xpos[2]+width/2,summary.breast[[2]],col=color[1],border=NA)
+   rect(xpos[2]-width/2,summary.breast[[2]],xpos[2]+width/2,summary.breast[[2]]+summary.breast[[3]],col=color[2],border=NA)
+   rect(xpos[2]-width/2,0,xpos[2]+width/2,summary.breast[[4]],col=color[3],border=NA)
+   rect(xpos[2]-width/2,summary.breast[[4]],xpos[2]+width/2,summary.breast[[4]]+summary.breast[[5]],col=color[4],border=NA)
         
    barplot(matrix(c(rep(NA,10),unlist(summary.breast[c(6,7,8,9,10)])),ncol=3,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"),width=c(1,1,1))
    axis(2,at=seq(-6,12,2),las=1)
    axis(1,at=xpos,paste(c("Overall","Size","Mortality")),tick=FALSE)
    abline(h=0,col="grey")
-   text(xpos[2],summary.breast[[2]]/1.25,"<1cm",cex=0.9)
+   text(xpos[2],summary.breast[[2]]/2,"<1cm",cex=0.9)
    text(xpos[2],summary.breast[[2]]+summary.breast[[3]]/2,"1-2cm",cex=0.9)
    text(xpos[2],summary.breast[[4]]/2,"2-5cm",cex=0.9)
    text(xpos[2],summary.breast[[4]]+summary.breast[[5]]/2,"5+cm",cex=0.9,col="white")
@@ -64,10 +62,58 @@ graph.decomp.results.fxn <- function(i,breast.results.sum)
    text(xpos[3],sum(unlist(summary.breast[6:7]))+summary.breast[[8]]/2,"2-5cm, Cancer",cex=1)
    text(xpos[3],sum(unlist(summary.breast[6:8]))+summary.breast[[9]]/2,"5+cm, Cancer",cex=0.75,col="white")
 text(xpos[3],sum(unlist(summary.breast[6:9]))+summary.breast[[10]]/2,"All Other Causes",cex=1)
-mtext(paste(name,"% Overdiagnosis",sep=""),side=3,line=0,outer=TRUE,at=1/2,cex=2)
 mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=2)
 dev.off()
   }
+
+graph.decomp.results.fxn2 <- function(i,breast.results.sum)
+  {name <- 100*as.numeric(names(breast.results.sum)[[i]])
+   summary.breast <- breast.results.sum[[i]]
+   width <- 0.3
+    pdf(paste("~/Desktop/Cancer/figures/decomp_breast_overdiagnosis2_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
+   par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+   year <- 1975:2002
+   xpos <-  barplot(c(summary.breast[["ex.overall.diff"]],NA,NA),plot=FALSE,width=c(1,1,1))
+   barplot(c(summary.breast[["ex.overall.diff"]],NA,NA),las=1,axes=FALSE,ylim=c(0,12),border=FALSE,col=c("black","darkgrey"),width=c(1,1,1))
+   barplot(c(NA,sum(unlist(summary.breast[c(2,3,4,5)])),NA),add=TRUE,axes=FALSE,
+             col=alpha("darkgrey",1),border=alpha("darkgrey",1),width=c(1,1,1))
+        
+   barplot(matrix(c(rep(NA,10),unlist(summary.breast[c(6,7,8,9,10)])),ncol=3,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"),width=c(1,1,1))
+   axis(2,at=seq(-6,12,2),las=1)
+   axis(1,at=xpos,paste(c("Overall","Size","Mortality")),tick=FALSE)
+   abline(h=0,col="grey")
+   text(xpos[3],sum(unlist(summary.breast[6]))/2,"<1cm, Cancer",cex=0.9)
+   text(xpos[3],sum(unlist(summary.breast[6]))+summary.breast[[7]]/2,"1-2cm, Cancer",cex=1)
+   text(xpos[3],sum(unlist(summary.breast[6:7]))+summary.breast[[8]]/2,"2-5cm, Cancer",cex=1)
+   text(xpos[3],sum(unlist(summary.breast[6:8]))+summary.breast[[9]]/2,"5+cm, Cancer",cex=0.75,col="white")
+text(xpos[3],sum(unlist(summary.breast[6:9]))+summary.breast[[10]]/2,"All Other Causes",cex=1)
+mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=2)
+dev.off()
+}
+
+overdiagnosis.fxn <- function(breast.results.sum,name) {
+    total.le <- unlist(lapply(breast.results.sum,function(x) x[[1]]))
+    change.size <- unlist(lapply(breast.results.sum,function(x) sum(unlist(x[2:5]))))
+    change.cancer.mort <- unlist(lapply(breast.results.sum,function(x) sum(unlist(x[6:9]))))
+    change.other.mort <- unlist(lapply(breast.results.sum,function(x) x[[10]]))
+    
+    pdf(paste("~/Desktop/Cancer/figures/sensitity_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
+    par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+    plot(scalar.list,total.le,bty="l",ylab="",xlab="",type="l",lwd=5,las=1,ylim=c(0,max(unlist(total.le))),axes=FALSE)
+    axis(1,at=scalar.list[seq(1,21,2)],paste(100*scalar.list[seq(1,21,2)]))
+    axis(2,at=seq(0,20,1),las=1)
+    polygon(c(scalar.list,rev(scalar.list)),c(rep(0,length(scalar.list)),rev(change.size)),col=brewer.pal(3,"Reds")[3],border=brewer.pal(3,"Reds")[3])
+    polygon(c(scalar.list,rev(scalar.list)),c(change.size,rev(change.size+change.cancer.mort)),col=brewer.pal(9,"YlGnBu")[6],border=brewer.pal(9,"YlGnBu")[6])
+    polygon(c(scalar.list,rev(scalar.list)),c(change.size+change.cancer.mort,rev(change.size+change.cancer.mort+change.other.mort)),col="darkgrey",border="darkgrey")
+    lines(scalar.list,total.le,lwd=5)
+    grid()
+    text(scalar.list[10],change.size[10]/2,"Size",col="white")
+    text(scalar.list[10],change.size[10]+change.cancer.mort[10]/2,"Breast Cancer Mortality",col="white")
+    text(scalar.list[10],change.size[10]+change.cancer.mort[10]+change.other.mort[10]/2,"Other Cause Mortality",col="white",srt=-4)
+    mtext("Years",side=2,line=-1,outer=TRUE,at=1/2,cex=2)
+    mtext("% Overdiagnosed",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
+    dev.off()
+}
 
 scalar.list <- seq(0,0.20,0.01)
 breast.results <- list()
@@ -80,3 +126,15 @@ color <- brewer.pal(9,"YlGnBu")[c(3,5,7,9)]
 color2 <- alpha(color,0.5)
 for (i in 1:length(scalar.list))
   graph.decomp.results.fxn(i,breast.results.sum)
+
+graph.decomp.results.fxn2(1,breast.results.sum)
+overdiagnosis.fxn(breast.results.sum,"small")
+
+
+scalar.list <- seq(0,0.20,0.01)
+breast.results2 <- list()
+for (i in 1:length(scalar.list))
+  breast.results2[[i]]<- odx.fxn(scalar.list[i],c("<1cm","1-2cm","2-5cm","5+cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
+breast.results.sum2 <- lapply(breast.results2,summary.fxn)
+names(breast.results.sum2) <- scalar.list
+overdiagnosis.fxn(breast.results.sum2,"all")
