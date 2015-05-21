@@ -1,0 +1,86 @@
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+\usepackage{subfig}
+\usepackage{amsmath,amsfonts,graphicx}
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+
+\begin{document}
+This is the decomposition you have done so far:
+
+Let $\pi_i(t)$ and $e_i(x,t)$ be the proportion of patients and the life expectancy at age $x$ time $t$, 
+respectively, for cancer patients with stage $i$ (i.e., localized, regional, distant). That is, 
+$e_i(x,t)$ would be a stage-specific life expectancy. The overall life expectancy at age $x$ time $t$ would be
+\begin{eqnarray}
+  e(x,t)=\sum_{i=0}^{3}\,\pi_i(t)\,e_i(x,t) \notag
+\end{eqnarray}
+where $\sum_{i=0}^{3}\,\pi_i=1$.
+
+Then, the change in life expectancy at age $x$ between times $t_1$ and $t_2$ can be decomposed as (Kitagawa 1955):
+{\footnotesize
+\begin{eqnarray}
+  e(x,t_2)-e(x,t_1)&=&\sum_{i=0}^{3}\left[\,\pi_i(t_2)\,e_i(x,t_2)- \pi_i(t_1)\,e_i(x,t_1)\right] \notag \\
+  &=&\sum_{i=0}^{3}\left[\pi_i(t_2)-\pi_i(t_1) \right]\left[\frac{e_i(x,t_1)+e_i(x,t_2)}{2}\right]+\sum_{i=0}^{3}\left[e_i(x,t_2)-e_i(x,t_1) \right]\left[\frac{\pi_i(t_1)+\pi_i(t_2)}{2}\right] 
+  \label{eqn:basic}
+\end{eqnarray}
+}
+
+The above equation tells us how much of change in life expectancy at age $x$ between times $t_1$ and $t_2$ is due to: 
+a) changes in cancer stage distribution due to shifts in cancer stage (first term) and b) changes in stage-specific life expectancy (mortality).
+
+Formula \eqref{eqn:basic} would produce 6 terms (one for each cancer-stage proportion and for each cancer-stage mortality), which
+are the pieces you plotted as blue and red bars. 
+
+The next step is to further decompose the second term in \eqref{eqn:basic}. The idea would be to estimate how much of the change
+in cancer-specific life expectancy, $e_i(x,t_2)-e_i(x,t_1)$, is due to cancer and non-cancer mortality improvements. 
+In this case we are looking at cause of death $j$ among patients diagnosed with cancer $i$; this can be done using traditional decomposition approaches as follows (eqn 2 in my 2008 paper):
+\begin{eqnarray}
+e_i(x,t_2)-e_i(x,t_1)=\sum_{j=1}^{k} \sum_{x=0}^{\omega}\left[L_{x,i,j}(t_2)-L_{x,i,j}(t_1) \right] \left[\frac{L_{x,i,-j}(t_2)+L_{x,i,-j}(t_1) }{2n} \right]
+\label{eqn:causedecomp}
+\end{eqnarray}
+where $i$ corresponds to cancer, $j$ is cause-specific mortality among patients diagnosed with cancer $i$, $x$ is age, and $L_x$ are person-years lived from the life table.
+
+For simplicity, I think we only want to look at two causes of death among cancer patients: deaths due to cancer $i$ and all-other causes. That is, we are interested in finding the contribution of improvements in cancer mortality $i$ among those diagnosed with this type of cancer.
+
+Thus, we don't need additional proportions in equation \eqref{eqn:basic} for the additional decomposition, we just need to estimate equation \eqref{eqn:causedecomp} and use these results in the second term of equation \eqref{eqn:basic}.
+
+
+\section{Assuming constant mortality within age intervals}
+Let $M_{x,x+n}$ represent the mortality rate between ages $x$ and $x+n$. Then 
+\begin{equation}
+l_{x+n}=e^{-\int_x^{x+n}\mu(s)\,ds}=e^{-n\,M_{x,x+n}}
+\end{equation}
+We can then estimate the person-years lived between ages $x$ and $x+n$ as
+\begin{equation}
+_nL_{x}=l_x\,\int_x^{x+n} e^{-M_{x,x+n}(s-x)} ds=l_x \left(\frac{-1}{M_{x,x+n}}(e^{-n\,M_{x,x+n}}-1) \right)
+\label{Lx}
+\end{equation}
+so, if we have 5-year age groups, then equation \eqref{Lx} would look like
+\begin{equation}
+_5L_{x}=l_x \left(\frac{-1}{M_{x,x+5}}(e^{-5\,M_{x,x+5}}-1) \right)
+\end{equation}
+For the last age group (open-ended, say 100+), we can assume there are no person-years lived beyond a certain time (say no more than 10yrs) to compute $_+L_{100}$ as
+\begin{equation}
+_+L_{100}=l_{100} \left(\frac{-1}{M_{100+}}(e^{-10\,M_{100+}}-1) \right)
+\end{equation}
+
+\end{document}
+
+
+
+
+

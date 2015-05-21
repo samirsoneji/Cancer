@@ -48,10 +48,10 @@ par (mfrow=c(1,3),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.
 year <- 1975:2002
 
 scale <- 100000
-matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l")
+matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=2)
 axis(1,at=seq(1975,2002,9))
 axis(2,las=1,at=seq(0,600,100))
-legend("bottomright",cex=0.7,ncol=2,paste(c("<1cm","1-2cm","2-5cm","5+cm")),lty=1,col=color,text.col=color,bty="n")
+text(year[length(year)-2],scale*stand.size.rate[as.character(year[length(year)]),],paste(c("<1cm","1-2cm","2-5cm","5+cm")),lty=1,col=color,pos=c(1,1,1,1))
 
 plot(year,rep(NA,length(year)),axes=FALSE,bty="l",ylim=c(0,100),xlab=NA,ylab=NA)
 polygon(c(year,rev(year)),
@@ -84,7 +84,7 @@ legend(1975,0.08,ncol=2,cex=0.6,paste(c("5+cm, Cancer","5+cm, Other","2-5cm, Can
 
 
 mtext("A. Incidence Rates (Per 100,000)",side=3,line=0,outer=TRUE,at=1/6,cex=0.8)
-mtext("B. Grade Distribution (%)",side=3,line=0,outer=TRUE,at=3/6,cex=0.8)
+mtext("B. Size Distribution (%)",side=3,line=0,outer=TRUE,at=3/6,cex=0.8)
 mtext("C. Incidence-Based Mortality Rates",side=3,line=0,outer=TRUE,at=5/6,cex=0.8)
 dev.off()
 
@@ -112,6 +112,78 @@ mtext("Gain in Life Expectancy",side=3,line=0,outer=TRUE,at=1/2,cex=0.9)
 mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=0.9)
 dev.off()
 
+###for talk###
+pdf("~/Dropbox/talks/figures/decomp_breast1a.pdf", height=8.5, width=14, paper="special")
+par (mfrow=c(1,2),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+year <- 1975:2002
+scale <- 100000
+matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5)
+axis(1,at=seq(1975,2002,9))
+axis(2,las=1,at=seq(0,600,100))
+text(year[length(year)-2],scale*stand.size.rate[as.character(year[length(year)]),],paste(c("<1cm","1-2cm","2-5cm","5+cm")),lty=1,col=color,pos=c(1,1,1,1))
+
+plot(year,rep(NA,length(year)),axes=FALSE,bty="l",ylim=c(0,100),xlab=NA,ylab=NA)
+polygon(c(year,rev(year)),
+        100*c(rep(0,length(year)),rev(prop.breast[as.character(year),1])),
+        col=color[1],border=FALSE)
+polygon(c(year,rev(year)),
+        100*c(prop.breast[as.character(year),1],rev(apply(prop.breast[as.character(year),1:2],1,sum))),
+        col=color[2],border=FALSE)
+polygon(c(year,rev(year)),
+        100*c(apply(prop.breast[as.character(year),1:2],1,sum),rev(apply(prop.breast[as.character(year),1:3],1,sum))),
+        col=color[3],border=FALSE)
+polygon(c(year,rev(year)),
+        100*c(apply(prop.breast[as.character(year),1:3],1,sum),rev(apply(prop.breast[as.character(year),1:4],1,sum))),
+        col=color[4],border=FALSE)
+axis(1,at=seq(1975,2002,9))
+axis(2,at=seq(0,100,10),las=1)
+text(1988,100*(prop.breast["1988",1]/2),"<1cm",cex=1)
+text(1988,100*(sum(prop.breast["1988",1])+ prop.breast["1988",2]/2),"1-2cm",cex=1)
+text(1988,100*(sum(prop.breast["1988",1:2])+ prop.breast["1988",3]/2),"2-5cm",cex=1)
+text(1988,100*(sum(prop.breast["1988",1:3])+ prop.breast["1988",4]/2),"5+cm",cex=1,col="white")
+dev.off()
+
+pdf("~/Dropbox/talks/figures/decomp_breast1b.pdf", height=8.5, width=14, paper="special")
+par (mfrow=c(1,2),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+year <- 1975:2002
+mx.breast.cause <- apply(mx.breast.cause, c(1,2,3,4), function(x) min(12,x))
+stand.mx <- apply(mx.breast.cause,c(1,3,4),function(x) sum(x * stand.breast, na.rm=TRUE))
+matplot(year,(stand.mx["breast",as.character(year),]),col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5,cex=1,ylim=c(min(stand.mx[,as.character(year),]),max(stand.mx[,as.character(year),])))
+axis(1,at=seq(1975,2002,9))
+axis(2,las=1,at=seq(0,0.12,0.02))
+text(year[1]+3,stand.mx["breast",as.character(year[1]+3),],paste(c("<1cm","1-2cm","2-5cm","5+cm")),col=color,pos=c(1,3,3,1))
+matplot(year,(stand.mx["other",as.character(year),]),col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5,cex=1,ylim=c(min(stand.mx[,as.character(year),]),max(stand.mx[,as.character(year),])))
+axis(1,at=seq(1975,2002,9))
+axis(2,las=1,at=seq(0,0.12,0.02))
+text(year[1]+2,stand.mx["other",as.character(year[1]+2),c(1,4)],paste(c("<1cm","5+cm")),col=color[c(1,4)],pos=c(1,3))
+text(year[22],0.0035+stand.mx["other",as.character(year[22]),c(2)],paste(c("1-2cm")),col=color[c(2)])
+text(year[10],0.0025+stand.mx["other",as.character(year[10]),c(3)],paste(c("2-5cm")),col=color[c(3)])
+mtext("Death from Breast Cancer",side=3,line=-1,outer=TRUE,at=1/4,cex=2)
+mtext("Death from Other Causes of Death",side=3,line=-1,outer=TRUE,at=3/4,cex=2)
+dev.off()
+
+pdf("~/Dropbox/talks/figures/decomp_breast2.pdf", height=8.5, width=14, paper="special")
+par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+year <- 1975:2002
+xpos <- barplot(c(summary.breast[["gain in life expectancy"]],summary.breast[["size"]],NA),plot=FALSE)
+barplot(c(summary.breast[["gain in life expectancy"]],NA,NA),las=1,axes=FALSE,ylim=c(-6,12),border=FALSE,col=c("black","darkgrey"))
+barplot(matrix(c(rep(NA,2),unlist(breast[c(4,5)]),rep(NA,2)),ncol=3,nrow=2),add=TRUE,axes=FALSE,col=color[c(1,2)],border=color[c(1,2)])
+barplot(matrix(c(rep(NA,2),unlist(breast[c(6,7)]),rep(NA,2)),ncol=3,nrow=2),add=TRUE,axes=FALSE,col=color[c(3,4)],border=color[c(3,4)])
+barplot(matrix(c(rep(NA,10),unlist(summary.breast[c(3,4,5,6,7)])),ncol=3,nrow=5),add=TRUE,axes=FALSE,col=c(color,"darkgrey"),border=c(color,"darkgrey"))
+axis(2,at=seq(-6,12,2),las=1)
+axis(1,at=xpos,paste(c("Overall","Size","Mortality")),tick=FALSE)
+abline(h=0,col="grey")
+text(xpos[2],breast[[4]]/2,"<1cm",cex=0.9)
+text(xpos[2],breast[[4]]+breast[[5]]/2,"1-2cm",cex=0.9)
+text(xpos[2],breast[[6]]/2,"2-5cm",cex=0.9)
+text(xpos[2],breast[[6]]+breast[[7]]/2,"5+cm",cex=0.9,col="white")
+text(xpos[3],sum(unlist(summary.breast[3]))/2,"<1cm, Cancer",cex=0.9)
+text(xpos[3],sum(unlist(summary.breast[3]))+summary.breast[[4]]/2,"1-2cm, Cancer",cex=1)
+text(xpos[3],sum(unlist(summary.breast[3:4]))+summary.breast[[5]]/2,"2-5cm, Cancer",cex=1)
+text(xpos[3],sum(unlist(summary.breast[3:5]))+summary.breast[[6]]/2,"5+cm, Cancer",cex=0.7,col="white")
+text(xpos[3],sum(unlist(summary.breast[3:6]))+summary.breast[[7]]/2,"All Other Causes",cex=1)
+mtext("Years",side=2,line=-1,outer=TRUE,at=1/2,cex=2)
+dev.off()
 
 ##############
 ###Prostate###
@@ -185,5 +257,7 @@ text(xpos[3],sum(unlist(summary.prostate[3:4]))+summary.prostate[[5]]/2,"All Oth
 mtext("Gain in Life Expectancy",side=3,line=0,outer=TRUE,at=1/2,cex=0.9)
 mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=0.9)
 dev.off()
+
+
 
 
