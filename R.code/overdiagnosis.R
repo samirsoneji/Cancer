@@ -91,7 +91,7 @@ mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=2)
 dev.off()
 }
 
-overdiagnosis.fxn <- function(breast.results.sum,name) {
+overdiagnosis.fxn <- function(breast.results.sum,name,overdiagnosis=FALSE) {
     total.le <- unlist(lapply(breast.results.sum,function(x) x[[1]]))
     change.size <- unlist(lapply(breast.results.sum,function(x) sum(unlist(x[2:5]))))
     change.cancer.mort <- unlist(lapply(breast.results.sum,function(x) sum(unlist(x[6:9]))))
@@ -105,11 +105,16 @@ overdiagnosis.fxn <- function(breast.results.sum,name) {
     polygon(c(scalar.list,rev(scalar.list)),c(rep(0,length(scalar.list)),rev(change.size)),col=brewer.pal(3,"Reds")[3],border=brewer.pal(3,"Reds")[3])
     polygon(c(scalar.list,rev(scalar.list)),c(change.size,rev(change.size+change.cancer.mort)),col=brewer.pal(9,"YlGnBu")[6],border=brewer.pal(9,"YlGnBu")[6])
     polygon(c(scalar.list,rev(scalar.list)),c(change.size+change.cancer.mort,rev(change.size+change.cancer.mort+change.other.mort)),col="darkgrey",border="darkgrey")
-    lines(scalar.list,total.le,lwd=5)
-    grid()
-    text(scalar.list[10],change.size[10]/2,"Size",col="white")
-    text(scalar.list[10],change.size[10]+change.cancer.mort[10]/2,"Breast Cancer Mortality",col="white")
-    text(scalar.list[10],change.size[10]+change.cancer.mort[10]+change.other.mort[10]/2,"Other Cause Mortality",col="white",srt=-4)
+    if (overdiagnosis==TRUE) {
+      polygon(c(scalar.list,rev(scalar.list)),c(change.size+change.cancer.mort+change.other.mort,rev(rep(total.le[1],length(scalar.list)))),col="black",border="black")
+      text(scalar.list[11],total.le[11]+0.35,"Overdiagnosis",col="white",srt=-4,pos=4)
+      Arrows(scalar.list[21]-0.001,total.le[18],scalar.list[21]-0.001,total.le[3],code=3,col='white')
+      text(scalar.list[21],total.le[21]+diff(total.le[c(21,1)])/2,paste(round(100*(diff(total.le[c(21,1)])/total.le[1]),0),"%",sep=""),pos=2,col="white")
+    }
+    grid(lty=2,col="lightgrey")
+    text(scalar.list[11],change.size[11]/2,"Size",col="white")
+    text(scalar.list[11],change.size[11]+change.cancer.mort[11]/2,"Breast Cancer Mortality",col="white")
+    text(scalar.list[11],change.size[11]+change.cancer.mort[11]+change.other.mort[11]/2,"Other Cause Mortality",col="white",srt=-4)
     mtext("Years",side=2,line=-1,outer=TRUE,at=1/2,cex=2)
     mtext("% Overdiagnosed",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
     dev.off()
@@ -128,7 +133,8 @@ for (i in 1:length(scalar.list))
   graph.decomp.results.fxn(i,breast.results.sum)
 
 graph.decomp.results.fxn2(1,breast.results.sum)
-overdiagnosis.fxn(breast.results.sum,"small")
+overdiagnosis.fxn(breast.results.sum,"small",overdiagnosis=FALSE)
+overdiagnosis.fxn(breast.results.sum,"small_overdiagnosis",overdiagnosis=TRUE)
 
 
 scalar.list <- seq(0,0.20,0.01)
@@ -137,4 +143,14 @@ for (i in 1:length(scalar.list))
   breast.results2[[i]]<- odx.fxn(scalar.list[i],c("<1cm","1-2cm","2-5cm","5+cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
 breast.results.sum2 <- lapply(breast.results2,summary.fxn)
 names(breast.results.sum2) <- scalar.list
-overdiagnosis.fxn(breast.results.sum2,"all")
+overdiagnosis.fxn(breast.results.sum2,"all",overdiagnosis=FALSE)
+overdiagnosis.fxn(breast.results.sum2,"all_overdiagnosis",overdiagnosis=TRUE)
+
+scalar.list <- seq(0,0.20,0.01)
+breast.results3 <- list()
+for (i in 1:length(scalar.list))
+  breast.results3[[i]]<- odx.fxn(scalar.list[i],c("<1cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
+breast.results.sum3 <- lapply(breast.results3,summary.fxn)
+names(breast.results.sum3) <- scalar.list
+overdiagnosis.fxn(breast.results.sum3,"1cm",overdiagnosis=FALSE)
+overdiagnosis.fxn(breast.results.sum3,"1cm_overdiagnosis",overdiagnosis=TRUE)

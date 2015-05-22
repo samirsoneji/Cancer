@@ -1,0 +1,37 @@
+rm(list=ls())
+library(RColorBrewer)
+library(scales)
+library(shape)
+load("~/Desktop/Cancer/data/mx.breast.size.Rdata")
+load("~/Desktop/Cancer/data/mx.prostate.grade.Rdata")
+
+source("~/Desktop/Cancer/R.code/lifetable.R")
+source("~/Desktop/Cancer/R.code/decomp.ex.cd.fxn.R")
+source("~/Desktop/Cancer/R.code/Assoc_LT.r")
+source("~/Desktop/Cancer/R.code/create.datos.sens.fxn.R")
+source("~/Desktop/Cancer/R.code/decomp.sens.fxn.R")
+source("~/Desktop/Cancer/R.code/results.sens.fxn.R")
+
+year.list <- 1975:2002
+le <- create.datos.sens.fxn(mx.breast,prop.breast,year.list)$ex.overall
+
+pdf("~/Dropbox/talks/figures/breast_le1.pdf", height=11, width=8.5, paper="special")
+par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+plot(year.list,le,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5)
+axis(1,at=year.list)
+axis(2,las=1,at=seq(0,36,2))
+grid()
+mtext("Life Expectancy at Age 40 (Years)",side=2,line=-0.5,outer=TRUE,at=1/2,cex=2)
+mtext("Year",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
+dev.off()
+
+pdf("~/Dropbox/talks/figures/breast_le2.pdf", height=11, width=8.5, paper="special")
+par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+plot(year.list,le,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5)
+axis(1,at=year.list)
+axis(2,las=1,at=seq(0,36,2))
+grid()
+Arrows(year.list[length(year.list)]+0.5,min(le),year.list[length(year.list)]+0.5,code=3,max(le),lwd=5,col=brewer.pal(3,"Reds")[3])
+mtext("Life Expectancy at Age 40 (Years)",side=2,line=-0.5,outer=TRUE,at=1/2,cex=2)
+mtext("Year",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
+dev.off()
