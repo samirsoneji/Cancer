@@ -11,6 +11,9 @@ source("~/Desktop/Cancer/R.code/create.datos.sens.fxn.R")
 source("~/Desktop/Cancer/R.code/decomp.sens.fxn.R")
 source("~/Desktop/Cancer/R.code/results.sens.fxn.R")
 
+color <- brewer.pal(9,"YlGnBu")[c(3,5,7,9)]
+color2 <- alpha(color,0.5)
+
 readjust.fxn <- function(x,categories,other.categories) {
   adjusted.categories <- sum(x[categories])
   ratio.other.categories <- x[other.categories]/sum(x[other.categories])
@@ -34,6 +37,61 @@ odx.fxn <- function(scalar, categories, prop, mx, mx.cause,cancer,year.list) {
 
 summary.fxn <- function(x)
     c(x[3],x[4],x[5],x[6],x[7],x[12],x[14],x[16],x[18],sum(x[seq(13,19,2)]))
+
+graph.rates.fxn <- function(scalar, categories, prop, mx, mx.cause, size.rate, standard){
+ other.categories <- dimnames(prop)[[2]][-which(categories %in% dimnames(prop)[[2]])]
+ size.rate[,,categories] <- (1-scalar)*size.rate[,,categories]
+ stand.size.rate <- apply(size.rate, c(1,3), function(x) x%*%standard)
+ prop[,categories] <- (1-scalar) * prop[,categories]
+ prop.adj <- matrix(NA,nrow=nrow(prop),ncol=ncol(prop))
+ for (i in 1:nrow(prop.adj))
+   prop.adj[i,] <- readjust.fxn(prop[i,],categories,other.categories)
+ dimnames(prop.adj) <- dimnames(prop)
+ mx[,,categories] <- (1-scalar)^-1 * mx[,,categories]
+ mx.cause[,,,categories] <- (1-scalar)^-1 * mx.cause[,,,categories]
+ name <- 100*scalar
+ pdf(paste("~/Desktop/Cancer/figures/breast_rates_overdiagnosis_",name,".pdf",sep=""), height=4, width=8.5, paper="special")
+ par (mfrow=c(1,3),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
+ year <- 1975:2002
+ 
+ scale <- 100000
+ matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=2)
+ axis(1,at=seq(1975,2002,9))
+ axis(2,las=1,at=seq(0,700,100))
+ text(year[length(year)-2],scale*stand.size.rate[as.character(year[length(year)]),],paste(c("<1cm","1-2cm","2-5cm","5+cm")),lty=1,col=color,pos=c(1,1,1,1))
+ 
+ plot(year,rep(NA,length(year)),axes=FALSE,bty="l",ylim=c(0,100),xlab=NA,ylab=NA)
+ polygon(c(year,rev(year)),
+         100*c(rep(0,length(year)),rev(prop.adj[as.character(year),1])),
+         col=color[1],border=FALSE)
+ polygon(c(year,rev(year)),
+         100*c(prop.adj[as.character(year),1],rev(apply(prop.adj[as.character(year),1:2],1,sum))),
+         col=color[2],border=FALSE)
+ polygon(c(year,rev(year)),
+         100*c(apply(prop.adj[as.character(year),1:2],1,sum),rev(apply(prop.adj[as.character(year),1:3],1,sum))),
+         col=color[3],border=FALSE)
+ polygon(c(year,rev(year)),
+         100*c(apply(prop.adj[as.character(year),1:3],1,sum),rev(apply(prop.adj[as.character(year),1:4],1,sum))),
+         col=color[4],border=FALSE)
+ axis(1,at=seq(1975,2002,9))
+ axis(2,at=seq(0,100,10),las=1)
+ text(1988,100*(prop.adj["1988",1]/2),"<1cm",cex=1)
+ text(1988,100*(sum(prop.adj["1988",1])+ prop.adj["1988",2]/2),"1-2cm",cex=1)
+ text(1988,100*(sum(prop.adj["1988",1:2])+ prop.adj["1988",3]/2),"2-5cm",cex=1)
+ text(1988,100*(sum(prop.adj["1988",1:3])+ prop.adj["1988",4]/2),"5+cm",cex=1,col="white")
+      
+ mx.cause <- apply(mx.cause, c(1,2,3,4), function(x) min(12,x))
+ stand.mx <- apply(mx.cause,c(1,3,4),function(x) sum(x * stand.breast, na.rm=TRUE))
+ matplot(year,(stand.mx["breast",as.character(year),]),col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="o",pch=19,cex=1,ylim=c(0,max(stand.mx[,as.character(year),])))
+ matlines(year,(stand.mx["other",as.character(year),]),col=color,lty=1)
+ axis(1,at=seq(1975,2002,9))
+ axis(2,las=1,at=seq(0,0.12,0.02))
+ legend(1975,0.08,ncol=2,cex=0.6,paste(c("5+cm, Cancer","5+cm, Other","2-5cm, Cancer","2-5cm, Other","1-2cm, Cancer","1-2cm, Other","<1cm, Cancer","<1cm, Other")),lty=1,pch=c(19,NA),col=c(color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),text.col=c(color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),bty="n")
+ mtext("A. Incidence Rates (Per 100,000)",side=3,line=0,outer=TRUE,at=1/6,cex=0.8)
+ mtext("B. Size Distribution (%)",side=3,line=0,outer=TRUE,at=3/6,cex=0.8)
+ mtext("C. Incidence-Based Mortality Rates",side=3,line=0,outer=TRUE,at=5/6,cex=0.8)
+ dev.off()
+    }
 
 graph.decomp.results.fxn <- function(i,breast.results.sum)
   {name <- 100*as.numeric(names(breast.results.sum)[[i]])
@@ -122,13 +180,12 @@ overdiagnosis.fxn <- function(breast.results.sum,name,overdiagnosis=FALSE) {
 
 scalar.list <- seq(0,0.20,0.01)
 breast.results <- list()
-for (i in 1:length(scalar.list))
+for (i in 1:length(scalar.list)){
+  graph.rates.fxn(scalar.list[i],c("<1cm","1-2cm"),prop.breast,mx.breast,mx.breast.cause,size.rate,standard)
   breast.results[[i]]<- odx.fxn(scalar.list[i],c("<1cm","1-2cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
+}
 breast.results.sum <- lapply(breast.results,summary.fxn)
 names(breast.results.sum) <- scalar.list
-
-color <- brewer.pal(9,"YlGnBu")[c(3,5,7,9)]
-color2 <- alpha(color,0.5)
 for (i in 1:length(scalar.list))
   graph.decomp.results.fxn(i,breast.results.sum)
 
