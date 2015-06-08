@@ -15,8 +15,8 @@ source("~/Desktop/Cancer/R.code/results.sens.fxn.R")
 year.list <- 1975:2002
 le <- create.datos.sens.fxn(mx.breast,prop.breast,year.list)$ex.overall
 
-pdf("~/Dropbox/talks/figures/breast_le1.pdf", height=11, width=8.5, paper="special")
-par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+pdf("~/Dropbox/talks/figures/breast_le1.pdf", height=8.5, width=11, paper="special")
+par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white", cex=2.0,cex.main=2.0)
 plot(year.list,le,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5)
 axis(1,at=year.list)
 axis(2,las=1,at=seq(0,36,2))
@@ -25,13 +25,15 @@ mtext("Life Expectancy at Age 40 (Years)",side=2,line=-0.5,outer=TRUE,at=1/2,cex
 mtext("Year",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
 dev.off()
 
-pdf("~/Dropbox/talks/figures/breast_le2.pdf", height=11, width=8.5, paper="special")
-par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+pdf("~/Dropbox/talks/figures/breast_le2.pdf", height=8.5, width=11, paper="special")
+par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white", cex=2.0,cex.main=2.0)
 plot(year.list,le,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=5)
 axis(1,at=year.list)
 axis(2,las=1,at=seq(0,36,2))
 grid()
 Arrows(year.list[length(year.list)]+0.5,min(le),year.list[length(year.list)]+0.5,code=3,max(le),lwd=5,col=brewer.pal(3,"Reds")[3])
+text(year.list[length(year.list)],mean(c(min(le),max(le))),paste(round(max(le)-min(le),1),"years"),pos=2,col=brewer.pal(3,"Reds")[3])
+text(year.list[length(year.list)],mean(c(min(le),max(le)))-1,paste("(",round(100*c(max(le)-min(le))/max(le)),"%)",sep=""),pos=2,col=brewer.pal(3,"Reds")[3])
 mtext("Life Expectancy at Age 40 (Years)",side=2,line=-0.5,outer=TRUE,at=1/2,cex=2)
 mtext("Year",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
 dev.off()
