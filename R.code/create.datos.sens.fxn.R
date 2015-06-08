@@ -1,6 +1,6 @@
 create.datos.sens.fxn <- function(mx, prop, year.list) {
-  value.list <- c("ex.overall","ex.size.I","ex.size.II","ex.size.III","ex.size.IV",
-                  "prop.size.I","prop.size.II","prop.size.III","prop.size.IV")
+  value.list <- c("ex.overall","ex.size.I","ex.size.II","ex.size.III","ex.size.IV","ex.size.V",
+                  "prop.size.I","prop.size.II","prop.size.III","prop.size.IV","prop.size.V")
   datos <- matrix(NA, nrow=length(year.list), ncol=length(value.list))
   rownames(datos) <- year.list
   colnames(datos) <- value.list
@@ -9,32 +9,39 @@ create.datos.sens.fxn <- function(mx, prop, year.list) {
     mx.size.II <- c(rep(0,9),mx[,as.character(year.list[y]),2])
     mx.size.III <- c(rep(0,9),mx[,as.character(year.list[y]),3])
     mx.size.IV <- c(rep(0,9),mx[,as.character(year.list[y]),4])
+    mx.size.V <- c(rep(0,9),mx[,as.character(year.list[y]),4])
     mx.size.I[which(is.na(mx.size.I)==TRUE)] <- 0
     mx.size.II[which(is.na(mx.size.II)==TRUE)] <- 0 
     mx.size.III[which(is.na(mx.size.III)==TRUE)] <- 0
     mx.size.IV[which(is.na(mx.size.IV)==TRUE)] <- 0
+    mx.size.V[which(is.na(mx.size.V)==TRUE)] <- 0
     mx.size.I[mx.size.I==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
     mx.size.II[mx.size.II==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
     mx.size.III[mx.size.III==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
     mx.size.IV[mx.size.IV==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
+    mx.size.V[mx.size.V==Inf] <- 10^6 #assigned infinite mortality rate a large numeric mortality rate
     ex.size.I <- lifetab.grad.nax.nLxappr(nMx=mx.size.I, Rdx=1)$ex[10]
     ex.size.II <- lifetab.grad.nax.nLxappr(nMx=mx.size.II, Rdx=1)$ex[10]
     ex.size.III <- lifetab.grad.nax.nLxappr(nMx=mx.size.III, Rdx=1)$ex[10]
     ex.size.IV <- lifetab.grad.nax.nLxappr(nMx=mx.size.IV, Rdx=1)$ex[10]
+     ex.size.V <- lifetab.grad.nax.nLxappr(nMx=mx.size.V, Rdx=1)$ex[10]
     prop.size.I <- prop[as.character(year.list[y]),1]
     prop.size.II <- prop[as.character(year.list[y]),2]
     prop.size.III <- prop[as.character(year.list[y]),3]
     prop.size.IV <- prop[as.character(year.list[y]),4]
-    ex.overall <- ex.size.I*prop.size.I+ex.size.II*prop.size.II+ex.size.III*prop.size.III+ex.size.IV*prop.size.IV
+     prop.size.V <- prop[as.character(year.list[y]),5]
+    ex.overall <- ex.size.I*prop.size.I+ex.size.II*prop.size.II+ex.size.III*prop.size.III+ex.size.IV*prop.size.IV+ex.size.V*prop.size.V
     datos[y,"ex.overall"] <- ex.overall
     datos[y,"ex.size.I"] <- ex.size.I
     datos[y,"ex.size.II"] <- ex.size.II
     datos[y,"ex.size.III"] <- ex.size.III
     datos[y,"ex.size.IV"] <- ex.size.IV
+      datos[y,"ex.size.V"] <- ex.size.V
     datos[y,"prop.size.I"] <- prop.size.I
     datos[y,"prop.size.II"] <- prop.size.II
     datos[y,"prop.size.III"] <- prop.size.III
     datos[y,"prop.size.IV"] <- prop.size.IV
+     datos[y,"prop.size.V"] <- prop.size.V
   }
   datos <- data.frame(datos)
   return(datos)

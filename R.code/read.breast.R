@@ -40,19 +40,23 @@ breast$age.dx.cat[breast$age.dx.cat>=100] <- 100
 levels(breast$stage) <- c("0. in situ","1. localized","2. regional","4. distant",NA)
 breast$size[breast$size.eod13.path.op %in% c("1","2")] <- "<1cm"
 breast$size[breast$size.eod13.path.op %in% c("3")] <- "1-2cm"
-breast$size[breast$size.eod13.path.op %in% c("4","5","6")] <- "2-5cm"
+breast$size[breast$size.eod13.path.op %in% c("4")] <- "2-3cm"
+breast$size[breast$size.eod13.path.op %in% c("5","6")] <- "3-5cm"
 breast$size[breast$size.eod13.path.op %in% c("7","8")] <- "5+cm"
 breast$size[breast$size.eod4 %in% 3:9] <- "<1cm"
 breast$size[breast$size.eod4 %in% 10:19] <- "1-2cm"
-breast$size[breast$size.eod4 %in% 20:49] <- "2-5cm"
+breast$size[breast$size.eod4 %in% 20:29] <- "2-3cm"
+breast$size[breast$size.eod4 %in% 30:49] <- "3-5cm"
 breast$size[breast$size.eod4 %in% 50:97] <- "5+cm"
 breast$size[breast$size.eod10 %in% 3:9] <- "<1cm"
 breast$size[breast$size.eod10 %in% 10:19] <- "1-2cm"
-breast$size[breast$size.eod10 %in% 20:49] <- "2-5cm"
+breast$size[breast$size.eod10 %in% 20:29] <- "2-3cm"
+breast$size[breast$size.eod10 %in% 30:49] <- "3-5cm"
 breast$size[breast$size.eod10 %in% 50:990] <- "5+cm"
 breast$size[breast$size.cs %in% c(1:9,991)] <- "<1cm"
 breast$size[breast$size.cs %in% c(10:19,992)] <- "1-2cm"
-breast$size[breast$size.cs %in% c(21:49,993:995)] <- "2-5cm"
+breast$size[breast$size.cs %in% c(20:29,993)] <- "2-3cm"
+breast$size[breast$size.cs %in% c(30:49,994:995)] <- "3-5cm"
 breast$size[breast$size.cs %in% c(51:998)] <- "5+cm"
 breast$cod2[breast$cod==26000] <- "breast"
 breast$cod2[breast$cod>=20010 & breast$cod<=50300 & breast$cod!=26000] <- "other"
@@ -86,9 +90,8 @@ stand.breast <- prop.table(table(breast$age.dx.cat[breast$year==1987]))
 popl <- read.fwf("~/Dropbox/Cancer/Value/data/SEER_data/SEER_1973_2012_TEXTDATA/populations/white_black_other/yr1973_2012.seer9/singleages.txt",
                  widths=c(4,2,2,3,2,1,1,1,2,11))
 names(popl) <- c("year","state","statefips","countyfips","registry","race","origin","sex","age","popl")
-popl$popl <- popl$popl/10
 
-popl.array <- by(popl$popl,list(popl$year,popl$age), sum)[,as.character(40:85)]
+popl.array <- by(popl$popl,list(popl$year,popl$age,popl$sex), sum)[,as.character(40:85),"2"]
 
 size.counts <- table(breast$year.dx,breast$age.dx, breast$size)
 size.counts <- apply(size.counts, c(1,3), function(x) c(x[1:45],sum(x[46:69])))
@@ -98,7 +101,8 @@ size.counts <- aperm(size.counts,c(2,1,3))
 size.rate <- array(NA,dim=dim(size.counts),dimnames=dimnames(size.counts))
 size.rate[,,"<1cm"] <- size.counts[,,"<1cm"]/popl.array
 size.rate[,,"1-2cm"] <- size.counts[,,"1-2cm"]/popl.array
-size.rate[,,"2-5cm"] <- size.counts[,,"2-5cm"]/popl.array
+size.rate[,,"2-3cm"] <- size.counts[,,"2-3cm"]/popl.array
+size.rate[,,"3-5cm"] <- size.counts[,,"3-5cm"]/popl.array
 size.rate[,,"5+cm"] <- size.counts[,,"5+cm"]/popl.array
 
 standard <- popl.array["2000",]/sum(popl.array["2000",])
@@ -110,6 +114,10 @@ prop.died.breast.breast <- apply(table(breast$year.dx,breast$size,breast$cod3),c
 save(stand.breast, standard, size.rate, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
 
 save(breast, file="~/Desktop/Cancer/data/mx.breast.Rdata")
+
+
+
+
 #proportion dead within 10 years
 color <- brewer.pal(9,"YlGnBu")[c(3,5,7,9)]
 matplot(1975:2002,100*apply(table(breast$year.dx,breast$size,breast$dead),c(1,2),function(x) x[["1"]]/sum(x))[as.character(1975:2002),],type="l",lty=1,ylab="% dead within 10 years",xlab="year",bty="l",las=1,ylim=c(0,100),col=color,lwd=2)
