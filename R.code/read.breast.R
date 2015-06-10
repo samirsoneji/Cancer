@@ -112,8 +112,7 @@ prop.died.breast.all <- apply(table(breast$year.dx,breast$size,breast$dead),c(1,
 prop.died.breast.breast <- apply(table(breast$year.dx,breast$size,breast$cod3),c(1,2),function(x) x[["breast"]]/sum(x))
 
 save(stand.breast, standard, size.rate, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
-
-save(breast, file="~/Desktop/Cancer/data/mx.breast.Rdata")
+save(breast, file="~/Desktop/Cancer/data/breast.Rdata")
 
 
 
