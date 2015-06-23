@@ -1,12 +1,12 @@
 rm(list=ls())
 library(RColorBrewer)
-load("~/Desktop/Cancer/data/mx.breast.size.Rdata") 
+load("~/Desktop/Cancer/data/mx.breast.Rdata") 
 source("~/Desktop/Cancer/R.code/lifetable.R")
 source("~/Desktop/Cancer/R.code/decomp.ex.cd.fxn.R")
 source("~/Desktop/Cancer/R.code/Assoc_LT.r")
-source("~/Desktop/Cancer/R.code/create.datos.sens.fxn.R")
-source("~/Desktop/Cancer/R.code/decomp.sens.fxn.R")
-source("~/Desktop/Cancer/R.code/results.sens.fxn.R")
+source("~/Desktop/Cancer/R.code/create.datos.fxn.R")
+source("~/Desktop/Cancer/R.code/decomp.fxn.R")
+source("~/Desktop/Cancer/R.code/results.fxn.R")
 
 wrap_sentence <- function(string, width) {
   words <- unlist(strsplit(string, " "))
@@ -30,7 +30,7 @@ prop.breast <- prop.breast[,-1]
 year.list <- as.character(c(1981,2001))
 stage <- t(prop.breast[year.list,])
 mx <- mx.breast["75",as.character(c(2001)),]
-ex.stage <- as.matrix(create.datos.sens.fxn(mx.breast,prop.breast,as.numeric(year.list))[c("ex.localized","ex.regional","ex.distant")])
+ex.stage <- as.matrix(create.datos.fxn(mx.breast,prop.breast,as.numeric(year.list))[c("ex.localized","ex.regional","ex.distant")])
 ex.overall <- c(stage[,1] %*% ex.stage[2,]*0.9,stage[,2] %*% ex.stage[2,]) #*0.9 to create more vertical distance between two bars in panel C
 
 
@@ -162,7 +162,7 @@ xpos <- barplot(c(t(ex.stage)),space=c(0.1,0.1,0.1,1,0.1,0.1),plot=FALSE)
 text(xpos,ex.stage[2,3]/2,paste(stage.list),srt=90,col=c(1,1,"white",1,1,"white"))
 axis(1,at=c(mean(xpos[1:3]),mean(xpos[4:6])),paste(c("Time 1","Time 2")),tick=FALSE)
 
-barplot(ex.overall,border=FALSE,las=1,xaxt="n",yaxt="n",ylim=c(0,max(ex.overall)+5),col=1)
+barplot(ex.overall,border=FALSE,las=1,xaxt="n",yaxt="n",ylim=c(0,max(ex.overall)+3),col=1)
 xpos <- barplot(ex.overall,plot=FALSE)
 axis(1,at=xpos,paste(c("Time 1","Time 2")),tick=FALSE)
 arrows(1.3,ex.overall[1],1.3,ex.overall[2],code=3,length=0.1)
@@ -170,7 +170,7 @@ text(xpos[1],mean(ex.overall)+1.5,
      wrap_sentence("Gain in life exp. entirely due to decreases in size-specific mort. rates from cancer",8),cex=0.85)
 
 mtext("A. Size Distribution",side=3,line=0,outer=TRUE,at=1/8,cex=1)
-mtext("B. Size-Specific Mortality Rates",side=3,line=0,outer=TRUE,at=3/8,cex=1)
+mtext("B. Size-Specific\nCase Fatality Rates",side=3,line=0,outer=TRUE,at=3/8,cex=1)
 mtext("C. Size-Specific Life Expectancy",side=3,line=0,outer=TRUE,at=5/8,cex=1)
 mtext("D. Overall Life Expectancy",side=3,line=0,outer=TRUE,at=7/8,cex=1)
 dev.off()

@@ -49,8 +49,7 @@ mx.breast.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.breast <- prop.table(as.table(table(breast$year.dx, breast$stage)),1)
 mx.breast.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
 stand.breast <- prop.table(table(breast$age.dx.cat[breast$year==1987]))
-save(stand.breast, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, file="~/Desktop/Cancer/data/mx.breast.Rdata")
-save(prop.breast, file="~/Desktop/Cancer/data/prop.breast.Rdata") 
+save(prop.breast, stand.breast, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, file="~/Desktop/Cancer/data/mx.breast.Rdata")
 print(paste("completed breast",date()))
  
 ###################
@@ -133,7 +132,7 @@ cod <- as.numeric(apply(seer.respir, 1, function(x) substr(x,255,259)))
 data.respir <- data.frame(cbind(cancer=cancer,site.recode=site.recode,age.dx=age.dx,year.dx=year.dx,sex=sex,
                                 stage=stage,vital.status=vital.status,surv.months=surv.months,cod=cod))
 data.lung <- subset(data.respir, site.recode %in% c(22030))
-drop <- which(data.lung$surv.months==9999 | data.lung$stage==9 | data.lung$age.dx < 40 | data.lung$age.dx==999)
+drop <- which(data.lung$surv.months==9999 | data.lung$stage==9 | data.lung$age.dx==999)
 lung <- data.lung[-drop,]
 lung$sex[lung$sex==1] <- "male"
 lung$sex[lung$sex==2] <- "female"

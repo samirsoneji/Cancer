@@ -56,8 +56,9 @@ graph.rates.fxn <- function(scalar, categories, prop, mx, mx.cause, size.rate, s
   year <- 1975:2002
  
  scale <- 100000
- matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,xaxt="n",type="l",lwd=2)
+ matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=2,ylim=c(0,max(scale*stand.size.rate[as.character(year),])))
  axis(1,at=seq(1975,2002,9))
+  axis(2,at=seq(0,200,20),las=1)
  text(year[length(year)-2],scale*stand.size.rate[as.character(year[length(year)]),],paste(c("<1cm","1-2cm","2-3cm","3-5cm","5+cm")),lty=1,col=color,pos=c(3,1,1,1,1))
  
  plot(year,rep(NA,length(year)),axes=FALSE,bty="l",ylim=c(0,100),xlab=NA,ylab=NA)
@@ -84,16 +85,16 @@ graph.rates.fxn <- function(scalar, categories, prop, mx, mx.cause, size.rate, s
  text(1988,100*(sum(prop.adj["1988",1:3])+ prop.adj["1988",4]/2),"3-5cm",cex=1)
  text(1988,100*(sum(prop.adj["1988",1:4])+ prop.adj["1988",5]/2),"5+cm",cex=1,col="white")
       
- mx.cause <- apply(mx.cause, c(1,2,3,4), function(x) min(12,x))
+ mx.cause <- 1000*apply(mx.cause, c(1,2,3,4), function(x) min(12,x))
  stand.mx <- apply(mx.cause,c(1,3,4),function(x) sum(x * stand.breast, na.rm=TRUE))
  matplot(year,(stand.mx["breast",as.character(year),]),col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="o",pch=19,cex=1,ylim=c(0,max(stand.mx[,as.character(year),])))
  matlines(year,(stand.mx["other",as.character(year),]),col=color,lty=1)
  axis(1,at=seq(1975,2002,9))
- axis(2,las=1,at=seq(0,0.12,0.02))
- legend(1975,0.08,ncol=2,cex=0.5,paste(c("5+cm, Cancer","5+cm, Other","3-5cm, Cancer","3-5cm, Other","2-3cm, Cancer","2-3cm, Other","1-2cm, Cancer","1-2cm, Other","<1cm, Cancer","<1cm, Other")),lty=1,pch=c(19,NA),col=c(color[5],color[5],color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),text.col=c(color[5],color[5],color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),bty="n")
+ axis(2,las=1,at=1000*seq(0,0.12,0.02))
+ legend(1975,1000*0.08,ncol=2,cex=0.5,paste(c("5+cm, Cancer","5+cm, Other","3-5cm, Cancer","3-5cm, Other","2-3cm, Cancer","2-3cm, Other","1-2cm, Cancer","1-2cm, Other","<1cm, Cancer","<1cm, Other")),lty=1,pch=c(19,NA),col=c(color[5],color[5],color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),text.col=c(color[5],color[5],color[4],color[4],color[3],color[3],color[2],color[2],color[1],color[1]),bty="n")
  mtext("A. Incidence Rates (Per 100,000)",side=3,line=0,outer=TRUE,at=1/6,cex=0.8)
  mtext("B. Size Distribution (%)",side=3,line=0,outer=TRUE,at=3/6,cex=0.8)
- mtext("C. Case Fatality Rates",side=3,line=0,outer=TRUE,at=5/6,cex=0.8)
+ mtext("C. Case Fatality Rates (Per 1000)",side=3,line=0,outer=TRUE,at=5/6,cex=0.8)
  dev.off()
   if (output==TRUE)
     save(stand.size.rate,prop.adj,stand.mx,file=paste("~/Desktop/Cancer/data/output_",name,".Rdata",sep=""))
@@ -298,4 +299,14 @@ rownames(slopes) <- 1975:1997
 ###summary###
 results.summary <- lapply(breast.results.sum, function(x) round(100*c(sum(unlist(x[2:6]))/x[[1]],
                                                                 sum(unlist(x[7:11]))/x[[1]],
-                                                                x[[12]]/x[[1]])))
+                                                                x[[12]]/x[[1]]),1))
+
+###comparison with other findings###
+overall.summary <- function(x)
+  c(round(100*c(sum(unlist(x[2:6]))/x[[1]],
+                sum(unlist(x[7:11]))/x[[1]],
+                x[[12]]/x[[1]]),1))
+
+decomp.75.00 <- overall.summary(summary.fxn(odx.fxn(0.10,c("<1cm","1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))))
+decomp.88.00 <- overall.summary(summary.fxn(odx.fxn(0.10,c("<1cm","1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))))
+names(decomp.75.00) <- names(decomp.88.00) <- c("contribution from earlier detection","contribution from cancer mortality","contribution from other cause mortality")
