@@ -40,6 +40,22 @@ odx.fxn <- function(scalar, scalar2, categories, categories2, prop, mx, mx.cause
   return(res)
 }
 
+odx.age.fxn <- function(scalar, scalar2, categories, categories2, prop, counts, mx, mx.cause,cancer,year.list) {
+  categories.all <- c(categories,categories2)
+  other.categories <- dimnames(prop)[[2]][-which(categories.all %in% dimnames(prop)[[2]])]
+  prop[,categories] <- (1-scalar) * prop[,categories]
+  prop[,categories2] <- (1-scalar2) * prop[,categories2]
+  prop.adj <- matrix(NA,nrow=nrow(prop),ncol=ncol(prop))
+  for (i in 1:nrow(prop.adj))
+    prop.adj[i,] <- readjust.fxn(prop[i,],categories.all,other.categories)
+  dimnames(prop.adj) <- dimnames(prop)
+  mx[,,categories] <- (1-scalar)^-1 * mx[,,categories]
+  mx[,,categories2] <- (1-scalar2)^-1 * mx[,,categories2]
+  mx.cause[,,,categories] <- (1-scalar)^-1 * mx.cause[,,,categories]
+  mx.cause[,,,categories2] <- (1-scalar2)^-1 * mx.cause[,,,categories2]
+  res <- results.age.fxn(mx,mx.cause,prop.adj,counts,cancer,year.list)
+  return(res)
+}
 summary.fxn <- function(x)
     c(x[3],x[4],x[5],x[6],x[7],x[8],x[14],x[16],x[18],x[20],x[22],sum(x[seq(15,23,2)]))
 
@@ -200,8 +216,9 @@ overdiagnosis.fxn <- function(breast.results.sum,name,overdiagnosis=FALSE) {
     dev.off()
 }
 
-scalar.list <- seq(0.00,0.99,0.05)
-scalar.list2 <- seq(0.00,0.31,0.05)
+scalar.list <- c(0.10,0.20)#seq(0.00,0.99,0.05)
+scalar.list2 <- c(0.10,0.20)#seq(0.00,0.31,0.05)
+
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
@@ -262,3 +279,25 @@ dev.off()
 
 
 
+###CISNET Comparison
+scalar.list <- c(0.10,0.20)
+scalar.list2 <- c(0.10,0.20)
+mx.breast2 <- mx.breast
+mx.breast.cause2 <- mx.breast.cause
+mx.breast2[,"1975",] <- (1-0.65)*mx.breast2[,"1975",] + 0.65*mx.breast2[,"2002",]
+mx.breast.cause2[,,"1975",] <- (1-0.65)*mx.breast.cause2[,,"1975",] + 0.65*mx.breast.cause2[,,"2002",]
+var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000)))
+cisnet.comparison <- cisnet.comparison2 <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
+                        dimnames=list(scalar.list,scalar.list2,var.names))
+for (i in 1:length(scalar.list)){
+  for (j in 1:length(scalar.list2)){
+    tmp <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))
+    cisnet.comparison[i,j,]<- c(unlist(tmp))
+    tmp2 <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000))
+    cisnet.comparison2[i,j,]<- c(unlist(tmp2))
+    print(paste(i,j))
+  }}
+
+
+tmp <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
+ 

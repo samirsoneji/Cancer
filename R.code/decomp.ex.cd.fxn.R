@@ -34,10 +34,12 @@ decomp.ex.cd <- function(nMx1,nMx2,Rx) {
   }
   
   sum.term1<-colSums(term1,na.rm=TRUE)
+  sum.young <- colSums(term1[1:11,],na.rm=TRUE)
+  sum.old <- colSums(term1[-c(1:11),],na.rm=TRUE)
   
   change.ex<-t2.lt$ex[1]-t1.lt$ex[1]
   
-  decomp.change.ex<-data.frame(Cause.death=c(nms,"SUM"), Cause.contr=c(sum.term1,sum(sum.term1)))
+  decomp.change.ex<-data.frame(Cause.death=c(nms,"SUM"), Cause.contr=c(sum.term1,sum(sum.term1)), Cause.contr.young=c(sum.young, sum(sum.young)), Cause.contr.old=c(sum.old, sum(sum.old)))
   out<-list(Decomposition=decomp.change.ex,
             ex.t1=t1.lt$ex[1],
             ex.t2=t2.lt$ex[1],

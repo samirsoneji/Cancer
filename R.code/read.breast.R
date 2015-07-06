@@ -37,6 +37,8 @@ breast$dead[breast$surv.months >= 120] <- 0
 breast$surv.months <- ifelse(breast$surv.months<=120,breast$surv.months,120)
 breast$age.dx.cat <- 5*floor(breast$age.dx/5)
 breast$age.dx.cat[breast$age.dx.cat>=100] <- 100
+breast$age.dx.cat2 <- as.factor(breast$age.dx.cat)
+levels(breast$age.dx.cat2) <- c(rep("40-49",2),rep("50+",11))
 levels(breast$stage) <- c("0. in situ","1. localized","2. regional","4. distant",NA)
 breast$size[breast$size.eod13.path.op %in% c("1","2")] <- "<1cm"
 breast$size[breast$size.eod13.path.op %in% c("3")] <- "1-2cm"
@@ -83,6 +85,9 @@ exposure <- by(breast$surv.months/12, list(breast$age.dx.cat, breast$year.dx, br
 mx.breast <- dead/exposure
 mx.breast.cause <- aaply(dead.cause, 4, function(x) x/exposure)
 prop.breast <- prop.table(as.table(table(breast$year.dx, breast$size)),1)
+prop.breast.age <- prop.table(as.table(table(breast$year.dx, breast$size, breast$age.dx.cat2)),1)
+counts.breast.age <- table(breast$year.dx, breast$size, breast$age.dx.cat2)
+prop.age <- prop.table(as.table(table(breast$year.dx, breast$age.dx.cat2)),1)
 mx.breast.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
 stand.breast <- prop.table(table(breast$age.dx.cat[breast$year==1987]))
 
@@ -110,7 +115,7 @@ stand.size.rate <- apply(size.rate, c(1,3), function(x) x%*%standard)
 prop.died.breast.all <- apply(table(breast$year.dx,breast$size,breast$dead),c(1,2),function(x) x[["1"]]/sum(x))
 prop.died.breast.breast <- apply(table(breast$year.dx,breast$size,breast$cod3),c(1,2),function(x) x[["breast"]]/sum(x))
 
-save(stand.breast, standard, size.rate, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
+save(stand.breast, standard, size.rate, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.breast.age, prop.age, counts.breast.age, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
 save(breast, file="~/Desktop/Cancer/data/breast.Rdata")
 
 
