@@ -217,8 +217,8 @@ overdiagnosis.fxn <- function(breast.results.sum,name,overdiagnosis=FALSE) {
     dev.off()
 }
 
-scalar.list <- c(0.10,0.20)#seq(0.00,0.99,0.05)
-scalar.list2 <- c(0.10,0.20)#seq(0.00,0.31,0.05)
+scalar.list <- c(0,0.10,0.20)#seq(0.00,0.99,0.05)
+scalar.list2 <- c(0,0.10,0.20)#seq(0.00,0.31,0.05)
 
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
@@ -279,8 +279,8 @@ dev.off()
 ## overdiagnosis.fxn(breast.results.sum,"small_overdiagnosis",overdiagnosis=TRUE)
 
 ###CISNET Comparison
-scalar.list <- c(0.10,0.20)
-scalar.list2 <- c(0.10,0.20)
+scalar.list <- c(0,0.10,0.20)
+scalar.list2 <- c(0,0.10,0.20)
 mx.breast2 <- mx.breast
 mx.breast.cause2 <- mx.breast.cause
 mx.breast2[,"1975",] <- (1-0.65)*mx.breast2[,"1975",] + 0.65*mx.breast2[,"2002",]
@@ -298,15 +298,35 @@ for (i in 1:length(scalar.list)){
   }}
 
 
-tmp <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
+###contribution by age
+age <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
  
-tmp.results <- c(sum(tmp[4:8]),
-                 sum(tmp[9:13+5*0]),
-                 sum(tmp[9:13+5*1]),
-                 sum(tmp[9:13+5*2]),
-                 sum(tmp[9:13+5*3]),
-                 sum(tmp[9:13+5*4]),
-                 sum(tmp[9:13+5*5]),
-                 sum(tmp[9:13+5*6]))
-names(tmp.results) <- c("overall","40-49","50-59","60-69","70-79","80-89","90-99","100+")
- 
+age.scr.results <- c(sum(age[4:8]),
+                 sum(age[9:13+5*0]),
+                 sum(age[9:13+5*1]),
+                 sum(age[9:13+5*2]),
+                 sum(age[9:13+5*3]),
+                 sum(age[9:13+5*4]),
+                 sum(age[9:13+5*5]),
+                     sum(age[9:13+5*6]))
+age.cancer.results <- c(sum(age[seq(49,57,2)]),
+                        sum(age[seq(59,67,2)]),
+                        sum(age[seq(69,77,2)]),
+                        sum(age[seq(79,87,2)]),
+                        sum(age[seq(89,97,2)]),
+                        sum(age[seq(99,107,2)]),
+                        sum(age[seq(109,117,2)]),
+                        sum(age[seq(119,127,2)]))
+age.other.results <- c(sum(age[seq(50,58,2)]),
+                       sum(age[seq(60,68,2)]),
+                       sum(age[seq(70,78,2)]),
+                       sum(age[seq(80,88,2)]),
+                       sum(age[seq(90,98,2)]),
+                       sum(age[seq(100,108,2)]),
+                       sum(age[seq(110,118,2)]),
+                       sum(age[seq(120,128,2)]))
+age.results <- rbind(age.scr.results, age.cancer.results, age.other.results)
+age.results <- rbind(age.results, apply(age.results,2,sum))
+colnames(age.results) <- c("overall","40-49","50-59","60-69","70-79","80-89","90-99","100+")
+rownames(age.results) <- c("screening","cancer mortality","other mortality","total")
+write.csv(age.results, "~/Desktop/Cancer/figures/age.results.csv")
