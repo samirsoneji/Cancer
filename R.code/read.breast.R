@@ -38,7 +38,7 @@ breast$surv.months <- ifelse(breast$surv.months<=120,breast$surv.months,120)
 breast$age.dx.cat <- 5*floor(breast$age.dx/5)
 breast$age.dx.cat[breast$age.dx.cat>=100] <- 100
 breast$age.dx.cat2 <- as.factor(breast$age.dx.cat)
-levels(breast$age.dx.cat2) <- c(rep("40-49",2),rep("50+",11))
+levels(breast$age.dx.cat2) <- c(rep("40-49",2),rep("50-59",2),rep("60-69",2),rep("70-79",2),rep("80-89",2),rep("90-99",2),rep("100+"))
 levels(breast$stage) <- c("0. in situ","1. localized","2. regional","4. distant",NA)
 breast$size[breast$size.eod13.path.op %in% c("1","2")] <- "<1cm"
 breast$size[breast$size.eod13.path.op %in% c("3")] <- "1-2cm"

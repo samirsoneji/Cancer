@@ -2,6 +2,7 @@ rm(list=ls())
 library(RColorBrewer)
 library(scales)
 library(shape)
+library(lattice)
 load("~/Desktop/Cancer/data/mx.breast.size.Rdata")
 
 source("~/Desktop/Cancer/R.code/lifetable.R")
@@ -277,8 +278,6 @@ dev.off()
 ## overdiagnosis.fxn(breast.results.sum,"small",overdiagnosis=FALSE)
 ## overdiagnosis.fxn(breast.results.sum,"small_overdiagnosis",overdiagnosis=TRUE)
 
-
-
 ###CISNET Comparison
 scalar.list <- c(0.10,0.20)
 scalar.list2 <- c(0.10,0.20)
@@ -300,4 +299,14 @@ for (i in 1:length(scalar.list)){
 
 
 tmp <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
+ 
+tmp.results <- c(sum(tmp[4:8]),
+                 sum(tmp[9:13+5*0]),
+                 sum(tmp[9:13+5*1]),
+                 sum(tmp[9:13+5*2]),
+                 sum(tmp[9:13+5*3]),
+                 sum(tmp[9:13+5*4]),
+                 sum(tmp[9:13+5*5]),
+                 sum(tmp[9:13+5*6]))
+names(tmp.results) <- c("overall","40-49","50-59","60-69","70-79","80-89","90-99","100+")
  

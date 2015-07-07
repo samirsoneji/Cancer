@@ -50,8 +50,13 @@ create.datos.sens.fxn <- function(mx, prop, year.list) {
 create.datos.age.sens.fxn <- function(mx, prop, counts, year.list) {
   value.list <- c("ex.overall","ex.size.I","ex.size.II","ex.size.III","ex.size.IV","ex.size.V",
                   "prop.size.I","prop.size.II","prop.size.III","prop.size.IV","prop.size.V",
-                  "prop.size.I.young","prop.size.II.young","prop.size.III.young","prop.size.IV.young","prop.size.V.young",
-                  "prop.size.I.old","prop.size.II.old","prop.size.III.old","prop.size.IV.old","prop.size.V.old")
+                  "prop.size.I.40","prop.size.II.40","prop.size.III.40","prop.size.IV.40","prop.size.V.40",
+                  "prop.size.I.50","prop.size.II.50","prop.size.III.50","prop.size.IV.50","prop.size.V.50",
+                  "prop.size.I.60","prop.size.II.60","prop.size.III.60","prop.size.IV.60","prop.size.V.60",
+                  "prop.size.I.70","prop.size.II.70","prop.size.III.70","prop.size.IV.70","prop.size.V.70",
+                  "prop.size.I.80","prop.size.II.80","prop.size.III.80","prop.size.IV.80","prop.size.V.80",
+                  "prop.size.I.90","prop.size.II.90","prop.size.III.90","prop.size.IV.90","prop.size.V.90",
+                  "prop.size.I.100","prop.size.II.100","prop.size.III.100","prop.size.IV.100","prop.size.V.100")
   datos <- matrix(NA, nrow=length(year.list), ncol=length(value.list))
   rownames(datos) <- year.list
   colnames(datos) <- value.list
@@ -81,16 +86,49 @@ create.datos.age.sens.fxn <- function(mx, prop, counts, year.list) {
     prop.size.III <- prop[as.character(year.list[y]),3]
     prop.size.IV <- prop[as.character(year.list[y]),4]
     prop.size.V <- prop[as.character(year.list[y]),5]
-    prop.size.I.young <- prop.size.I * counts[as.character(year.list[y]),1,1]/sum(counts[as.character(year.list[y]),1,])
-    prop.size.II.young <- prop.size.II * counts[as.character(year.list[y]),2,1]/sum(counts[as.character(year.list[y]),2,])
-    prop.size.III.young <- prop.size.III * counts[as.character(year.list[y]),3,1]/sum(counts[as.character(year.list[y]),3,])
-    prop.size.IV.young <- prop.size.IV * counts[as.character(year.list[y]),4,1]/sum(counts[as.character(year.list[y]),4,])
-    prop.size.V.young <- prop.size.V * counts[as.character(year.list[y]),5,1]/sum(counts[as.character(year.list[y]),5,])
-    prop.size.I.old <- prop.size.I * (1-counts[as.character(year.list[y]),1,1]/sum(counts[as.character(year.list[y]),1,]))
-    prop.size.II.old <- prop.size.II * (1-counts[as.character(year.list[y]),2,1]/sum(counts[as.character(year.list[y]),2,]))
-    prop.size.III.old <- prop.size.III * (1-counts[as.character(year.list[y]),3,1]/sum(counts[as.character(year.list[y]),3,]))
-    prop.size.IV.old <- prop.size.IV * (1-counts[as.character(year.list[y]),4,1]/sum(counts[as.character(year.list[y]),4,]))
-    prop.size.V.old <- prop.size.V * (1-counts[as.character(year.list[y]),5,1]/sum(counts[as.character(year.list[y]),5,]))
+
+    prop.size.I.40 <-   prop.size.I *   counts[as.character(year.list[y]),1,1]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.40 <-  prop.size.II *  counts[as.character(year.list[y]),2,1]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.40 <- prop.size.III * counts[as.character(year.list[y]),3,1]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.40 <-  prop.size.IV *  counts[as.character(year.list[y]),4,1]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.40 <-   prop.size.V *   counts[as.character(year.list[y]),5,1]/sum(counts[as.character(year.list[y]),5,])
+
+    prop.size.I.50 <-   prop.size.I *   counts[as.character(year.list[y]),1,2]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.50 <-  prop.size.II *  counts[as.character(year.list[y]),2,2]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.50 <- prop.size.III * counts[as.character(year.list[y]),3,2]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.50 <-  prop.size.IV *  counts[as.character(year.list[y]),4,2]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.50 <-   prop.size.V *   counts[as.character(year.list[y]),5,2]/sum(counts[as.character(year.list[y]),5,])
+
+    prop.size.I.60 <-   prop.size.I *   counts[as.character(year.list[y]),1,3]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.60 <-  prop.size.II *  counts[as.character(year.list[y]),2,3]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.60 <- prop.size.III * counts[as.character(year.list[y]),3,3]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.60 <-  prop.size.IV *  counts[as.character(year.list[y]),4,3]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.60 <-  prop.size.V *    counts[as.character(year.list[y]),5,3]/sum(counts[as.character(year.list[y]),5,])
+
+    prop.size.I.70 <-   prop.size.I *   counts[as.character(year.list[y]),1,4]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.70 <-  prop.size.II *  counts[as.character(year.list[y]),2,4]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.70 <- prop.size.III * counts[as.character(year.list[y]),3,4]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.70 <-  prop.size.IV *  counts[as.character(year.list[y]),4,4]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.70 <-   prop.size.V *   counts[as.character(year.list[y]),5,4]/sum(counts[as.character(year.list[y]),5,])
+
+    prop.size.I.80 <-   prop.size.I *   counts[as.character(year.list[y]),1,5]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.80 <-  prop.size.II *  counts[as.character(year.list[y]),2,5]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.80 <- prop.size.III * counts[as.character(year.list[y]),3,5]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.80 <-  prop.size.IV *  counts[as.character(year.list[y]),4,5]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.80 <-   prop.size.V *   counts[as.character(year.list[y]),5,5]/sum(counts[as.character(year.list[y]),5,])
+
+    prop.size.I.90 <-   prop.size.I *   counts[as.character(year.list[y]),1,6]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.90 <-  prop.size.II *  counts[as.character(year.list[y]),2,6]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.90 <- prop.size.III * counts[as.character(year.list[y]),3,6]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.90 <-  prop.size.IV *  counts[as.character(year.list[y]),4,6]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.90 <-   prop.size.V *   counts[as.character(year.list[y]),5,6]/sum(counts[as.character(year.list[y]),5,])
+    
+    prop.size.I.100 <-   prop.size.I *   counts[as.character(year.list[y]),1,7]/sum(counts[as.character(year.list[y]),1,])
+    prop.size.II.100 <-  prop.size.II *  counts[as.character(year.list[y]),2,7]/sum(counts[as.character(year.list[y]),2,])
+    prop.size.III.100 <- prop.size.III * counts[as.character(year.list[y]),3,7]/sum(counts[as.character(year.list[y]),3,])
+    prop.size.IV.100 <-  prop.size.IV *  counts[as.character(year.list[y]),4,7]/sum(counts[as.character(year.list[y]),4,])
+    prop.size.V.100 <-   prop.size.V *   counts[as.character(year.list[y]),5,7]/sum(counts[as.character(year.list[y]),5,])
+  
     ex.overall <- ex.size.I*prop.size.I+ex.size.II*prop.size.II+ex.size.III*prop.size.III+ex.size.IV*prop.size.IV+ex.size.V*prop.size.V
     datos[y,"ex.overall"] <- ex.overall
     datos[y,"ex.size.I"] <- ex.size.I
@@ -103,16 +141,41 @@ create.datos.age.sens.fxn <- function(mx, prop, counts, year.list) {
     datos[y,"prop.size.III"] <- prop.size.III
     datos[y,"prop.size.IV"] <- prop.size.IV
     datos[y,"prop.size.V"] <- prop.size.V
-    datos[y,"prop.size.I.young"] <- prop.size.I.young
-    datos[y,"prop.size.II.young"] <- prop.size.II.young
-    datos[y,"prop.size.III.young"] <- prop.size.III.young
-    datos[y,"prop.size.IV.young"] <- prop.size.IV.young
-    datos[y,"prop.size.V.young"] <- prop.size.V.young
-    datos[y,"prop.size.I.old"] <- prop.size.I.old
-    datos[y,"prop.size.II.old"] <- prop.size.II.old
-    datos[y,"prop.size.III.old"] <- prop.size.III.old
-    datos[y,"prop.size.IV.old"] <- prop.size.IV.old
-    datos[y,"prop.size.V.old"] <- prop.size.V.old
+    datos[y,"prop.size.I.40"] <- prop.size.I.40
+    datos[y,"prop.size.II.40"] <- prop.size.II.40
+    datos[y,"prop.size.III.40"] <- prop.size.III.40
+    datos[y,"prop.size.IV.40"] <- prop.size.IV.40
+    datos[y,"prop.size.V.40"] <- prop.size.V.40
+    datos[y,"prop.size.I.50"] <- prop.size.I.50
+    datos[y,"prop.size.II.50"] <- prop.size.II.50
+    datos[y,"prop.size.III.50"] <- prop.size.III.50
+    datos[y,"prop.size.IV.50"] <- prop.size.IV.50
+    datos[y,"prop.size.V.50"] <- prop.size.V.50
+    datos[y,"prop.size.I.60"] <- prop.size.I.60
+    datos[y,"prop.size.II.60"] <- prop.size.II.60
+    datos[y,"prop.size.III.60"] <- prop.size.III.60
+    datos[y,"prop.size.IV.60"] <- prop.size.IV.60
+    datos[y,"prop.size.V.60"] <- prop.size.V.60
+    datos[y,"prop.size.I.70"] <- prop.size.I.70
+    datos[y,"prop.size.II.70"] <- prop.size.II.70
+    datos[y,"prop.size.III.70"] <- prop.size.III.70
+    datos[y,"prop.size.IV.70"] <- prop.size.IV.70
+    datos[y,"prop.size.V.70"] <- prop.size.V.70
+    datos[y,"prop.size.I.80"] <- prop.size.I.80
+    datos[y,"prop.size.II.80"] <- prop.size.II.80
+    datos[y,"prop.size.III.80"] <- prop.size.III.80
+    datos[y,"prop.size.IV.80"] <- prop.size.IV.80
+    datos[y,"prop.size.V.80"] <- prop.size.V.80
+    datos[y,"prop.size.I.90"] <- prop.size.I.90
+    datos[y,"prop.size.II.90"] <- prop.size.II.90
+    datos[y,"prop.size.III.90"] <- prop.size.III.90
+    datos[y,"prop.size.IV.90"] <- prop.size.IV.90
+    datos[y,"prop.size.V.90"] <- prop.size.V.90
+    datos[y,"prop.size.I.100"] <- prop.size.I.100
+    datos[y,"prop.size.II.100"] <- prop.size.II.100
+    datos[y,"prop.size.III.100"] <- prop.size.III.100
+    datos[y,"prop.size.IV.100"] <- prop.size.IV.100
+    datos[y,"prop.size.V.100"] <- prop.size.V.100    
   }
   datos <- data.frame(datos)
   return(datos)
