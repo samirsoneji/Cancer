@@ -283,31 +283,42 @@ scalar.list <- c(0,0.10,0.20)
 scalar.list2 <- c(0,0.10,0.20)
 mx.breast2 <- mx.breast
 mx.breast.cause2 <- mx.breast.cause
-mx.breast2[,"1975",] <- (1-0.65)*mx.breast2[,"1975",] + 0.65*mx.breast2[,"2002",]
-mx.breast.cause2[,,"1975",] <- (1-0.65)*mx.breast.cause2[,,"1975",] + 0.65*mx.breast.cause2[,,"2002",]
-var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000)))
-cisnet.comparison <- cisnet.comparison2 <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
-                        dimnames=list(scalar.list,scalar.list2,var.names))
-for (i in 1:length(scalar.list)){
-  for (j in 1:length(scalar.list2)){
-    tmp <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))
-    cisnet.comparison[i,j,]<- c(unlist(tmp))
-    tmp2 <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000))
-    cisnet.comparison2[i,j,]<- c(unlist(tmp2))
-    print(paste(i,j))
-  }}
+
+reduction <- 0.28
+mx.breast2[,"1975",] <- (1-reduction)*mx.breast2[,"1975",] + reduction*mx.breast2[,"2000",]
+mx.breast.cause2[,,"1975",] <- (1-reduction)*mx.breast.cause2[,,"1975",] + reduction*mx.breast.cause2[,,"2000",]
+tmp0 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))$ex.overall.diff
+tmp1 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000))$ex.overall.diff
+lower <- 100*(tmp0-tmp1)/tmp0
+
+reduction <- 0.65
+mx.breast2[,"1975",] <- (1-reduction)*mx.breast2[,"1975",] + reduction*mx.breast2[,"2000",]
+mx.breast.cause2[,,"1975",] <- (1-reduction)*mx.breast.cause2[,,"1975",] + reduction*mx.breast.cause2[,,"2000",]
+tmp0 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))$ex.overall.diff
+tmp1 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000))$ex.overall.diff
+upper <- 100*(tmp0-tmp1)/tmp0
+
+our.screening.contribution.75.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[4:8])/
+                                              odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[3])
+our.breast.cancer.mort.contribution.75.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[seq(14,22,2)])/
+                                                       odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[3])
+
+our.screening.contribution.88.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[4:8])/
+                                              odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[3])
+our.breast.cancer.mort.contribution.88.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[seq(14,22,2)])/
+                                                       odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[3])
 
 
 ###contribution by age
 age <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
  
 age.scr.results <- c(sum(age[4:8]),
-                 sum(age[9:13+5*0]),
-                 sum(age[9:13+5*1]),
-                 sum(age[9:13+5*2]),
-                 sum(age[9:13+5*3]),
-                 sum(age[9:13+5*4]),
-                 sum(age[9:13+5*5]),
+                     sum(age[9:13+5*0]),
+                     sum(age[9:13+5*1]),
+                     sum(age[9:13+5*2]),
+                     sum(age[9:13+5*3]),
+                     sum(age[9:13+5*4]),
+                     sum(age[9:13+5*5]),
                      sum(age[9:13+5*6]))
 age.cancer.results <- c(sum(age[seq(49,57,2)]),
                         sum(age[seq(59,67,2)]),
@@ -330,3 +341,15 @@ age.results <- rbind(age.results, apply(age.results,2,sum))
 colnames(age.results) <- c("overall","40-49","50-59","60-69","70-79","80-89","90-99","100+")
 rownames(age.results) <- c("screening","cancer mortality","other mortality","total")
 write.csv(age.results, "~/Desktop/Cancer/figures/age.results.csv")
+
+age.scr.results2 <- cbind(c(age[4:8]),
+                          c(age[4:8+5*1]),
+                          c(age[4:8+5*2]),
+                          c(age[4:8+5*3]),
+                          c(age[4:8+5*4]),
+                          c(age[4:8+5*5]),
+                          c(age[4:8+5*6]),
+                          c(age[4:8+5*7]))
+                          
+                          
+                     
