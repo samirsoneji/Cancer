@@ -351,5 +351,11 @@ age.scr.results2 <- cbind(c(age[4:8]),
                           c(age[4:8+5*6]),
                           c(age[4:8+5*7]))
                           
-                          
+###uspstf 15% reduction in breast cancer mortality###
+baseline <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
+mx.breast2 <- mx.breast
+mx.breast.cause2 <- mx.breast.cause
+mx.breast2[,"1975",] <- (1-0.15)*mx.breast2[,"1975",]
+mx.breast.cause2[,,"1975",] <- (1-0.15)*mx.breast.cause2[,,"1975",]                    
+new <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2002))
                      

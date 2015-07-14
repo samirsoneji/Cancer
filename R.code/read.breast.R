@@ -94,6 +94,8 @@ stand.breast <- prop.table(table(breast$age.dx.cat[breast$year==1987]))
 popl <- read.fwf("~/Dropbox/Cancer/Value/data/SEER_data/SEER_1973_2012_TEXTDATA/populations/white_black_other/yr1973_2012.seer9/singleages.txt",
                  widths=c(4,2,2,3,2,1,1,1,2,11))
 names(popl) <- c("year","state","statefips","countyfips","registry","race","origin","sex","age","popl")
+popl$age.cat <- 5*floor(popl$age/5)
+popl$age.cat2 <- 10*floor(popl$age/10)
 
 popl.array <- by(popl$popl,list(popl$year,popl$age,popl$sex), sum)[,as.character(40:85),"2"]
 
@@ -101,6 +103,15 @@ size.counts <- table(breast$year.dx,breast$age.dx, breast$size)
 size.counts <- apply(size.counts, c(1,3), function(x) c(x[1:45],sum(x[46:69])))
 dimnames(size.counts)[[1]] <- 40:85
 size.counts <- aperm(size.counts,c(2,1,3))
+size.counts2 <- apply(size.counts, c(1,3), function(x) c(sum(x[1:5]),sum(x[6:10]),sum(x[11:15]),sum(x[16:20]),
+                                                         sum(x[21:25]),sum(x[26:30]),sum(x[31:35]),sum(x[36:40]),
+                                                         sum(x[41:45]),x[46]))
+dimnames(size.counts2)[[1]] <- seq(40,85,5)
+size.counts2 <- aperm(size.counts2,c(2,1,3))
+size.counts3 <- apply(size.counts, c(1,3), function(x) c(sum(x[1:10]),sum(x[11:20]),sum(x[21:30]),sum(x[36:40]),
+                                                         sum(x[41:46])))
+dimnames(size.counts3)[[1]] <- seq(40,85,10)
+size.counts3 <- aperm(size.counts3,c(2,1,3))
 
 size.rate <- array(NA,dim=dim(size.counts),dimnames=dimnames(size.counts))
 size.rate[,,"<1cm"] <- size.counts[,,"<1cm"]/popl.array
@@ -109,13 +120,27 @@ size.rate[,,"2-3cm"] <- size.counts[,,"2-3cm"]/popl.array
 size.rate[,,"3-5cm"] <- size.counts[,,"3-5cm"]/popl.array
 size.rate[,,"5+cm"] <- size.counts[,,"5+cm"]/popl.array
 
+size.rate2 <- array(NA,dim=dim(size.counts2),dimnames=dimnames(size.counts2))
+size.rate2[,,"<1cm"] <- size.counts2[,,"<1cm"]/by(popl$popl,list(popl$year,popl$age.cat,popl$sex), sum)[,as.character(seq(40,85,5)),"2"]
+size.rate2[,,"1-2cm"] <- size.counts2[,,"1-2cm"]/by(popl$popl,list(popl$year,popl$age.cat,popl$sex), sum)[,as.character(seq(40,85,5)),"2"]
+size.rate2[,,"2-3cm"] <- size.counts2[,,"2-3cm"]/by(popl$popl,list(popl$year,popl$age.cat,popl$sex), sum)[,as.character(seq(40,85,5)),"2"]
+size.rate2[,,"3-5cm"] <- size.counts2[,,"3-5cm"]/by(popl$popl,list(popl$year,popl$age.cat,popl$sex), sum)[,as.character(seq(40,85,5)),"2"]
+size.rate2[,,"5+cm"] <- size.counts2[,,"5+cm"]/by(popl$popl,list(popl$year,popl$age.cat,popl$sex), sum)[,as.character(seq(40,85,5)),"2"]
+
+size.rate3 <- array(NA,dim=dim(size.counts3),dimnames=dimnames(size.counts3))
+size.rate3[,,"<1cm"] <- size.counts3[,,"<1cm"]/by(popl$popl,list(popl$year,popl$age.cat2,popl$sex), sum)[,as.character(seq(40,85,10)),"2"]
+size.rate3[,,"1-2cm"] <- size.counts3[,,"1-2cm"]/by(popl$popl,list(popl$year,popl$age.cat2,popl$sex), sum)[,as.character(seq(40,85,10)),"2"]
+size.rate3[,,"2-3cm"] <- size.counts3[,,"2-3cm"]/by(popl$popl,list(popl$year,popl$age.cat2,popl$sex), sum)[,as.character(seq(40,85,10)),"2"]
+size.rate3[,,"3-5cm"] <- size.counts3[,,"3-5cm"]/by(popl$popl,list(popl$year,popl$age.cat2,popl$sex), sum)[,as.character(seq(40,85,10)),"2"]
+size.rate3[,,"5+cm"] <- size.counts3[,,"5+cm"]/by(popl$popl,list(popl$year,popl$age.cat2,popl$sex), sum)[,as.character(seq(40,85,10)),"2"]
+
 standard <- popl.array["2000",]/sum(popl.array["2000",])
 stand.size.rate <- apply(size.rate, c(1,3), function(x) x%*%standard)
 
 prop.died.breast.all <- apply(table(breast$year.dx,breast$size,breast$dead),c(1,2),function(x) x[["1"]]/sum(x))
 prop.died.breast.breast <- apply(table(breast$year.dx,breast$size,breast$cod3),c(1,2),function(x) x[["breast"]]/sum(x))
 
-save(stand.breast, standard, size.rate, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.breast.age, prop.age, counts.breast.age, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
+save(stand.breast, standard, size.rate, size.rate2, size.rate3, size.counts, popl.array, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.breast.age, prop.age, counts.breast.age, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
 save(breast, file="~/Desktop/Cancer/data/breast.Rdata")
 
 
