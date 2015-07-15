@@ -350,7 +350,12 @@ age.scr.results2 <- cbind(c(age[4:8]),
                           c(age[4:8+5*5]),
                           c(age[4:8+5*6]),
                           c(age[4:8+5*7]))
-                          
+matplot(seq(40,100,10),t(age.scr.results2[,-1]),type="b",lty=1,xlab="age group",ylab="years",las=1,bty="l")
+abline(h=0,col="grey")
+lines(seq(40,100,10),apply(age.scr.results2[,-1],2,function(x) sum(unlist(x))),col="grey",lwd=4)
+
+
+
 ###uspstf 15% reduction in breast cancer mortality###
 baseline <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
 mx.breast2 <- mx.breast
