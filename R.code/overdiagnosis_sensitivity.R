@@ -84,7 +84,7 @@ graph.rates.fxn <- function(scalar, scalar2, categories, categories2, prop, mx, 
  scale <- 100000
  matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=2)
  axis(1,at=seq(1975,2002,9))
- axis(2,las=1,at=seq(0,700,100))
+ axis(2,las=1,at=seq(0,700,10))
  text(year[length(year)-2],scale*stand.size.rate[as.character(year[length(year)]),],paste(c("<1cm","1-2cm","2-3cm","3-5cm","5+cm")),lty=1,col=color,pos=c(3,1,1,1,1))
  
  plot(year,rep(NA,length(year)),axes=FALSE,bty="l",ylim=c(0,100),xlab=NA,ylab=NA)
@@ -125,8 +125,8 @@ graph.rates.fxn <- function(scalar, scalar2, categories, categories2, prop, mx, 
     }
 
 graph.decomp.results.fxn <- function(i,breast.results.sum)
-  {name <- 100*as.numeric(names(breast.results.sum)[[i]])
-   summary.breast <- breast.results.sum[[i]]
+  {name <- i
+   summary.breast <- breast.results.sum
    width <- 0.3
     pdf(paste("~/Desktop/Cancer/figures/decomp_breast_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
    par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
@@ -231,7 +231,6 @@ for (i in 1:length(scalar.list)){
     print(paste(i,j))
   }}
 
-
 ex.overall.diff <- data.frame(cbind(expand.grid(dimnames(breast.results)[1:2]),c(breast.results[,,"ex.overall.diff"])))
 colnames(ex.overall.diff) <- c("scalar1","scalar2","value")
 
@@ -268,11 +267,9 @@ print(plot.ex,position=c(0,0.5,1,1),more=TRUE)
 print(plot.size.cancer.other,position=c(0,0,1,0.5))
 dev.off()
 
-
-## breast.results.sum <- lapply(breast.results,summary.fxn)
-## names(breast.results.sum) <- scalar.list
-## for (i in 1:length(scalar.list))
-##   graph.decomp.results.fxn(i,breast.results.sum)
+###main analysis (10% overdiagnosis)###
+breast.results.sum10 <- summary.fxn(breast.results["0.1","0.1",])
+graph.decomp.results.fxn("10",breast.results.sum10)
 
 ## graph.decomp.results.fxn2(1,breast.results.sum)
 ## overdiagnosis.fxn(breast.results.sum,"small",overdiagnosis=FALSE)
@@ -311,7 +308,6 @@ our.breast.cancer.mort.contribution.88.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1
 
 ###contribution by age
 age <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
- 
 age.scr.results <- c(sum(age[4:8]),
                      sum(age[9:13+5*0]),
                      sum(age[9:13+5*1]),
@@ -354,6 +350,31 @@ matplot(seq(40,100,10),t(age.scr.results2[,-1]),type="b",lty=1,xlab="age group",
 abline(h=0,col="grey")
 lines(seq(40,100,10),apply(age.scr.results2[,-1],2,function(x) sum(unlist(x))),col="grey",lwd=4)
 
+age2020 <- odx.age.fxn(0.20, 0.20, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
+age2020.scr.results <- c(sum(age2020[4:8]),
+                     sum(age2020[9:13+5*0]),
+                     sum(age2020[9:13+5*1]),
+                     sum(age2020[9:13+5*2]),
+                     sum(age2020[9:13+5*3]),
+                     sum(age2020[9:13+5*4]),
+                     sum(age2020[9:13+5*5]),
+                     sum(age2020[9:13+5*6]))
+age2020.cancer.results <- c(sum(age2020[seq(49,57,2)]),
+                        sum(age2020[seq(59,67,2)]),
+                        sum(age2020[seq(69,77,2)]),
+                        sum(age2020[seq(79,87,2)]),
+                        sum(age2020[seq(89,97,2)]),
+                        sum(age2020[seq(99,107,2)]),
+                        sum(age2020[seq(109,117,2)]),
+                        sum(age2020[seq(119,127,2)]))
+age2020.other.results <- c(sum(age2020[seq(50,58,2)]),
+                       sum(age2020[seq(60,68,2)]),
+                       sum(age2020[seq(70,78,2)]),
+                       sum(age2020[seq(80,88,2)]),
+                       sum(age2020[seq(90,98,2)]),
+                       sum(age2020[seq(100,108,2)]),
+                       sum(age2020[seq(110,118,2)]),
+                       sum(age2020[seq(120,128,2)]))
 
 
 ###uspstf 15% reduction in breast cancer mortality###
@@ -364,3 +385,30 @@ mx.breast2[,"1975",] <- (1-0.15)*mx.breast2[,"1975",]
 mx.breast.cause2[,,"1975",] <- (1-0.15)*mx.breast.cause2[,,"1975",]                    
 new <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2002))
                      
+prop.breast.age <- array(NA,dim=c(dim(prop.breast),7))
+dimnames(prop.breast.age) <- list(dimnames(prop.breast)[[1]],dimnames(prop.breast)[[2]],seq(40,100,10))
+for (i in 1:dim(prop.breast.age)[1]) {
+    for (j in 1:dim(prop.breast.age)[2]) {
+        prop.breast.age[i,j,] <- prop.breast[i,j] * counts.breast.age[i,j,]/sum(counts.breast.age[i,j,])
+    }}
+prop.breast.age2 <- apply(prop.breast.age,c(1,2),cumsum)
+
+year <- 1975:2002
+size.title <- c("I","II","III","IV","V")
+pdf("~/Desktop/Cancer/figures/breast_prop_age.pdf", height=5.5, width=11, paper="special")
+par(mfrow=c(1,2),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=1,cex.main=1)
+for (s in 1:5) {
+    plot(year,prop.breast[3:30,s],bty="l",xlab="year",ylab="percentage",las=1,type="l",lwd=3,ylim=c(0,max(prop.breast[3:30,])))
+    polygon(c(year,rev(year)),c(rep(0,length(year)),rev(prop.breast.age2[1,3:30,s])),col=1,border=NA)
+    polygon(c(year,rev(year)),c(prop.breast.age2[1,3:30,s],rev(prop.breast.age2[2,3:30,s])),col=2,border=NA)
+    polygon(c(year,rev(year)),c(prop.breast.age2[2,3:30,s],rev(prop.breast.age2[3,3:30,s])),col=3,border=NA)
+    polygon(c(year,rev(year)),c(prop.breast.age2[3,3:30,s],rev(prop.breast.age2[4,3:30,s])),col=4,border=NA)
+    polygon(c(year,rev(year)),c(prop.breast.age2[4,3:30,s],rev(prop.breast.age2[5,3:30,s])),col=5,border=NA)
+    polygon(c(year,rev(year)),c(prop.breast.age2[5,3:30,s],rev(prop.breast.age2[6,3:30,s])),col=6,border=NA)
+    polygon(c(year,rev(year)),c(prop.breast.age2[6,3:30,s],rev(prop.breast.age2[7,3:30,s])),col=7,border=NA)
+    title(paste("cumulative, size: ",size.title[s]))
+    matplot(year,prop.breast.age[3:30,s,],ylim=c(0,max(prop.breast.age[3:30,,])),bty="l",xlab="year",ylab="percentage",las=1,type="b",cex=0.75,lty=1,pch=as.character(c(4:9,0)))
+    title(paste("individual, size: ",size.title[s]))
+    grid(lty=1)
+}
+dev.off()    

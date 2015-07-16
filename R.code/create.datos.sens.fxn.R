@@ -9,7 +9,7 @@ create.datos.sens.fxn <- function(mx, prop, year.list) {
     mx.size.II <- c(rep(0,9),mx[,as.character(year.list[y]),2])
     mx.size.III <- c(rep(0,9),mx[,as.character(year.list[y]),3])
     mx.size.IV <- c(rep(0,9),mx[,as.character(year.list[y]),4])
-    mx.size.V <- c(rep(0,9),mx[,as.character(year.list[y]),4])
+    mx.size.V <- c(rep(0,9),mx[,as.character(year.list[y]),5])
     mx.size.I[which(is.na(mx.size.I)==TRUE)] <- 0
     mx.size.II[which(is.na(mx.size.II)==TRUE)] <- 0 
     mx.size.III[which(is.na(mx.size.III)==TRUE)] <- 0
@@ -65,7 +65,7 @@ create.datos.age.sens.fxn <- function(mx, prop, counts, year.list) {
     mx.size.II <- c(rep(0,9),mx[,as.character(year.list[y]),2])
     mx.size.III <- c(rep(0,9),mx[,as.character(year.list[y]),3])
     mx.size.IV <- c(rep(0,9),mx[,as.character(year.list[y]),4])
-    mx.size.V <- c(rep(0,9),mx[,as.character(year.list[y]),4])
+    mx.size.V <- c(rep(0,9),mx[,as.character(year.list[y]),5])
     mx.size.I[which(is.na(mx.size.I)==TRUE)] <- 0
     mx.size.II[which(is.na(mx.size.II)==TRUE)] <- 0 
     mx.size.III[which(is.na(mx.size.III)==TRUE)] <- 0
@@ -80,7 +80,7 @@ create.datos.age.sens.fxn <- function(mx, prop, counts, year.list) {
     ex.size.II <- lifetab.grad.nax.nLxappr(nMx=mx.size.II, Rdx=1)$ex[10]
     ex.size.III <- lifetab.grad.nax.nLxappr(nMx=mx.size.III, Rdx=1)$ex[10]
     ex.size.IV <- lifetab.grad.nax.nLxappr(nMx=mx.size.IV, Rdx=1)$ex[10]
-     ex.size.V <- lifetab.grad.nax.nLxappr(nMx=mx.size.V, Rdx=1)$ex[10]
+    ex.size.V <- lifetab.grad.nax.nLxappr(nMx=mx.size.V, Rdx=1)$ex[10]
     prop.size.I <- prop[as.character(year.list[y]),1]
     prop.size.II <- prop[as.character(year.list[y]),2]
     prop.size.III <- prop[as.character(year.list[y]),3]
