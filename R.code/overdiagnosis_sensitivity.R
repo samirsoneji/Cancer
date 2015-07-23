@@ -218,9 +218,10 @@ overdiagnosis.fxn <- function(breast.results,name,scalar.list,overdiagnosis=FALS
     dev.off()
 }
 
+
+###main analysis (10% overdiagnosis)###
 scalar.list <- c(0,0.10,0.20)#seq(0.00,0.99,0.05)
 scalar.list2 <- c(0,0.10,0.20)#seq(0.00,0.31,0.05)
-
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
@@ -232,43 +233,6 @@ for (i in 1:length(scalar.list)){
     print(paste(i,j))
   }}
 
-ex.overall.diff <- data.frame(cbind(expand.grid(dimnames(breast.results)[1:2]),c(breast.results[,,"ex.overall.diff"])))
-colnames(ex.overall.diff) <- c("scalar1","scalar2","value")
-
-size <- data.frame(cbind(expand.grid(dimnames(breast.results)[1:2]),c(apply(breast.results[,,4:8],c(1,2),sum))))
-colnames(size) <- c("scalar1","scalar2","contribution")
-size$variable <- "B. Tumor Size"
-mort.cancer <- data.frame(cbind(expand.grid(dimnames(breast.results)[1:2]),c(apply(breast.results[,,seq(14,22,2)],c(1,2),sum))))
-colnames(mort.cancer) <- c("scalar1","scalar2","contribution")
-mort.cancer$variable <- "C. Fatality, Breast Cancer"
-mort.other <- data.frame(cbind(expand.grid(dimnames(breast.results)[1:2]),c(apply(breast.results[,,seq(15,23,2)],c(1,2),sum))))
-colnames(mort.other) <- c("scalar1","scalar2","contribution")
-mort.other$variable <- "D. Fatality, Other"
-size.cancer.other <- rbind(size,mort.cancer,mort.other)
-minz <- min(size.cancer.other$contribution)
-maxz <- max(size.cancer.other$contribution)
-
-my.col <- rev(colorRampPalette(brewer.pal(11, "RdBu"))(100))
-my.col2 <- colorRampPalette(brewer.pal(9, "Greys"))(100)
-
-plot.ex <- levelplot(value~scalar1*scalar2,data=ex.overall.diff,
-                     at=seq(min(ex.overall.diff[,3]),max(ex.overall.diff[,3]),length=100),
-                     col.regions=my.col2,
-                     xlab="% Overdiagnosis, <1cm",
-                     ylab="% Overdiagnosis, 1-2cm & 2-3cm")
-plot.size.cancer.other <- levelplot(contribution~scalar1*scalar2|variable,data=size.cancer.other,
-                                    at=seq(minz,maxz,length=100),col.regions=my.col,
-                                    layout=c(3,1),
-                                    xlab="% Overdiagnosis, <1cm",
-                                    ylab="% Overdiagnosis, 1-2cm & 2-3cm")
-
-pdf("~/Desktop/Cancer/figures/overdiagnosis_lattice.pdf", height=8.5, width=11, paper="special")
-par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
-print(plot.ex,position=c(0,0.5,1,1),more=TRUE)
-print(plot.size.cancer.other,position=c(0,0,1,0.5))
-dev.off()
-
-###main analysis (10% overdiagnosis)###
 breast.results.sum10 <- summary.fxn(breast.results["0.1","0.1",])
 graph.decomp.results.fxn("10",breast.results.sum10)
 
@@ -285,6 +249,58 @@ for (i in 1:length(scalar.list)){
     print(paste(i,j))
   }}
 overdiagnosis.fxn(breast.results.sens,"sens",scalar.list,overdiagnosis=FALSE) 
+
+## sensitivity analysis varying overdiagnosis level from 0% to 90% (<1cm) and 0% to 31% (1-2cm, and 2-3cm)
+scalar.list <- seq(0,0.90,0.01)
+scalar.list2 <- seq(0,0.31,0.01)
+var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
+breast.results.sens2 <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
+                        dimnames=list(scalar.list,scalar.list2,var.names))
+for (i in 1:length(scalar.list)){
+  for (j in 1:length(scalar.list2)){
+       tmp <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
+       breast.results.sens2[i,j,]<- c(unlist(tmp))
+    print(paste(i,j))
+  }}
+ex.overall.diff <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(breast.results.sens2[,,"ex.overall.diff"])))
+colnames(ex.overall.diff) <- c("scalar1","scalar2","value")
+
+size <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(apply(breast.results.sens2[,,4:8],c(1,2),sum))))
+colnames(size) <- c("scalar1","scalar2","contribution")
+size$variable <- "B. Tumor Size"
+mort.cancer <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(apply(breast.results.sens2[,,seq(14,22,2)],c(1,2),sum))))
+colnames(mort.cancer) <- c("scalar1","scalar2","contribution")
+mort.cancer$variable <- "C. Fatality, Breast Cancer"
+mort.other <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(apply(breast.results.sens2[,,seq(15,23,2)],c(1,2),sum))))
+colnames(mort.other) <- c("scalar1","scalar2","contribution")
+mort.other$variable <- "D. Fatality, Other"
+size.cancer.other <- rbind(size,mort.cancer,mort.other)
+minz <- min(size.cancer.other$contribution)
+maxz <- max(size.cancer.other$contribution)
+
+my.col <- rev(colorRampPalette(brewer.pal(11, "RdBu"))(100))
+my.col2 <- colorRampPalette(brewer.pal(9, "Greys"))(100)
+
+plot.ex <- levelplot(value~scalar1*scalar2,data=ex.overall.diff,
+                     at=seq(min(ex.overall.diff[,3]),max(ex.overall.diff[,3]),length=100),
+                     scales=list(x=list(at=seq(0,100,10),labels=seq(0,100,10)),
+                                 y=list(at=seq(0,100,10),labels=seq(0,100,10))),
+                     col.regions=my.col2,
+                     xlab="% Overdiagnosis, <1cm",
+                     ylab="% Overdiagnosis, 1-2cm & 2-3cm")
+plot.size.cancer.other <- levelplot(contribution~scalar1*scalar2|variable,data=size.cancer.other,
+                                    at=seq(minz,maxz,length=100),col.regions=my.col,
+                                    layout=c(3,1),
+                                    scales=list(x=list(at=seq(0,100,10),labels=seq(0,100,10)),
+                                 y=list(at=seq(0,100,10),labels=seq(0,100,10))),
+                                    xlab="% Overdiagnosis, <1cm",
+                                    ylab="% Overdiagnosis, 1-2cm & 2-3cm")
+
+pdf("~/Desktop/Cancer/figures/overdiagnosis_lattice.pdf", height=8.5, width=11, paper="special")
+par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
+print(plot.ex,position=c(0,0.5,1,1),more=TRUE)
+print(plot.size.cancer.other,position=c(0,0,1,0.5))
+dev.off()
 
 
 ###CISNET Comparison
