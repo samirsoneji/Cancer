@@ -185,21 +185,22 @@ mtext("Years",side=2,line=0,outer=TRUE,at=1/2,cex=2)
 dev.off()
 }
 
-overdiagnosis.fxn <- function(breast.results.sum,name,overdiagnosis=FALSE) {
-    total.le <- unlist(lapply(breast.results.sum,function(x) x[[1]]))
-    change.size <- unlist(lapply(breast.results.sum,function(x) sum(unlist(x[2:6]))))
-    change.cancer.mort <- unlist(lapply(breast.results.sum,function(x) sum(unlist(x[7:11]))))
-    change.other.mort <- unlist(lapply(breast.results.sum,function(x) x[[12]]))
+overdiagnosis.fxn <- function(breast.results,name,scalar.list,overdiagnosis=FALSE) {
+    total.le <- diag(breast.results[,,"ex.overall.diff"])
+    change.size <- diag(apply(breast.results,c(1,2),function(x) sum(unlist(x[4:8]))))
+    change.cancer.mort <- diag(apply(breast.results,c(1,2),function(x) sum(unlist(x[seq(14,22,2)]))))
+    change.other.mort <- diag(apply(breast.results,c(1,2),function(x) sum(unlist(x[seq(14,22,2)+1]))))
     last <- length(scalar.list)
     middle <- round(last/2)
-    pdf(paste("~/Desktop/Cancer/figures/sensitity_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
+    pdf(paste("~/Desktop/Cancer/figures/sensitivity_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
     par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
-    plot(scalar.list,total.le,bty="l",ylab="",xlab="",type="l",lwd=5,las=1,ylim=c(0,max(unlist(total.le))),axes=FALSE)
+    plot(scalar.list,change.size+change.cancer.mort+change.other.mort,bty="l",ylab="",xlab="",type="l",lwd=5,las=1,ylim=c(0,max(unlist(total.le))),axes=FALSE)
     axis(1,at=scalar.list[seq(1,last,2)],paste(100*scalar.list[seq(1,last,2)]))
     axis(2,at=seq(0,20,1),las=1)
     polygon(c(scalar.list,rev(scalar.list)),c(rep(0,length(scalar.list)),rev(change.size)),col=brewer.pal(3,"Reds")[3],border=brewer.pal(3,"Reds")[3])
     polygon(c(scalar.list,rev(scalar.list)),c(change.size,rev(change.size+change.cancer.mort)),col=brewer.pal(9,"YlGnBu")[6],border=brewer.pal(9,"YlGnBu")[6])
     polygon(c(scalar.list,rev(scalar.list)),c(change.size+change.cancer.mort,rev(change.size+change.cancer.mort+change.other.mort)),col="darkgrey",border="darkgrey")
+    lines(scalar.list,change.size+change.cancer.mort+change.other.mort,lwd=5)
     if (overdiagnosis==TRUE) {
       polygon(c(scalar.list,rev(scalar.list)),c(change.size+change.cancer.mort+change.other.mort,rev(rep(total.le[1],length(scalar.list)))),col="black",border="black")
       text(scalar.list[middle],total.le[middle]+0.35,"Overdiagnosis",col="white",srt=-4,pos=4)
@@ -212,7 +213,7 @@ overdiagnosis.fxn <- function(breast.results.sum,name,overdiagnosis=FALSE) {
     text(scalar.list[middle],change.size[middle]/2,"Tumor Size",col="white")
     text(scalar.list[middle],change.size[middle]+change.cancer.mort[middle]/2,"Breast Cancer Fatality",col="white")
     text(scalar.list[middle],change.size[middle]+change.cancer.mort[middle]+change.other.mort[middle]/2,"Other Cause Fatality",col="white",srt=-4)
-    mtext("Years",side=2,line=-1,outer=TRUE,at=1/2,cex=2)
+    mtext("Gain in Life Expectancy (Years)",side=2,line=-1,outer=TRUE,at=1/2,cex=2)
     mtext("% Overdiagnosed",side=1,line=-1,outer=TRUE,at=1/2,cex=2)
     dev.off()
 }
@@ -271,9 +272,20 @@ dev.off()
 breast.results.sum10 <- summary.fxn(breast.results["0.1","0.1",])
 graph.decomp.results.fxn("10",breast.results.sum10)
 
-## graph.decomp.results.fxn2(1,breast.results.sum)
-## overdiagnosis.fxn(breast.results.sum,"small",overdiagnosis=FALSE)
-## overdiagnosis.fxn(breast.results.sum,"small_overdiagnosis",overdiagnosis=TRUE)
+## sensitivity analysis varying overdiagnosis level from 0% to 31% (<=3cm, equal level for <1cm, 1-2cm, and 2-3cm)
+scalar.list <- seq(0,0.31,0.01)
+scalar.list2 <- seq(0,0.31,0.01)
+var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
+breast.results.sens <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
+                        dimnames=list(scalar.list,scalar.list2,var.names))
+for (i in 1:length(scalar.list)){
+  for (j in 1:length(scalar.list2)){
+       tmp <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
+       breast.results.sens[i,j,]<- c(unlist(tmp))
+    print(paste(i,j))
+  }}
+overdiagnosis.fxn(breast.results.sens,"sens",scalar.list,overdiagnosis=FALSE) 
+
 
 ###CISNET Comparison
 scalar.list <- c(0,0.10,0.20)
