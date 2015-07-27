@@ -99,6 +99,7 @@ popl$age.cat2 <- 10*floor(popl$age/10)
 
 popl.array <- by(popl$popl,list(popl$year,popl$age,popl$sex), sum)[,as.character(40:85),"2"]
 
+size.counts0 <- table(breast$year.dx,breast$size)
 size.counts <- table(breast$year.dx,breast$age.dx, breast$size)
 size.counts <- apply(size.counts, c(1,3), function(x) c(x[1:45],sum(x[46:69])))
 dimnames(size.counts)[[1]] <- 40:85
@@ -113,6 +114,8 @@ size.counts3 <- apply(size.counts, c(1,3), function(x) c(sum(x[1:10]),sum(x[11:2
 dimnames(size.counts3)[[1]] <- seq(40,85,10)
 size.counts3 <- aperm(size.counts3,c(2,1,3))
 
+size.rate0 <- size.counts0/by(popl$popl,list(popl$year,popl$sex), sum)[,"2"]
+  
 size.rate <- array(NA,dim=dim(size.counts),dimnames=dimnames(size.counts))
 size.rate[,,"<1cm"] <- size.counts[,,"<1cm"]/popl.array
 size.rate[,,"1-2cm"] <- size.counts[,,"1-2cm"]/popl.array
