@@ -57,6 +57,7 @@ odx.age.fxn <- function(scalar, scalar2, categories, categories2, prop, counts, 
   res <- results.age.fxn(mx,mx.cause,prop.adj,counts,cancer,year.list)
   return(res)
 }
+
 summary.fxn <- function(x)
     c(x[3],x[4],x[5],x[6],x[7],x[8],x[14],x[16],x[18],x[20],x[22],sum(x[seq(15,23,2)]))
 

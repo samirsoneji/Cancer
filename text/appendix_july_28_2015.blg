@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: appendix_july_28_2015.aux
+The style file: asa.bst
+Database file #1: cancer.bib
+You've used 2 entries,
+            2777 wiz_defined-function locations,
+            645 strings with 5082 characters,
+and the built_in function-call counts, 972 in all, are:
+= -- 89
+> -- 38
+< -- 1
++ -- 16
+- -- 12
+* -- 90
+:= -- 176
+add.period$ -- 4
+call.type$ -- 2
+change.case$ -- 12
+chr.to.int$ -- 2
+cite$ -- 2
+duplicate$ -- 40
+empty$ -- 73
+format.name$ -- 16
+if$ -- 187
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 2
+newline$ -- 11
+num.names$ -- 8
+pop$ -- 10
+preamble$ -- 1
+purify$ -- 12
+quote$ -- 0
+skip$ -- 26
+stack$ -- 0
+substring$ -- 80
+swap$ -- 8
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 18
+warning$ -- 0
+while$ -- 8
+width$ -- 0
+write$ -- 26
