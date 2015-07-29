@@ -129,7 +129,7 @@ mtext("C. Size-Specific Life Expectancy",side=3,line=0,outer=TRUE,at=5/8,cex=1)
 dev.off()
 
 
-pdf("~/Desktop/Cancer/results/example_decomp4.pdf", height=5.5, width=11, paper="special")
+postscript("~/Desktop/Cancer/text/appendix_figure1.ps", height=5.5, width=11, paper="special")
 par (mfrow=c(1,4),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.5,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
 
 stage[,2] <- stage[,1]
