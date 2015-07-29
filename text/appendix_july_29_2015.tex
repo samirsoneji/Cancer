@@ -147,69 +147,78 @@ a competing cause of death.  This entire cohort lived a total of
 5099.5 person-years over the 10-year period.  Thus, the
 incidence-based case fatality rate from breast cancer equaled
 22/5099.5 and the incidence-based case fatality rate from competing
-causes of death equaled 107/5099.5.
+causes of death equaled 107/5099.5.  Also, the proportion of women
+diagnosed with <1cm breast cancer in 2001 equaled 4,602 out of 19,029
+newly diagnosed breast cancers (24.2\%).
 
 \section{Adjustment for Overdiagnosis}
-Suppose 10\% of the 556 women aged 65-69 years old diagnosed with <1cm
+Suppose 10\% of the 556 women aged 65-69 years old diagnosed with $<1$cm
 breast cancer in 2001 were overdiagnosed, the observed case fatality
-rate from breast cancer (22/11,591) would become 22/[11,591 -
-0.10*11,591].  Formally, let $\mathcal{A}$ be a set of age intervals
-(e.g., 40-44 years, \dots, $\geq$100 years), $\mathcal{T}$ be a set of
+rate from breast cancer (22/5099.5) would become 22/[5099.5 -
+0.10*5099.5].  Formally, let $\mathcal{A}$ be a set of starting ages
+for age intervals analyzed (e.g., 40, 45, \dots, $\omega=100$ years), $\mathcal{T}$ be a set of
 years (e.g., 1975, \dots 2002), and $\mathcal{S}$ be a set of tumor
-sizes at diagnosis(e.g., $<1$ cm, 1-2 cm, 2-3 cm, 3-5 cm, and 5+ cm).
+sizes at diagnosis (e.g., $<1$ cm, 1-2 cm, 2-3 cm, 3-5 cm, and 5+ cm).
 Let $\alpha_s$ represent the assummed level of overdiagnosis for tumor
 size $s\in\mathcal{S}$.  Let $m_{a,t,s}$ represent the observed case
 fatality rate for age group $a \in \mathcal{A}$, year $t \in
 \mathcal{T}$, and tumor size $s \in \mathcal{S}$.  Then, the case
-fatality rate adjusted for overdiagnosis, $m^*_{a,t,s}$ equals,
+fatality rate adjusted for overdiagnosis, $m^*_{a,t,s}$, equals,
 $\frac{1}{1-\alpha_s} \times m_{a,t,s}$.
 
 \section{Schematic Representation of the Methodology}
 For simplicity, consider three mutually exclusive and exhaustive
 categories of tumor size: 1, 2, and 3 (e.g., $<$1cm, 1-2cm, and
 $\geq$2cm).  Suppose the distribution of tumor size at cancer
-diagnosis remains constant between times 1 and 2
-(Figure~\ref{fig:simple_case}, Panel A), tumor size-specific case
-fatality rates from breast cancer decrease between times 1 and 2
-(Figure~\ref{fig:simple_case}, Panel B), and tumor size-specific case
-fatality rates from competing causes of death remain constant between
-times 1 and 2 (Figure~\ref{fig:simple_case}, Panel B).  Tumor
-size-specific life expectancy increases between times 1 and 2 because
-tumor size-specific case fatality rates from breast cancer decreased
-over the time period (Figure~\ref{fig:simple_case}, Panel C).  Overall
-life expectancy at each time equals the weighted average of tumor
+diagnosis remained constant between times 1 and 2 (Supplemental
+Figure~\ref{fig:simple_case}, Panel A), tumor size-specific case
+fatality rates from breast cancer decreased between times 1 and 2
+(Supplemental Figure~\ref{fig:simple_case}, Panel B), and tumor
+size-specific case fatality rates from competing causes of death
+remained constant between times 1 and 2 (Supplemental
+Figure~\ref{fig:simple_case}, Panel B).  Tumor size-specific life
+expectancy increased between times 1 and 2 because tumor size-specific
+case fatality rates from breast cancer decreased over the time period
+(Supplemental Figure~\ref{fig:simple_case}, Panel C).  Overall life
+expectancy at each time equals the weighted average of tumor
 size-specific life expectancy, where the weights equal the
 distribution of tumor sizes at cancer diagnosis at times 1 and 2,
 respectively.  Overall life expectancy grew between times 1 and 2, and
 this gain was entirely due to decreases in tumor size-specific case
-fatality rates from breast cancer (Figure~\ref{fig:simple_case}, Panel
-D).  In actuality, all three aforementioned factors change over time
-and contribute to the gain in life expectancy.  We quantify the
-individual contribution of each of these three constituent components.
-We also utilize the same demographic method to further disaggregate
-these three contributions by age group.
+fatality rates from breast cancer (Supplemental
+Figure~\ref{fig:simple_case}, Panel D).  In actuality, all three
+aforementioned factors change over time and contribute to the gain in
+life expectancy.  We quantify the individual contribution of each of
+these three constituent components.  We also utilize the same
+demographic method to further disaggregate these three contributions
+by age group in Section~\ref{sec:age}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[trim=0 220 0 0,clip,width=\linewidth]{appendix_figure1}
-\spacingset{1}\caption{Changes in the gain in life expectancy depend on three factors: (A) Changes in the tumor size distribution at cancer diagnosis, (B) tumor size-specific case fatality rates from breast cancer, and (C) tumor size-specific life expectancy.} 
+\spacingset{1}\caption{The gain in life expectancy depends
+  on three factors: (A) changes in the tumor size distribution at
+  cancer diagnosis, (B) changes in tumor size-specific case fatality rates from
+  breast cancer, and (C) changes in tumor size-specific case fatality rates from
+  competing causes of death.}
 \label{fig:simple_case}
 \end{center}
 \end{figure}
 
 \section{Decomposition by Tumor Size and Case Fatality Rates from
   Breast Cancer and Other Causes of Death}
-Let $\pi_s(t)$ and $e_s(a,t)$ be the proportion of patients and the
-life expectancy for cancer patients with tumor size $s$,
-at age $a$, and at time $t$. That is, $e_s(a,t)$ represents tumor size-specific life
-expectancy. The overall life expectancy at age $a$ time $t$ is given
-by
+Let $\pi_s(t)$ equal the proportion of breast cancer patients
+diagnosed with tumor size $s$ in year $t$.  \textcolor{blue}{Hiram --
+  can we define life expectancy as a function of case-fatality rates
+  (m from section B)}.  Let $e_s(a,t)$ equal the
+tumor size-specific life expectancy at age $a$. The overall life
+expectancy at age $a$ and time $t$, $e(a,t)$, equals:
 \begin{eqnarray}
-  e(a,t)=\sum_{s\in\mathcal{S}}\,\pi_s(t)\,e_s(a,t) \notag
+  e(a,t)=\sum_{s\in\mathcal{S}}\,\pi_s(t)\,e_s(a,t), \notag
 \end{eqnarray}
 where $\sum_{s\in\mathcal{S}}\,\pi_s=1$. 
 
 The change in life expectancy at age $a$ between times $t_1$ and $t_2$
-by tumor sizes can be decomposed using the methodology of \cite{Kitagawa55}:
+can be decomposed using the methodology of \cite{Kitagawa55}:
 \begin{align}
   e(a,t_2)-e(a,t_1)&=\sum_{s\in\mathcal{S}}\left[\,\pi_s(t_2)\,e_s(a,t_2)- \pi_s(t_1)\,e_s(a,t_1)\right]  \notag\\
   \hspace{-0.7in} &=\sum_{s\in\mathcal{S}}\left[\pi_s(t_2)-\pi_s(t_1)
@@ -227,26 +236,24 @@ in tumor-size-specific life expectancy (second term).
 We can further decompose the second term of
 equation~\ref{eqn:decomp.basic} by cause of death. In doing so, we can
 quantify how much of this change in tumor-size-specific cancer life
-expectancy, $e_s(a,t_2)-e_s(a,t_1)$, is due to improvements in cancer
-mortality and competing causes of death.  Let $\mathcal{C}$ be a set
-of mutually exclusive and exhaustive causes of death (e.g., breast
-cancer and all other causes).  Let $L_{a,s,c}(t)$ represent the
-person-years lived in the life table based on the case fatality rate
-at age $a$, for tumor size $s$, from cause $c\in\mathcal{C}$, at time $t$.
-Similarly, let $L_{a,s,-c}(t)$ represent the
-person-years lived in the life table based on the case fatality rate
-at age $a$, for tumor size $s$, and from causes other than $c$ ($-c$),
-at time $t$.  Then, following the approach developed by \cite{BelPreCan08},
+expectancy, $e_s(a,t_2)-e_s(a,t_1)$, is due to improvements in case
+fatality rates from breast cancer and improvements in case fatality
+rates from  competing causes of death.  Let $\mathcal{C}$ be a set of
+mutually exclusive and exhaustive causes of death (e.g., breast cancer
+and all other causes).  Let $L_{a,s,c}(t)$ represent the person-years
+lived in the life table based on the case fatality rate at age $a$,
+for tumor size $s$, from cause $c\in\mathcal{C}$, and at time $t$.
+Similarly, let $L_{a,s,-c}(t)$ represent the person-years lived in the
+life table based on the case fatality rate at age $a$, for tumor size
+$s$, and from causes other than $c$ ($-c$), and at time $t$.  Let $a^*$ be
+the first starting age of $\mathcal{A}$.  Then, following the approach
+developed by \cite{BelPreCan08},
 \begin{eqnarray}
-e_s(a,t_2)-e_s(a,t_1)=\sum_{c\in\mathcal{C}} \sum_{a\in\mathcal{A}}\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right],
+e_s(a^*,t_2)-e_s(a^*,t_1)= \sum_{c\in\mathcal{C}}\sum_{a=a^*}^\omega \left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right],
 \label{eqn:causedecomp}
 \end{eqnarray}
-where $n$ is the width of the age interval.
-
-\textcolor{blue}{Samir: I don't think we can simplify the second summation by stating that $a\in\mathcal{A}$. The reason is that we are decomposition life exp at age $a$, so this summation must start at this age and end at $\omega$.  I think we need to use another letter to index the summation; something like
-\begin{eqnarray}
-e_s(a,t_2)-e_s(a,t_1)= \sum_{c\in\mathcal{C}}\sum_{x=a}^\omega \left[L_{x,s,c}(t_2)-L_{x,s,c}(t_1) \right] \left[\frac{L_{x,s,-c}(t_2)+L_{x,s,-c}(t_1) }{2n} \right] \notag
-\end{eqnarray} }
+where $n$ is the width of the age interval and $\omega$ is the
+starting age of the final and open-ended age interval.
 
 We perform the decomposition starting at age 40; the final
 decomposition equation equals:
@@ -254,12 +261,13 @@ decomposition equation equals:
   e(40,t_2)-e(40,t_1)&=\sum_{s\in\mathcal{S}}\left[\,\pi_s(t_2)\,e_s(40,t_2)- \pi_s(t_1)\,e_s(40,t_1)\right] \notag \\
                      &=\sum_{s\in\mathcal{S}}\left[\pi_s(t_2)-\pi_s(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[\mathtt{Diff_e} \right]\left[\frac{\pi_s(t_1)+\pi_s(t_2)}{2}\right],
 \end{align*}
-where $\mathtt{Diff_e}$ is given by \eqref{eqn:causedecomp} evaluated at $a=40$.\\
+where $\mathtt{Diff_e}$ is given by \eqref{eqn:causedecomp} evaluated at $a^*=40$.\\
 
 
 \section{Decomposition by Tumor Size, Case Fatality Rates from
   Breast Cancer and Other Causes of Death, and Age Group}
-Let $\pi_{s}(t)$ be the proportion of cancer patients with tumor size
+\label{sec:age}
+As previously defined $\pi_{s}(t)$ equals the proportion of cancer patients with tumor size
 $s$ in year $t$. This proportion can also be computed by age group
 such that $\pi_s(t)=\sum_{a\in\mathcal{A}}\pi_{s,a}(t)$ and
 $\sum_{s\in\mathcal{S}}\,\pi_s=1$.  Then, the
@@ -268,11 +276,11 @@ be estimated as:
 \begin{align*}
   e(40,t_2)-e(40,t_1)&=\sum_{s\in\mathcal{S}}\left[\,\pi_s(t_2)\,e_s(40,t_2)- \pi_s(t_1)\,e_s(40,t_1)\right] \\
                      &=\sum_{s\in\mathcal{S}} \left[\sum_{a\in\mathcal{A}}\pi_{s,a}(t_2)\,e_s(40,t_2)- \sum_{a\in\mathcal{A}}\pi_{s,a}(t_1)\,e_s(40,t_1) \right]\\
-                     &=\sum_{s\in\mathcal{S}}\left[\pi_{i,1}(t_2)\,e_s(40,t_2)-
-                       \pi_{i,1}(t_1)\,e_s(40,t_1)\right] +\\
-                     &\hspace{0.18in}\sum_{s\in\mathcal{S}}\left[\pi_{i,2}(t_2)\,e_s(40,t_2)- \pi_{i,2}(t_1)\,e_s(40,t_1)\right] + \\
+                     &=\sum_{s\in\mathcal{S}}\left[\pi_{s,40}(t_2)\,e_s(40,t_2)-
+                       \pi_{s,40}(t_1)\,e_s(40,t_1)\right] +\\
+                     &\hspace{0.18in}\sum_{s\in\mathcal{S}}\left[\pi_{s,45}(t_2)\,e_s(40,t_2)- \pi_{s,45}(t_1)\,e_s(40,t_1)\right] + \\
   &\phantom{=\Sigma}\vdots \\
-                     &\hspace{0.18in}\sum_{s\in\mathcal{S}}\left[\pi_{i,\left\vert\mathcal{A}\right\vert}(t_2)\,e_s(40,t_{\left\vert\mathcal{A}\right\vert})- \pi_{i,\left\vert\mathcal{A}\right\vert}(t_1)\,e_s(40,t_1)\right]. \notag 
+                     &\hspace{0.18in}\sum_{s\in\mathcal{S}}\left[\pi_{s,\omega}(t_2)\,e_s(40,t_{\omega})- \pi_{s,\omega}(t_1)\,e_s(40,t_1)\right]. \notag 
  \end{align*}
 
 
@@ -280,53 +288,38 @@ be estimated as:
  on equation \eqref{eqn:decomp.basic}:
 \begin{multline}
   e(40,t_2)-e(40,t_1)= \\
-  \sum_{s\in\mathcal{S}}\left[\pi_{i,1}(t_2)-\pi_{i,1}(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1) \right]\left[\frac{\pi_{i,1}(t_1)+\pi_{i,1}(t_2)}{2}\right] +\\
-  \sum_{s\in\mathcal{S}}\left[\pi_{i,2}(t_2)-\pi_{i,2}(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1) \right]\left[\frac{\pi_{i,2}(t_1)+\pi_{i,2}(t_2)}{2}\right] +\\
+  \sum_{s\in\mathcal{S}}\left[\pi_{s,40}(t_2)-\pi_{s,40}(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1) \right]\left[\frac{\pi_{s,40}(t_1)+\pi_{s,40}(t_2)}{2}\right] +\\
+  \sum_{s\in\mathcal{S}}\left[\pi_{s,45}(t_2)-\pi_{s,45}(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1) \right]\left[\frac{\pi_{s,45}(t_1)+\pi_{s,45}(t_2)}{2}\right] +\\
   \vdots \\
-  \sum_{s\in\mathcal{S}}\left[\pi_{i,{\left\vert\mathcal{A}\right\vert}}(t_2)-\pi_{i,{\left\vert\mathcal{A}\right\vert}}(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1) \right]\left[\frac{\pi_{i,{\left\vert\mathcal{A}\right\vert}}(t_1)+\pi_{i,{\left\vert\mathcal{A}\right\vert}}(t_2)}{2}\right] =\\
-  \sum_{s\in\mathcal{S}}\left[\mathtt{Diff_{\pi,1}} \right]\mathtt{\bar{e}_i} + \sum_{s\in\mathcal{S}}\left[\mathtt{Diff_{\pi,2}} \right]\mathtt{\bar{e}_i} + 
+  \sum_{s\in\mathcal{S}}\left[\pi_{s,{\omega}}(t_2)-\pi_{s,{\omega}}(t_1) \right]\left[\frac{e_s(40,t_1)+e_s(40,t_2)}{2}\right]+\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1) \right]\left[\frac{\pi_{s,{\omega}}(t_1)+\pi_{s,{\omega}}(t_2)}{2}\right] =\\
+  \sum_{s\in\mathcal{S}}\left[\mathtt{Diff_{\pi,40}} \right]\mathtt{\bar{e}_s} + \sum_{s\in\mathcal{S}}\left[\mathtt{Diff_{\pi,45}} \right]\mathtt{\bar{e}_s} + 
   \dots +
- \sum_{s\in\mathcal{S}}\left[\mathtt{Diff_{\pi,{\left\vert\mathcal{A}\right\vert}}} \right]\mathtt{\bar{e}_i} +\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1)\right]\left[\frac{\pi_s(t_1)+\pi_s(t_2)}{2}\right]
+ \sum_{s\in\mathcal{S}}\left[\mathtt{Diff_{\pi,{\omega}}} \right]\mathtt{\bar{e}_s} +\sum_{s\in\mathcal{S}}\left[e_s(40,t_2)-e_s(40,t_1)\right]\left[\frac{\pi_s(t_1)+\pi_s(t_2)}{2}\right]
 \label{agedec}
 \end{multline}
 where $\mathtt{Diff_{\pi,a}}=\pi_{s,a}(t_2)-\pi_{s,a}(t_1)$ and $\mathtt{\bar{e}_i}=\frac{e_s(40,t_1)+e_s(40,t_2)}{2}$.
 
-The first $\left\vert\mathcal{A}\right\vert$ terms of equation
-\eqref{agedec} (the terms based on $\mathtt{Diff_{\pi,1}}$ through
-$\mathtt{Diff_{\pi,{\left\vert\mathcal{A}\right\vert}}}$) correspond
-to the contribution of changes in the share of tumor size by age group
-to changes in cancer life expectancy between times $t_1$ and $t_2$. We
-can additionally estimate the contribution of cancer-specific
-mortality rates to changes in tumor-size-specific life expectancy by
-age. The last term of \eqref{agedec} can be written as follows, based
-on equation \eqref{eqn:causedecomp}:
-%\begin{align}
-%  e_s(40,t_2)-e_s(40,t_1)&=\sum_{c\in\mathcal{C}} \sum_{a=40}^{49}\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right] + \notag\\
-%  &\phantom{=}\sum_{c\in\mathcal{C}} \sum_{a=50}^{59}\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right] + \notag\\
-%  &\phantom{=  .}\vdots \notag\\
-%  &\phantom{=}\sum_{c\in\mathcal{C}} \sum_{a=100}^{\omega}\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right] .
-%\end{align}
-%
-%\textcolor{blue}{Hiram -- Can we write equation E.2 like this?  The last term of \eqref{agedec} can be written as follows, based
-%on equation \eqref{eqn:causedecomp}:
+The terms of equation\eqref{agedec} that include
+$\mathtt{Diff_{\pi,40}}\dots \mathtt{Diff_{\pi,\omega}}$ correspond to
+the contribution of changes in the share of tumor size by age group to
+the change in cancer life expectancy between times $t_1$ and $t_2$.
+We can additionally estimate the contribution of changes in case
+fatality rates from breast cancer and competing causes of death to
+changes in tumor-size-specific life expectancy by age. The last term
+of \eqref{agedec} can be written as follows, based on equation
+\eqref{eqn:causedecomp}:
 \begin{align}
-  e_s(40,t_2)-e_s(40,t_1)&=\sum_{c\in\mathcal{C}} \sum_{a\in\mathcal{A}}\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right] 
-\end{align}
-\textcolor{blue}{Samir: Same comment as above, I don't think we can simplify the second summation by stating that $a\in\mathcal{A}$. This summation must start at age 40 and end at $\omega$.  I suggest we write it as  
-\begin{align}
-  e_s(40,t_2)-e_s(40,t_1)&=\sum_{c\in\mathcal{C}} \sum_{a=40}^\omega\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right]  \notag
-\end{align} }
-
+  e_s(40,t_2)-e_s(40,t_1)&=\sum_{c\in\mathcal{C}} \sum_{a=40}^\omega\left[L_{a,s,c}(t_2)-L_{a,s,c}(t_1) \right] \left[\frac{L_{a,s,-c}(t_2)+L_{a,s,-c}(t_1) }{2n} \right]  
+\end{align}.
 
 \section{Assuming Constant Mortality Within Age Intervals}
 Let $M_{a,a+n}$ represent the mortality rate between ages $a$ and
 $a+n$ and let $\mu(a)$ represent the hazard of mortality at age
 $a$. Then, the number (or proportion) of survivors at age $a+n$ in the
-life table equals (\cite{PreHeuGui00}):
+life table, $l_{a+n}$, equals (\cite{PreHeuGui00}):
 \begin{equation}
 l_{a+n}=e^{-\int_a^{a+n}\mu(x)\,dx}=e^{-n\,M_{a,a+n}}.\notag
 \end{equation}
-where $\mu(x)$ represents the risk of death at age $x\in[a,a+n)$.
 Then, the number of person-years lived between ages $a$ and $a+n$ equals:
 \begin{equation}
 _nL_{a}=l_a\,\int_a^{a+n} e^{-M_{a,a+n}(s-a)} ds=l_a \left(\frac{-1}{M_{a,a+n}}(e^{-n\,M_{a,a+n}}-1) \right).
@@ -337,9 +330,9 @@ equals:
 \begin{equation}
 _5L_{a}=l_a \left(\frac{-1}{M_{a,a+5}}(e^{-5\,M_{a,a+5}}-1) \right).\notag
 \end{equation}
-For the last age group (e.g., $\geq$100 years), we can assume there
+For the last and open-ended age group (e.g., $\geq$100 years), we can assume there
 are no person-years lived beyond a certain time (say no more than 10
-years) to compute $_{\infty}L_{100}$ as
+years) to compute $_{\infty}L_{100}$ as:
 \begin{equation}
 _{\infty}L_{100}=l_{100} \left(\frac{-1}{M_{100+}}(e^{-10\,M_{100+}}-1) \right).\notag
 \end{equation}
@@ -348,11 +341,11 @@ _{\infty}L_{100}=l_{100} \left(\frac{-1}{M_{100+}}(e^{-10\,M_{100+}}-1) \right).
 %in life expectancy at age $x$ between times $t_1$ and $t_2$ can be
 %decomposed as (Kitigawa 1955): 
 %\begin{equation}
-% e_s(x,t_2)-e_s(x,t_1) = \sum_{j=1}^k \int_x^\infty \left[ p_{i,j}(s,t_2)- p_{i,j}(s,t_1)\right] \left[ \frac{p_{i,-j}(s,t_1)+p_{i,-j}(s,t_2)}{2} \right]\,ds, \notag
+% e_s(x,t_2)-e_s(x,t_1) = \sum_{j=1}^k \int_x^\infty \left[ p_{s,j}(s,t_2)- p_{s,j}(s,t_1)\right] \left[ \frac{p_{s,-j}(s,t_1)+p_{s,-j}(s,t_2)}{2} \right]\,ds, \notag
 %\end{equation}
-%where $p_{i,j}(s,t)$ is the probability of surviving from birth to age
+%where $p_{s,j}(s,t)$ is the probability of surviving from birth to age
 %$s$ for cancer patients with tumor size $i$ cause $j$ at time $t$, and
-%$p_{i,-j}(s,t)$ is the analogue survival probability for competing
+%$p_{s,-j}(s,t)$ is the analogue survival probability for competing
 %causes of death (other than $j$). 
 
 \newpage
@@ -361,13 +354,14 @@ _{\infty}L_{100}=l_{100} \left(\frac{-1}{M_{100+}}(e^{-10\,M_{100+}}-1) \right).
 \begin{center}
 \includegraphics[width=\linewidth]{appendix_figure2}
 \spacingset{1}\caption{Gain in life expectancy (top panel) and
-  contributions of earlier detection (bottom left), advancements in
-  breast cancer treatment (bottom center), and advancements in
-  treatment of other diseases (bottom right) varying overdiagnosis
+  contributions of the temporal shift to smaller sized tumors (bottom
+  left), temporal reductions in case fatality rates from breast cancer
+  (bottom center), and temporal reductions in case fatality rates from
+  competing causes of death (bottom right) varying the overdiagnosis
   level for $<1$cm tumors (0\% to 90\%) and 1-3cm tumors (0\% to
   31\%).  The color scale for the top (bottom) panel indicates the
 number of years of the gain in life expectancy (contribution to the gain).}
-\label{fig:simple_case}
+\label{fig:figure2}
 \end{center}
 \end{figure}
 
@@ -378,19 +372,20 @@ number of years of the gain in life expectancy (contribution to the gain).}
 \begin{center}
   \begin{table}[h]
 \begin{tabular}{@{}l rrrr@{}}
- Time & Gain in Life & Earlier & \multicolumn{2}{c}{\underline{Advancements in Treatment of}}\\
- Interval & Expectancy & Detection  & Breast Cancer   & Other Diseases  \\ 
+  Time & Gain in Life & &
+                                \multicolumn{2}{c}{\underline{Reductions
+                                in Case Fatality Rates from}}\\
+  Interval & Expectancy & Tumor Size  & Breast Cancer   & Competing Causes  \\ 
   \midrule
   8  & 11.23 & 3.15 (28\%) & 7.07 (63\%) & 1.03 (9\%) \\ 
-    9  & 10.93 & 3.09 (28\%) & 6.76 (62\%) & 1.09 (10\%) \\ 
-   10  & 10.69 & 2.99 (28\%) & 6.57 (61\%) & 1.15 (11\%) \\ 
-   11  & 10.38 & 2.78 (27\%) & 6.27 (60\%) & 1.35 (13\%) \\ 
-   12  & 10.28 & 2.65 (26\%) & 6.05 (59\%) & 1.59 (15\%) \\ 
-   \bottomrule
+  9  & 10.93 & 3.09 (28\%) & 6.76 (62\%) & 1.09 (10\%) \\ 
+  10  & 10.69 & 2.99 (28\%) & 6.57 (61\%) & 1.15 (11\%) \\ 
+  11  & 10.38 & 2.78 (27\%) & 6.27 (60\%) & 1.35 (13\%) \\ 
+  12  & 10.28 & 2.65 (26\%) & 6.05 (59\%) & 1.59 (15\%) \\ 
+  \bottomrule
 \end{tabular}
-\caption{Gain in life expectancy and contribution from earlier
-  detection, advancements in breast cancer treatment, and advancements
-  in treatment of other diseases, 1975-2000, varying time interval between breast
+\caption{Gain in life expectancy and contribution of the temporal shift to smaller sized tumors, temporal reductions in case fatality rates from breast cancer, and temporal reductions in case fatality rates from
+  competing causes of death, 1975-2000, varying time interval between breast
   cancer diagnosis and death.  Note: Yrs=years.}
 \end{table}
 \end{center}
