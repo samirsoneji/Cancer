@@ -164,6 +164,17 @@ fatality rate for age group $a \in \mathcal{A}$, year $t \in
 fatality rate adjusted for overdiagnosis, $m^*_{a,t,s}$ equals,
 $\frac{1}{1-\alpha_s} \times m_{a,t,s}$.
 
+\section{Computation of Tumor size-specific Life Expectancy}
+Life expectancy at age $a^*$, time $t$, and tumor size $s$ can be estimated as 
+\begin{eqnarray}
+ e_s(a^*,t)=\int_{a^*}^{\omega} e^{\left( -\int_{a*}^{a}\mu_s(y,t)\,dy \right)}da =\int_{a^*}^{\omega} e^{\left(-\sum_{a=a*}^{a}n\,m^*_{a,t,s}\right)}\,da 
+\end{eqnarray} 
+where $\mu_s(a,t)$ and $m^*_{a,t,s}$ represent the hazard of mortality
+and observed case fatality rate, respectively, for age group $a \in
+\mathcal{A}$, year $t \in \mathcal{T}$, and tumor size $s \in
+\mathcal{S}$; $n$ is the width of the age interval; and $\omega$ is
+the starting age of the final and open-ended age interval.
+
 \section{Schematic Representation of the Methodology}
 For simplicity, consider three mutually exclusive and exhaustive
 categories of tumor size: 1, 2, and 3 (e.g., $<$1cm, 1-2cm, and
