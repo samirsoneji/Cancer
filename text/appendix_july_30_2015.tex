@@ -166,6 +166,17 @@ fatality rate for age group $a \in \mathcal{A}$, year $t \in
 fatality rate adjusted for overdiagnosis, $m^*_{a,t,s}$, equals,
 $\frac{1}{1-\alpha_s} \times m_{a,t,s}$.
 
+\section{Computation of Tumor Size-Specific Life Expectancy}
+The life expectancy of a breast cancer patient newly diagnosed at age
+$a^*\in\mathcal{A}$, at time $t$, and with tumor size $s$ equals:
+\begin{eqnarray}
+ e_s(a^*,t)=\int_{a^*}^{\omega} e^{\left( -\int_{a*}^{a}\mu_s(y,t)\,dy \right)}da =\int_{a^*}^{\omega} e^{\left(-\sum_{a=a*}^{a}n\,m^*_{a,t,s}\right)}\,da ,
+\end{eqnarray} 
+where $\mu_s(a,t)$ and $m^*_{a,t,s}$ represent the hazard of mortality
+and case fatality rate adjusted for overdiagnosis, respectively; $n$
+is the width of the age interval; and $\omega$ is the starting age of
+the final and open-ended age interval.
+
 \section{Schematic Representation of the Methodology}
 For simplicity, consider three mutually exclusive and exhaustive
 categories of tumor size: 1, 2, and 3 (e.g., $<$1cm, 1-2cm, and
@@ -207,9 +218,7 @@ by age group in Section~\ref{sec:age}.
 \section{Decomposition by Tumor Size and Case Fatality Rates from
   Breast Cancer and Other Causes of Death}
 Let $\pi_s(t)$ equal the proportion of breast cancer patients
-diagnosed with tumor size $s$ in year $t$.  \textcolor{blue}{Hiram --
-  can we define life expectancy as a function of case-fatality rates
-  (m from section B)}.  Let $e_s(a,t)$ equal the
+diagnosed with tumor size $s$ in year $t$.  Let $e_s(a,t)$ equal the
 tumor size-specific life expectancy at age $a$. The overall life
 expectancy at age $a$ and time $t$, $e(a,t)$, equals:
 \begin{eqnarray}
@@ -318,7 +327,7 @@ $a+n$ and let $\mu(a)$ represent the hazard of mortality at age
 $a$. Then, the number (or proportion) of survivors at age $a+n$ in the
 life table, $l_{a+n}$, equals (\cite{PreHeuGui00}):
 \begin{equation}
-l_{a+n}=e^{-\int_a^{a+n}\mu(x)\,dx}=e^{-n\,M_{a,a+n}}.\notag
+l_{a+n}=l_{a}\,e^{-\int_a^{a+n}\mu(x)\,dx}=l_{a}\,e^{-n\,M_{a,a+n}}.\notag
 \end{equation}
 Then, the number of person-years lived between ages $a$ and $a+n$ equals:
 \begin{equation}
