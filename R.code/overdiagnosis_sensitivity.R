@@ -262,8 +262,8 @@ for (i in 1:length(scalar.list)){
 overdiagnosis.fxn(breast.results.sens,"sens",scalar.list,overdiagnosis=FALSE) 
 
 ## sensitivity analysis varying overdiagnosis level from 0% to 90% (<1cm) and 0% to 31% (1-2cm, and 2-3cm)
-scalar.list <- seq(0,0.90,0.1)
-scalar.list2 <- seq(0,0.31,0.1)
+scalar.list <- seq(0,0.90,0.01)
+scalar.list2 <- seq(0,0.31,0.01)
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results.sens2 <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
