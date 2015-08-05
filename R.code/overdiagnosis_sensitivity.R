@@ -248,8 +248,8 @@ breast.results.sum10 <- summary.fxn(breast.results["0.1","0.1",])
 graph.decomp.results.fxn("10",breast.results.sum10)
 
 ## sensitivity analysis varying overdiagnosis level from 0% to 31% (<=3cm, equal level for <1cm, 1-2cm, and 2-3cm)
-scalar.list <- seq(0,0.31,0.01)
-scalar.list2 <- seq(0,0.31,0.01)
+scalar.list <- seq(0,0.31,0.1)
+scalar.list2 <- seq(0,0.31,0.1)
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results.sens <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
@@ -261,9 +261,9 @@ for (i in 1:length(scalar.list)){
   }}
 overdiagnosis.fxn(breast.results.sens,"sens",scalar.list,overdiagnosis=FALSE) 
 
-## sensitivity analysis varying overdiagnosis level from 0% to 90% (<1cm) and 0% to 31% (1-2cm, and 2-3cm)
-scalar.list <- seq(0,0.90,0.01)
-scalar.list2 <- seq(0,0.31,0.01)
+## sensitivity analysis varying overdiagnosis level from 0% to 52% (<1cm) and 0% to 35% (1-2cm, and 2-3cm)
+scalar.list <- seq(0,0.52,0.01)
+scalar.list2 <- seq(0,0.35,0.01)
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results.sens2 <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
@@ -312,6 +312,22 @@ par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0
 print(plot.ex,position=c(0,0.5,1,1),more=TRUE)
 print(plot.size.cancer.other,position=c(0,0,1,0.5))
 dev.off()
+
+size.le <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(breast.results.sens2[,,3]),c(apply(breast.results.sens2[,,4:8],c(1,2),sum))))
+names(size.le) <- c("scalar1","scalar2","le","size")
+size.le$scalar1 <- as.numeric(as.character(size.le$scalar1))
+size.le$scalar2 <- as.numeric(as.character(size.le$scalar2))
+size.le$scalar1 <- 100*size.le$scalar1
+size.le$scalar2 <- 100*size.le$scalar2
+size.le$prop <- 100*size.le$size/size.le$le
+my.col3 <- colorRampPalette(brewer.pal(9, "Reds"))(100)
+plot.size <- levelplot(prop~scalar1*scalar2,data=size.le,
+                                    at=seq(10,35,length=100),col.regions=my.col3,
+                                    layout=c(1,1),
+                                    scales=list(x=list(at=seq(0,100,10),labels=seq(0,100,10)),
+                                                y=list(at=seq(0,35,5),labels=seq(0,35,5))),
+                                    xlab="% Overdiagnosis, <1cm",
+                                    ylab="% Overdiagnosis, 1-2cm & 2-3cm")
 
 
 ###CISNET Comparison
