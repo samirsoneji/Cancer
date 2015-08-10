@@ -1,0 +1,20 @@
+\begin{thebibliography}{3}
+\newcommand{\enquote}[1]{``#1''}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Beltr\'{a}n-S\'{a}nchez et~al.(2008)Beltr\'{a}n-S\'{a}nchez, Preston,
+  and Canudas-Romo}]{BelPreCan08}
+Beltr\'{a}n-S\'{a}nchez, H., Preston, S.~H., and Canudas-Romo, V. (2008),
+  \enquote{An Integrated Approach to Cause-of-Death Analysis: Cause-Deleted
+  Life Tables and Decompositions of Life Expectancy,} \textit{Demographic
+  Research}, 19, 1323--1350.
+
+\bibitem[{Kitagawa(1955)}]{Kitagawa55}
+Kitagawa, E. (1955), \enquote{Components of a Difference Between Two Rates,}
+  \textit{Journal of the American Statistical Association}, 50, 1168--1194.
+
+\bibitem[{Preston et~al.(2000)Preston, Heuveline, and Guillot}]{PreHeuGui00}
+Preston, S.~H., Heuveline, P., and Guillot, M. (2000), \textit{Demography:
+  Measuring and Modeling Population Processes}, Oxford, UK: Blackwell.
+
+\end{thebibliography}
