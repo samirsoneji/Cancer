@@ -1,4 +1,4 @@
-#rm(list=ls())
+rm(list=ls())
 library(RColorBrewer)
 library(scales)
 library(shape)
@@ -13,7 +13,7 @@ source("~/Desktop/Cancer/R.code/decomp.sens.fxn.R")
 source("~/Desktop/Cancer/R.code/results.sens.fxn.R")
 
 red <- brewer.pal(11,"RdYlBu")[1]
-color <- brewer.pal(11,"RdYlBu")[c(3,5,8,9,11)]
+color <- brewer.pal(5,"Set1")
 color2 <- alpha(color,0.5)
 color3 <- alpha(color,1)
 
@@ -78,13 +78,13 @@ graph.rates.fxn <- function(scalar, scalar2, categories, categories2, prop, mx, 
   mx[,,categories2] <- (1-scalar2)^-1 * mx[,,categories2]
   mx.cause[,,,categories] <- (1-scalar)^-1 * mx.cause[,,,categories]
   mx.cause[,,,categories2] <- (1-scalar2)^-1 * mx.cause[,,,categories2]
-  name <- paste(100*scalar,100*scalar2)
-  pdf(paste("~/Desktop/Cancer/figures/breast_rates_overdiagnosis_",name,".pdf",sep=""), height=4, width=8.5, paper="special")
-  par (mfrow=c(1,3),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
+  name <- paste(100*scalar,"_",100*scalar2,sep="")
+  pdf(paste("~/Dropbox/talks/figures/breast_rates_overdiagnosis1_",name,".pdf",sep=""), height=4, width=8.5, paper="special")
+  par (mfrow=c(1,2),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
   year <- 1975:2002
  
  scale <- 100000
- matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=2)
+ matplot(year,scale*stand.size.rate[as.character(year),],col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",lwd=4)
  axis(1,at=seq(1975,2002,9))
  axis(2,las=1,at=seq(0,700,10))
  text(year[length(year)-2],scale*stand.size.rate[as.character(year[length(year)]),],paste(c("<1cm","1-2cm","2-3cm","3-5cm","5+cm")),lty=1,col=color,pos=c(3,1,1,1,1))
@@ -112,20 +112,27 @@ graph.rates.fxn <- function(scalar, scalar2, categories, categories2, prop, mx, 
  text(1988,100*(sum(prop.adj["1988",1:2])+ prop.adj["1988",3]/2),"2-3cm",cex=1)
  text(1988,100*(sum(prop.adj["1988",1:3])+ prop.adj["1988",4]/2),"3-5cm",cex=1)
  text(1988,100*(sum(prop.adj["1988",1:4])+ prop.adj["1988",5]/2),"5+cm",cex=1,col="white")
-      
- mx.cause <- apply(mx.cause, c(1,2,3,4), function(x) min(12,x))
+  mtext("Incidence Rates (Per 100,000)",side=3,line=0,outer=TRUE,at=1/4,cex=0.8)
+ mtext("Size Distribution (%)",side=3,line=0,outer=TRUE,at=3/4,cex=0.8)
+ dev.off()
+
+pdf(paste("~/Dropbox/talks/figures/breast_rates_overdiagnosis2_",name,".pdf",sep=""), height=4, width=8.5, paper="special")
+  par (mfrow=c(1,2),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0,0.4,0), tcl=-0.25,bg="white",cex=0.8,cex.main=0.8)
+  year <- 1975:2002
+ 
+  mx.cause <- apply(mx.cause, c(1,2,3,4), function(x) min(12,x))
  stand.mx <- apply(mx.cause,c(1,3,4),function(x) sum(x * stand.breast, na.rm=TRUE))
- matplot(year,(stand.mx["breast",as.character(year),]),col=color,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="o",pch=19,cex=1,ylim=c(0,max(stand.mx[,as.character(year),])))
- matlines(year,(stand.mx["other",as.character(year),]),col=color,lty=1)
+ matplot(year,(stand.mx["breast",as.character(year),]),col=color,lwd=4,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",cex=1,ylim=c(0,max(stand.mx[,as.character(year),])))
  axis(1,at=seq(1975,2002,9))
  axis(2,las=1,at=seq(0,0.12,0.02))
-  legend(1975,0.08,ncol=2,cex=0.5,paste(c("5+cm, Cancer","3-5cm, Cancer","2-3cm, Cancer","1-2cm, Cancer","<1cm, Cancer",
-                              "5+cm, Other","3-5cm, Other","2-3cm, Other","1-2cm, Other","<1cm, Other")),lty=1,pch=c(rep(19,5),rep(NA,5)),col=c(rep(color[5:1],2)),text.col=c(rep(color[5:1],2)),bty="n")
- mtext("A. Incidence Rates (Per 100,000)",side=3,line=0,outer=TRUE,at=1/6,cex=0.8)
- mtext("B. Size Distribution (%)",side=3,line=0,outer=TRUE,at=3/6,cex=0.8)
- mtext("C. Incidence-Based Case Fatality Rates",side=3,line=0,outer=TRUE,at=5/6,cex=0.8)
+  text(2001, stand.mx["breast","2002",],paste(c("5+cm","3-5cm","2-3cm","1-2cm","<1cm")),col=color,pos=c(1,3,3,3,1))
+matplot(year,(stand.mx["other",as.character(year),]),col=color,lwd=4,lty=1,bty="l",xlab=NA,ylab=NA,axes=FALSE,type="l",cex=1,ylim=c(0,max(stand.mx[,as.character(year),])))
+ axis(1,at=seq(1975,2002,9))
+ axis(2,las=1,at=seq(0,0.12,0.02))
+ mtext("Incidence-Based Case Fatality Rates,\nBreast Cancer (10% Overdiagnosis, <3cm)",side=3,line=0,outer=TRUE,at=1/4,cex=0.8)
+   mtext("Incidence-Based Case Fatality Rates,\nOther Causes (10% Overdiagnosis, <3cm)",side=3,line=0,outer=TRUE,at=3/4,cex=0.8)
  dev.off()
-    }
+}
 
 graph.decomp.results.fxn <- function(i,breast.results.sum)
   {name <- i
@@ -134,7 +141,7 @@ graph.decomp.results.fxn <- function(i,breast.results.sum)
    space.value <- c(0.3,0.3,0.3,0.025,0.3)
    width.value <- c(1,1,1/3,1,1)
    cex.value <- 0.75
-   pdf(paste("~/Desktop/Cancer/figures/decomp_breast_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
+   pdf(paste("~/Dropbox/talks/figures/decomp_breast_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
    par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
    year <- 1975:2002
    xpos <-  barplot(c(summary.breast[["ex.overall.diff"]],NA,NA,NA,NA),plot=FALSE,width=width.value,space=space.value)
@@ -175,7 +182,7 @@ graph.decomp.results.fxn2 <- function(i,breast.results.sum)
   {name <- 100*as.numeric(names(breast.results.sum)[[i]])
    summary.breast <- breast.results.sum[[i]]
    width <- 0.3
-    pdf(paste("~/Desktop/Cancer/figures/decomp_breast_overdiagnosis2_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
+    pdf(paste("~/Dropbox/talks/figures/decomp_breast_overdiagnosis2_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
    par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
    year <- 1975:2002
    xpos <-  barplot(c(summary.breast[["ex.overall.diff"]],NA,NA),plot=FALSE,width=c(1,1,1))
@@ -203,7 +210,7 @@ overdiagnosis.fxn <- function(breast.results,name,scalar.list,overdiagnosis=FALS
     change.other.mort <- diag(apply(breast.results,c(1,2),function(x) sum(unlist(x[seq(14,22,2)+1]))))
     last <- length(scalar.list)
     middle <- round(last/2)
-    pdf(paste("~/Desktop/Cancer/figures/sensitivity_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
+    pdf(paste("~/Dropbox/talks/figures/sensitivity_overdiagnosis_",name,".pdf",sep=""), height=8.5, width=14, paper="special")
     par (mfrow=c(1,1),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
     plot(scalar.list,change.size+change.cancer.mort+change.other.mort,bty="l",ylab="",xlab="",type="l",lwd=5,las=1,ylim=c(0,max(unlist(total.le))),axes=FALSE)
     axis(1,at=scalar.list[seq(1,last,2)],paste(100*scalar.list[seq(1,last,2)]))
@@ -230,8 +237,8 @@ overdiagnosis.fxn <- function(breast.results,name,scalar.list,overdiagnosis=FALS
 }
 
 ###main analysis (10% overdiagnosis)###
-scalar.list <- c(0,0.10,0.20)#seq(0.00,0.99,0.05)
-scalar.list2 <- c(0,0.10,0.20)#seq(0.00,0.31,0.05)
+scalar.list <- c(0,0.10,0.20)
+scalar.list2 <- c(0,0.10,0.20)
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
@@ -247,8 +254,8 @@ breast.results.sum10 <- summary.fxn(breast.results["0.1","0.1",])
 graph.decomp.results.fxn("10",breast.results.sum10)
 
 ## sensitivity analysis varying overdiagnosis level from 0% to 52% (<=3cm, equal level for <1cm, 1-2cm, and 2-3cm)
-scalar.list <- seq(0,0.52,0.25)#seq(0,0.52,0.01)
-scalar.list2 <- seq(0,0.52,0.25)#seq(0,0.52,0.01)
+scalar.list <- seq(0,0.52,0.01)
+scalar.list2 <- seq(0,0.52,0.01)
 var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
 breast.results.sens <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
                         dimnames=list(scalar.list,scalar.list2,var.names))
@@ -259,126 +266,6 @@ for (i in 1:length(scalar.list)){
     print(paste(i,j))
   }}
 overdiagnosis.fxn(breast.results.sens,"sens",scalar.list,overdiagnosis=FALSE) 
-
-## sensitivity analysis varying overdiagnosis level from 0% to 52% (<1cm) and 0% to 35% (1-2cm, and 2-3cm)
-scalar.list <- seq(0,0.97,0.5)#seq(0,0.97,0.01)
-scalar.list2 <- seq(0,0.52,0.25)#seq(0,0.52,0.01)
-var.names <- names(odx.fxn(scalar.list[1],scalar.list2[1],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002)))
-breast.results.sens2 <- array(NA,dim=c(length(scalar.list),length(scalar.list2),length(var.names)),
-                        dimnames=list(scalar.list,scalar.list2,var.names))
-for (i in 1:length(scalar.list)){
-  for (j in 1:length(scalar.list2)){
-       tmp <- odx.fxn(scalar.list[i],scalar.list2[j],"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2002))
-       breast.results.sens2[i,j,]<- c(unlist(tmp))
-    print(paste(i,j))
-  }}
-ex.overall.diff <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(breast.results.sens2[,,"ex.overall.diff"])))
-colnames(ex.overall.diff) <- c("scalar1","scalar2","value")
-
-size <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(apply(breast.results.sens2[,,4:8],c(1,2),sum))))
-colnames(size) <- c("scalar1","scalar2","contribution")
-size$variable <- "B. Tumor Size"
-mort.cancer <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(apply(breast.results.sens2[,,seq(14,22,2)],c(1,2),sum))))
-colnames(mort.cancer) <- c("scalar1","scalar2","contribution")
-mort.cancer$variable <- "C. Fatality, Breast Cancer"
-mort.other <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(apply(breast.results.sens2[,,seq(15,23,2)],c(1,2),sum))))
-colnames(mort.other) <- c("scalar1","scalar2","contribution")
-mort.other$variable <- "D. Fatality, Other"
-size.cancer.other <- rbind(size,mort.cancer,mort.other)
-minz <- min(size.cancer.other$contribution)
-maxz <- max(size.cancer.other$contribution)
-
-my.col <- rev(colorRampPalette(brewer.pal(11, "RdBu"))(100))
-my.col2 <- colorRampPalette(brewer.pal(9, "Greys"))(100)
-
-plot.ex <- levelplot(value~scalar1*scalar2,data=ex.overall.diff,
-                     at=seq(min(ex.overall.diff[,3]),max(ex.overall.diff[,3]),length=100),
-                     scales=list(x=list(at=seq(0,100,10),labels=seq(0,100,10)),
-                                 y=list(at=seq(0,100,10),labels=seq(0,100,10))),
-                     col.regions=my.col2,
-                     xlab="% Overdiagnosis, <1cm",
-                     ylab="% Overdiagnosis, 1-2cm & 2-3cm")
-plot.size.cancer.other <- levelplot(contribution~scalar1*scalar2|variable,data=size.cancer.other,
-                                    at=seq(minz,maxz,length=100),col.regions=my.col,
-                                    layout=c(3,1),
-                                    scales=list(x=list(at=seq(0,100,10),labels=seq(0,100,10)),
-                                 y=list(at=seq(0,100,10),labels=seq(0,100,10))),
-                                    xlab="% Overdiagnosis, <1cm",
-                                    ylab="% Overdiagnosis, 1-2cm & 2-3cm")
-
-pdf("~/Desktop/Cancer/figures/overdiagnosis_lattice.pdf", height=8.5, width=11, paper="special")
-par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
-print(plot.ex,position=c(0,0.5,1,1),more=TRUE)
-print(plot.size.cancer.other,position=c(0,0,1,0.5))
-dev.off()
-
-size.le <- data.frame(cbind(expand.grid(dimnames(breast.results.sens2)[1:2]),c(breast.results.sens2[,,3]),c(apply(breast.results.sens2[,,4:8],c(1,2),sum))))
-names(size.le) <- c("scalar1","scalar2","le","size")
-size.le$scalar1 <- as.numeric(as.character(size.le$scalar1))
-size.le$scalar2 <- as.numeric(as.character(size.le$scalar2))
-size.le$scalar1 <- 100*size.le$scalar1
-size.le$scalar2 <- 100*size.le$scalar2
-size.le$prop <- 100*size.le$size/size.le$le
-my.col3 <- colorRampPalette(brewer.pal(9, "Reds"))(100)
-plot.size <- levelplot(prop~scalar1*scalar2,data=size.le,
-                                    at=seq(10,max(size.le$prop),length=100),col.regions=my.col3,
-                                    layout=c(1,1),
-                                    scales=list(x=list(at=seq(0,100,10),labels=seq(0,100,10)),
-                                                y=list(at=seq(0,35,5),labels=seq(0,35,5))),
-                                    xlab="% Overdiagnosis, <1cm",
-                                    ylab="% Overdiagnosis, 1-2cm & 2-3cm")
-pdf("~/Desktop/Cancer/figures/overdiagnosis_lattice_size_contribution.pdf", height=8.5, width=8.5, paper="special")
-par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=2,cex.main=2)
-print(plot.size)
-dev.off()
-
-pdf("~/Desktop/Cancer/figures/incidence_breast_size.pdf", height=8.5, width=8.5, paper="special")
-par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=1,cex.main=1)
-matplot(1975:2012,100000*size.rate2[-c(1,2),,"5+cm"],lty=1,type="l",las=1,bty="l",xlab="year",ylab="incidence rate, 5+cm, per 100,000")
-text(2012,100000*size.rate2[40,,"5+cm"],paste(seq(40,85,5)),col=1:10,cex=0.75)
-dev.off()
-
-pdf("~/Desktop/Cancer/figures/incidence_breast_size10.pdf", height=8.5, width=8.5, paper="special")
-par(mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=1,cex.main=1)
-matplot(1975:2012,100000*size.rate3[-c(1,2),,"5+cm"],lty=1,type="l",las=1,bty="l",xlab="year",ylab="incidence rate, 5+cm, per 100,000")
-text(2012,100000*size.rate3[40,,"5+cm"],paste(seq(40,80,10)),col=1:10,cex=0.75)
-dev.off()
-
-###CISNET Comparison
-scalar.list <- c(0,0.10,0.20)
-scalar.list2 <- c(0,0.10,0.20)
-mx.breast2 <- mx.breast
-mx.breast.cause2 <- mx.breast.cause
-
-reduction <- 0.28
-mx.breast2[,"1975",] <- (1-reduction)*mx.breast2[,"1975",] + reduction*mx.breast2[,"2000",]
-mx.breast.cause2[,,"1975",] <- (1-reduction)*mx.breast.cause2[,,"1975",] + reduction*mx.breast.cause2[,,"2000",]
-tmp0 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))$ex.overall.diff
-tmp1 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000))$ex.overall.diff
-lower <- 100*(tmp0-tmp1)/tmp0
-
-reduction <- 0.65
-mx.breast2[,"1975",] <- (1-reduction)*mx.breast2[,"1975",] + reduction*mx.breast2[,"2000",]
-mx.breast.cause2[,,"1975",] <- (1-reduction)*mx.breast.cause2[,,"1975",] + reduction*mx.breast.cause2[,,"2000",]
-tmp0 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))$ex.overall.diff
-tmp1 <- odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast2,mx.breast.cause2,"breast",c(1975,2000))$ex.overall.diff
-upper <- 100*(tmp0-tmp1)/tmp0
-
-our.screening.contribution.75.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[4:8])/
-                                              odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[3])
-our.screening.contribution.75.00.lower <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[4:8])/
-                                              odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[3])
-our.screening.contribution.75.00.higher <- round(100*sum(odx.fxn(0.52,0.52,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[4:8])/
-                                              odx.fxn(0.52,0.52,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[3])
-
-our.breast.cancer.mort.contribution.75.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[seq(14,22,2)])/
-                                                       odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1975,2000))[3])
-
-our.screening.contribution.88.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[4:8])/
-                                              odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[3])
-our.breast.cancer.mort.contribution.88.00 <- round(100*sum(odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[seq(14,22,2)])/
-                                                       odx.fxn(0.10,0.10,"<1cm",c("1-2cm","2-3cm"),prop.breast,mx.breast,mx.breast.cause,"breast",c(1988,2000))[3])
-
 
 ###contribution by age
 age <- odx.age.fxn(0.10, 0.10, "<1cm", c("1-2cm","2-3cm"), prop.breast, counts.breast.age, mx.breast, mx.breast.cause, "breast", c(1975,2002))
@@ -410,7 +297,7 @@ age.results <- rbind(age.scr.results, age.cancer.results, age.other.results)
 age.results <- rbind(age.results, apply(age.results,2,sum))
 colnames(age.results) <- c("overall","40-49","50-59","60-69","70-79","80-89","90-99","100+")
 rownames(age.results) <- c("screening","cancer mortality","other mortality","total")
-write.csv(age.results, "~/Desktop/Cancer/figures/age.results.csv")
+write.csv(age.results, "~/Dropbox/talks/figures/age.results.csv")
 
 age.scr.results2 <- cbind(c(age[4:8]),
                           c(age[4:8+5*1]),
@@ -469,7 +356,7 @@ prop.breast.age2 <- apply(prop.breast.age,c(1,2),cumsum)
 
 year <- 1975:2002
 size.title <- c("I","II","III","IV","V")
-pdf("~/Desktop/Cancer/figures/breast_prop_age.pdf", height=5.5, width=11, paper="special")
+pdf("~/Dropbox/talks/figures/breast_prop_age.pdf", height=5.5, width=11, paper="special")
 par(mfrow=c(1,2),mgp=c(2.75,1,0)*0.55,mar=c(1.6,1.5,0.5,1.0)*1.6,omi=c(0.2,0.2,0.4,0), tcl=-0.25,bg="white",cex=1,cex.main=1)
 for (s in 1:5) {
     plot(year,prop.breast[3:30,s],bty="l",xlab="year",ylab="percentage",las=1,type="l",lwd=3,ylim=c(0,max(prop.breast[3:30,])))

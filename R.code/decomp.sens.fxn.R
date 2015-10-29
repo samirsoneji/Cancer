@@ -113,7 +113,26 @@ decomp.age.fxn <- function(datos, year.list, mx.cause) {
     change.size.80 <- c(diff(tmp$prop.size.I.80)*mean(tmp$ex.size.I), diff(tmp$prop.size.II.80)*mean(tmp$ex.size.II),diff(tmp$prop.size.III.80)*mean(tmp$ex.size.III),diff(tmp$prop.size.IV.80)*mean(tmp$ex.size.IV),diff(tmp$prop.size.V.80)*mean(tmp$ex.size.V))
     change.size.90 <- c(diff(tmp$prop.size.I.90)*mean(tmp$ex.size.I), diff(tmp$prop.size.II.90)*mean(tmp$ex.size.II),diff(tmp$prop.size.III.90)*mean(tmp$ex.size.III),diff(tmp$prop.size.IV.90)*mean(tmp$ex.size.IV),diff(tmp$prop.size.V.90)*mean(tmp$ex.size.V))
     change.size.100 <- c(diff(tmp$prop.size.I.100)*mean(tmp$ex.size.I), diff(tmp$prop.size.II.100)*mean(tmp$ex.size.II),diff(tmp$prop.size.III.100)*mean(tmp$ex.size.III),diff(tmp$prop.size.IV.100)*mean(tmp$ex.size.IV),diff(tmp$prop.size.V.100)*mean(tmp$ex.size.V))
-  
+
+    tmp2 <- rbind(c(diff(tmp$prop.size.I.40),diff(tmp$prop.size.II.40),diff(tmp$prop.size.III.40),diff(tmp$prop.size.IV.40),diff(tmp$prop.size.V.40)),
+                  c(diff(tmp$prop.size.I.50),diff(tmp$prop.size.II.50),diff(tmp$prop.size.III.50),diff(tmp$prop.size.IV.50),diff(tmp$prop.size.V.50)),
+                  c(diff(tmp$prop.size.I.60),diff(tmp$prop.size.II.60),diff(tmp$prop.size.III.60),diff(tmp$prop.size.IV.60),diff(tmp$prop.size.V.60)),
+                  c(diff(tmp$prop.size.I.70),diff(tmp$prop.size.II.70),diff(tmp$prop.size.III.70),diff(tmp$prop.size.IV.70),diff(tmp$prop.size.V.70)),
+                  c(diff(tmp$prop.size.I.80),diff(tmp$prop.size.II.80),diff(tmp$prop.size.III.80),diff(tmp$prop.size.IV.80),diff(tmp$prop.size.V.80)),
+                  c(diff(tmp$prop.size.I.90),diff(tmp$prop.size.II.90),diff(tmp$prop.size.III.90),diff(tmp$prop.size.IV.90),diff(tmp$prop.size.V.90)),
+                  c(diff(tmp$prop.size.I.100),diff(tmp$prop.size.II.100),diff(tmp$prop.size.III.100),diff(tmp$prop.size.IV.100),diff(tmp$prop.size.V.100)))
+
+    tmp3 <- c(mean(tmp$ex.size.I),mean(tmp$ex.size.II),mean(tmp$ex.size.III),mean(tmp$ex.size.IV),mean(tmp$ex.size.V)) 
+
+    tmp2a <- rbind(c((tmp$prop.size.I.40),(tmp$prop.size.II.40),(tmp$prop.size.III.40),(tmp$prop.size.IV.40),(tmp$prop.size.V.40)),
+                   c((tmp$prop.size.I.50),(tmp$prop.size.II.50),(tmp$prop.size.III.50),(tmp$prop.size.IV.50),(tmp$prop.size.V.50)),
+                   c((tmp$prop.size.I.60),(tmp$prop.size.II.60),(tmp$prop.size.III.60),(tmp$prop.size.IV.60),(tmp$prop.size.V.60)),
+                   c((tmp$prop.size.I.70),(tmp$prop.size.II.70),(tmp$prop.size.III.70),(tmp$prop.size.IV.70),(tmp$prop.size.V.70)),
+                   c((tmp$prop.size.I.80),(tmp$prop.size.II.80),(tmp$prop.size.III.80),(tmp$prop.size.IV.80),(tmp$prop.size.V.80)),
+                   c((tmp$prop.size.I.90),(tmp$prop.size.II.90),(tmp$prop.size.III.90),(tmp$prop.size.IV.90),(tmp$prop.size.V.90)),
+                   c((tmp$prop.size.I.100),(tmp$prop.size.II.100),(tmp$prop.size.III.100),(tmp$prop.size.IV.100),(tmp$prop.size.V.100)))
+
+    save(tmp2, tmp2a, tmp3, file="~/Downloads/values.Rdata")
     results[y,"year.start"] <- year1
     results[y,"year.end"] <- year2
     results[y,"ex.overall.diff"] <- ex.overall.diff
