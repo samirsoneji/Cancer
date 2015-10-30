@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  30 OCT 2015 10:36
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  30 OCT 2015 10:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**\input appendix_aug_9_2015.tex
-(./appendix_aug_9_2015.tex
+**\input appendix_oct_30_2015.tex
+(./appendix_oct_30_2015.tex
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/size11.clo
@@ -461,8 +461,8 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 LaTeX Warning: Unknown theoremstyle `remark'. Using `plain' on input line 61.
 
 \c@rem=\count136
-(./appendix_aug_9_2015.aux)
-\openout1 = `appendix_aug_9_2015.aux'.
+(./appendix_oct_30_2015.aux)
+\openout1 = `appendix_oct_30_2015.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 83.
 LaTeX Font Info:    ... okay on input line 83.
@@ -527,9 +527,9 @@ LaTeX Info: Redefining \ref on input line 83.
 LaTeX Info: Redefining \pageref on input line 83.
 LaTeX Info: Redefining \nameref on input line 83.
 
-(./appendix_aug_9_2015.out) (./appendix_aug_9_2015.out)
+(./appendix_oct_30_2015.out) (./appendix_oct_30_2015.out)
 \@outlinefile=\write3
-\openout3 = `appendix_aug_9_2015.out'.
+\openout3 = `appendix_oct_30_2015.out'.
 
 LaTeX Font Info:    Try loading font information for U+lasy on input line 105.
 
@@ -637,25 +637,25 @@ File: appendix_figure2.pdf Graphic file (type pdf)
 Package pdftex.def Info: appendix_figure2.pdf used on input line 394.
 (pdftex.def)             Requested size: 445.18016pt x 344.00284pt.
  [7 <./appendix_figure2.pdf>] [8]
-(./appendix_aug_9_2015.bbl)
+(./appendix_oct_30_2015.bbl)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 435.
  [9]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 435.
- (./appendix_aug_9_2015.aux)
+ (./appendix_oct_30_2015.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 435.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 435.
-Package rerunfilecheck Info: File `appendix_aug_9_2015.out' has not changed.
+Package rerunfilecheck Info: File `appendix_oct_30_2015.out' has not changed.
 (rerunfilecheck)             Checksum: 2D9616B00C4316CD00A9FAF775104729;955.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 435.
  ) 
 Here is how much of TeX's memory you used:
  8997 strings out of 493488
- 130590 string characters out of 3141326
+ 130605 string characters out of 3141326
  327104 words of memory out of 3000000
  12115 multiletter control sequences out of 15000+200000
  17844 words of font info for 77 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 44i,14n,42p,735b,387s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 44i,14n,42p,736b,387s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.p
@@ -674,7 +674,7 @@ ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive
 012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/20
 12/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
 2/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on appendix_aug_9_2015.pdf (10 pages, 327829 bytes).
+Output written on appendix_oct_30_2015.pdf (10 pages, 327816 bytes).
 PDF statistics:
  243 PDF objects out of 1000 (max. 8388607)
  201 compressed objects within 3 object streams
