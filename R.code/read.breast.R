@@ -157,3 +157,15 @@ grid(lty=1,col="lightgrey")
 
 matplot(1975:2002,100*apply(table(breast$year.dx,breast$size,breast$cod3),c(1,2),function(x) x[["breast"]]/sum(x))[as.character(1975:2002),],type="l",lty=1,ylab="% dead of breast cancer within 10 years",xlab="year",bty="l",las=1,ylim=c(0,100),col=color,lwd=2)
 grid(lty=1,col="lightgrey")
+
+
+
+###standardized case fatality rates: breast cancer and all other causes, across all sizes
+dead.cause2 <- apply(dead.cause, c(1,2,4), sum)
+exposure2 <- apply(exposure,c(1,2),sum)
+mx2 <- abind(dead.cause2[,,1]/exposure2, dead.cause2[,,2]/exposure2,along=3)
+dimnames(mx2)[[3]] <- c("breast","other")
+mx2.stand <- apply(mx2,c(2,3), function(x) sum(x * stand.breast, na.rm=TRUE))
+
+matplot(1975:2002,mx2.stand[3:30,],las=1,bty="l",type="l",lwd=3,lty=1,ylab="standardized incidence-based case fatality rate",xlab="year",ylim=c(0,max(mx2.stand[3:30,])))
+text(rep(2000,2),mx2.stand[30,],c("breast cancer","all other"),col=c(1,2),pos=1)
