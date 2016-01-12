@@ -128,8 +128,8 @@ pdfstartview=FitH, breaklinks=true, urlbordercolor={1 1 1}, citebordercolor={1 1
  \setcounter{table}{0}  % reset counter for equation numbers
  \setcounter{figure}{0}  % reset counter for equation numbers
  \setcounter{page}{1}
- \renewcommand{\figurename}{Supplemental Figure}
- \renewcommand{\tablename}{Supplemental Table}
+ \renewcommand{\figurename}{eFigure}
+ \renewcommand{\tablename}{eTable}
 %\clearpage
 %\pagenumbering{gobble}
 \appendix
@@ -194,8 +194,43 @@ $a^*\in\mathcal{A}$, at time $t$, and with tumor size $s$ equals:
 where $\mu_s(a,t)$ and $m^*_{a,t,s}$ represent the hazard of mortality
 and case fatality rate adjusted for overdiagnosis, respectively; $n$
 is the width of the age interval; and $\omega$ is the starting age of
-the final and open-ended age interval.
+the final and open-ended age interval.  As an example, consider the
+life table to estimate life expectancy of $<1$cm incidence-based case
+fatality rates in 2002 assumming a $10\%$ level of overdiagnosis.
 
+\spacingset{1} 
+\begin{center}
+  \begin{table}[h]
+\begin{tabular}{@{}l rrrr rrr@{}}
+$a$ & $m_a$ & $m_a^*$ & $q_a^*$ & $l_a^*$ & $L_a^*$ & $T_a^*$ & $e_a^*$\\
+  \midrule
+40&	0.0034&	0.0037&	0.0185&	1.0000&	4.9537&	36.9008&	36.9008\\
+45&	0.0052&	0.0058&	0.0285&	0.9815&	4.8374&	31.9471&	32.5483\\
+50&	0.0074&	0.0082&	0.0402&	0.9536&	4.6715&	27.1096&	28.4292\\
+55&	0.0089&	0.0099&	0.0481&	0.9153&	4.4653&	22.4382&	24.5154\\
+60&	0.0129&	0.0143&	0.0689&	0.8712&	4.2041&	17.9728&	20.6295\\
+65&	0.0190&	0.0211&	0.1000&	0.8112&	3.8494&	13.7687&	16.9742\\
+70&	0.0328&	0.0364&	0.1665&	0.7300&	3.3371&	9.9193&	13.5872\\
+75&	0.0448&	0.0498&	0.2205&	0.6085&	2.6932&	6.5821&	10.8169\\
+80&	0.0791&	0.0879&	0.3557&	0.4743&	1.9191&	3.8889&	8.1986\\
+85&	0.1309&	0.1455&	0.5168&	0.3056&	1.0857&	1.9699&	6.4456\\
+90&	0.1689&	0.1877&	0.6087&	0.1477&	0.4790&	0.8841&	5.9872\\
+95&	0.1739&	0.1932&	0.6195&	0.0578&	0.1852&	0.4051&	7.0111\\
+100&0.0000&	0.0000&	1.0000&	0.0220&	0.2199&	0.2199&	10.0000\\
+  \bottomrule
+\end{tabular}
+\caption{Life Table, $<1$cm in 2002.  The incidence-based case fatality rate for year 2002 and size
+  $<1$cm, $m_a$, is adjusted for a $10\%$ overdiagnosis level, $m_a^*$.
+  The adjusted incidence-based case fatality is converted to
+  conditional probabilties of death, $q_a^*$.  The proportion
+  surviving, $l_a^*$, and number of dead, $q_a^* \,l_a^*$, determine
+  the life-years lived, $L_a^*$.  The total number of life-years lived
+  at age $a$ and beyond equals $T_a^*$.  Finally, the ratio of $T_a^*$
+  and $l_a^*$ equals the life expectancy at age $a$, $e_a^*$.}
+\end{table}
+\end{center}
+
+\spacingset{1.5}
 \section{Schematic Representation of the Methodology}
 For simplicity, consider three mutually exclusive and exhaustive
 categories of tumor size: 1, 2, and 3 (e.g., $<$1cm, 1-2cm, and

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  30 OCT 2015 10:37
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  31 OCT 2015 13:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -553,51 +553,52 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 <appendix_figure1.pdf, id=77, 794.97pt x 614.295pt>
 File: appendix_figure1.pdf Graphic file (type pdf)
  <use appendix_figure1.pdf>
-Package pdftex.def Info: appendix_figure1.pdf used on input line 227.
+Package pdftex.def Info: appendix_figure1.pdf used on input line 262.
 (pdftex.def)             Requested size: 455.24408pt x 225.33058pt.
 
+[2]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2] [3pdfTeX warning (ext4): destination with the same identifier (name{equatio
+[3] [4pdfTeX warning (ext4): destination with the same identifier (name{equatio
 n.E.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.263 
-       <./appendix_figure1.pdf>]
-Overfull \hbox (10.87958pt too wide) in paragraph at lines 291--291
+l.314 \begin{eqnarray}
+                       <./appendix_figure1.pdf>]
+Overfull \hbox (10.87958pt too wide) in paragraph at lines 326--326
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 291--293
+Underfull \hbox (badness 10000) in paragraph at lines 326--328
 
  []
 
 
-Overfull \hbox (9.0088pt too wide) in paragraph at lines 296--296
+Overfull \hbox (9.0088pt too wide) in paragraph at lines 331--331
  |[]\OT1/cmr/bx/n/14.4 Decomposition by Tu-mor Size, Case Fa-tal-ity Rates from
  Breast
  []
 
-[4]
-Overfull \hbox (23.27454pt too wide) detected at line 327
+
+Overfull \hbox (23.27454pt too wide) detected at line 362
  []$[] [] [] [] \OT1/cmr/m/n/10.95 + [] [] [] +$ 
  []
 
 
-Overfull \hbox (23.27454pt too wide) detected at line 327
+Overfull \hbox (23.27454pt too wide) detected at line 362
  []$[] [] [] [] \OT1/cmr/m/n/10.95 + [] [] [] +$ 
  []
 
 
-Overfull \hbox (12.77988pt too wide) detected at line 327
+Overfull \hbox (12.77988pt too wide) detected at line 362
  []$[] [] [] [] \OT1/cmr/m/n/10.95 + [] [] [] =$ 
  []
 
 
-Overfull \hbox (34.40848pt too wide) detected at line 327
+Overfull \hbox (34.40848pt too wide) detected at line 362
  []$[] [] [] [] \OT1/cmr/m/n/10.95 + [] [] [] + [] + [] [] [] + [] [] []$ []  
  []
 
@@ -606,52 +607,52 @@ n.G.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.379 \newpage
-              pdfTeX warning (ext4): destination with the same identifier (name
-{equation.G.2}) has been already used, duplicate ignored
+l.401 \end{equation}
+                    ] [7pdfTeX warning (ext4): destination with the same identi
+fier (name{equation.G.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.379 \newpage
+l.414 \newpage
               ]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 380.
+(hyperref)                removing `math shift' on input line 415.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 380.
+(hyperref)                removing `math shift' on input line 415.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 380.
+(hyperref)                removing `math shift' on input line 415.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 380.
+(hyperref)                removing `math shift' on input line 415.
 
-<appendix_figure2.pdf, id=154, 794.97pt x 614.295pt>
+<appendix_figure2.pdf, id=159, 794.97pt x 614.295pt>
 File: appendix_figure2.pdf Graphic file (type pdf)
 
 <use appendix_figure2.pdf>
-Package pdftex.def Info: appendix_figure2.pdf used on input line 394.
+Package pdftex.def Info: appendix_figure2.pdf used on input line 429.
 (pdftex.def)             Requested size: 445.18016pt x 344.00284pt.
- [7 <./appendix_figure2.pdf>] [8]
+ [8 <./appendix_figure2.pdf>] [9]
 (./appendix_oct_30_2015.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 435.
- [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 435.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 470.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 470.
  (./appendix_oct_30_2015.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 435.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 435.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 470.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 470.
 Package rerunfilecheck Info: File `appendix_oct_30_2015.out' has not changed.
 (rerunfilecheck)             Checksum: 2D9616B00C4316CD00A9FAF775104729;955.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 435.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 470.
  ) 
 Here is how much of TeX's memory you used:
- 8997 strings out of 493488
- 130605 string characters out of 3141326
- 327104 words of memory out of 3000000
+ 8999 strings out of 493488
+ 130627 string characters out of 3141326
+ 329104 words of memory out of 3000000
  12115 multiletter control sequences out of 15000+200000
  17844 words of font info for 77 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -674,10 +675,10 @@ ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive
 012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/20
 12/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
 2/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on appendix_oct_30_2015.pdf (10 pages, 327816 bytes).
+Output written on appendix_oct_30_2015.pdf (11 pages, 330260 bytes).
 PDF statistics:
- 243 PDF objects out of 1000 (max. 8388607)
- 201 compressed objects within 3 object streams
- 36 named destinations out of 1000 (max. 500000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 208 compressed objects within 3 object streams
+ 38 named destinations out of 1000 (max. 500000)
  105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
