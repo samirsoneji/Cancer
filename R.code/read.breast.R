@@ -89,6 +89,7 @@ prop.breast.age <- prop.table(as.table(table(breast$year.dx, breast$size, breast
 counts.breast.age <- table(breast$year.dx, breast$size, breast$age.dx.cat2)
 prop.age <- prop.table(as.table(table(breast$year.dx, breast$age.dx.cat2)),1)
 mx.breast.overall <- apply(dead,c(1,2),sum,na.rm=TRUE)/apply(exposure,c(1,2),sum,na.rm=TRUE)
+mx.breast.overall.all.sizes <- aperm(aaply(apply(dead.cause,c(1,2,4),sum,na.rm=TRUE),3,function(x) x/apply(exposure,c(1,2),sum,na.rm=TRUE)),c(2,3,1))
 stand.breast <- prop.table(table(breast$age.dx.cat[breast$year==1987]))
 
 popl <- read.fwf("~/Dropbox/Cancer/Value/data/SEER_data/SEER_1973_2012_TEXTDATA/populations/white_black_other/yr1973_2012.seer9/singleages.txt",
@@ -144,7 +145,8 @@ prop.died.breast.all <- apply(table(breast$year.dx,breast$size,breast$dead),c(1,
 prop.died.breast.breast <- apply(table(breast$year.dx,breast$size,breast$cod3),c(1,2),function(x) x[["breast"]]/sum(x))
 
 save(stand.breast, standard, size.rate, size.rate2, size.rate3, size.counts, size.counts2, size.counts3,
-     popl.array, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.breast.age, prop.age, counts.breast.age, prop.died.breast.all, prop.died.breast.breast, file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
+     popl.array, stand.size.rate, number.breast, mx.breast, mx.breast.cause, mx.breast.overall, prop.breast, prop.breast.age, prop.age, counts.breast.age, prop.died.breast.all, prop.died.breast.breast,mx.breast.overall.all.sizes,
+     file="~/Desktop/Cancer/data/mx.breast.size.Rdata")
 save(breast, file="~/Desktop/Cancer/data/breast.Rdata")
 
 
