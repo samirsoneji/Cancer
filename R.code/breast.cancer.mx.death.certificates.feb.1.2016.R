@@ -68,3 +68,4 @@ age.death.1975$realized <- apply(age.death.1975,1,function(x) min(x[2:3]))
 print(apply(age.death.1975,2,mean))
 #print(apply(age.death.2002,2,mean))
 #print(apply(age.death.2002,2,mean)-apply(age.death.1975,2,mean))
+ 
