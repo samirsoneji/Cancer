@@ -116,18 +116,22 @@ diagnosed with $<$1cm breast cancer in 2001 equaled 4,602 out of 19,029
 newly diagnosed breast cancers (24.2\%).
 
 \section{Adjustment for Overdiagnosis}
-Suppose 10\% of the 556 women aged 65-69 years old diagnosed with $<$1cm
-breast cancer in 2001 were overdiagnosed, the observed case fatality
-rate from breast cancer (22/5099.5) would become 22/[5099.5 -
-0.10*5099.5].  Formally, let $\mathcal{A}$ be a set of starting ages
-for age intervals analyzed (e.g., 40, 45, \dots, $\omega=100$ years), $\mathcal{T}$ be a set of
+Overdiagnosis is the detection of asymptomatic breast cancers that are
+so slow-growing that they would never present
+symptomatically.\cite{MarProMil2015} Suppose 10\% of the 556 women
+aged 65-69 years old diagnosed with $<$1cm breast cancer in 2001 were
+overdiagnosed, the observed case fatality rate from breast cancer
+(22/5099.5) would become 22/[5099.5 - 0.10*5099.5].  Formally, let
+$\mathcal{A}$ be a set of starting ages for age intervals analyzed
+(e.g., 40, 45, \dots, $\omega=100$ years), $\mathcal{T}$ be a set of
 years (e.g., 1975, \dots 2002), and $\mathcal{S}$ be a set of tumor
-sizes at diagnosis (e.g., $<$1cm, 1-2cm, 2-3cm, 3-5cm, and $\geq$5cm).
-Let $\alpha_s$ represent the assumed level of overdiagnosis for tumor
-size $s\in\mathcal{S}$.  Let $m_{a,t,s}$ represent the observed case
-fatality rate for age group $a \in \mathcal{A}$, year $t \in
-\mathcal{T}$, and tumor size $s \in \mathcal{S}$.  Then, the case
-fatality rate adjusted for overdiagnosis equals:
+sizes at diagnosis determined by clinical and operative/pathological
+assessment (e.g., $<$1cm, 1-2cm, 2-3cm, 3-5cm, and $\geq$5cm).  Let
+$\alpha_s$ represent the assumed level of overdiagnosis for tumor size
+$s\in\mathcal{S}$.  Let $m_{a,t,s}$ represent the observed case
+fatality rate for age group $a \in \mathcal{A}$, year
+$t \in \mathcal{T}$, and tumor size $s \in \mathcal{S}$.  Then, the
+case fatality rate adjusted for overdiagnosis equals:
 \begin{eqnarray}
 m^*_{a,t,s}=\frac{1}{1-\alpha_s} \times m_{a,t,s}. \notag
 \end{eqnarray}

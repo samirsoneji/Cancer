@@ -1,5 +1,5 @@
 #rm(list=ls())
-lt <- read.table("~/Desktop/Cancer/data/fltper_5x1.txt",header=TRUE,skip=2)
+lt <- read.table("~/Desktop/Cancer/data/fltper_1x1.txt",header=TRUE,skip=2)
 #load("~/Desktop/Cancer/data/mx.breast.size.Rdata")
 
 life.table <- function( x, nMx){  #https://web.stanford.edu/group/heeh/cgi-bin/web/node/75
